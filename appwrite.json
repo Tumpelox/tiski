@@ -1,0 +1,179 @@
+{
+    "projectId": "kesaseurahassakka",
+    "projectName": "Kesäseurahässäkkä",
+    "settings": {
+        "services": {
+            "account": true,
+            "avatars": true,
+            "databases": true,
+            "locale": true,
+            "health": true,
+            "storage": true,
+            "teams": true,
+            "users": true,
+            "functions": true,
+            "graphql": true,
+            "messaging": true
+        },
+        "auth": {
+            "methods": {
+                "jwt": true,
+                "phone": true,
+                "invites": true,
+                "anonymous": true,
+                "email-otp": true,
+                "magic-url": true,
+                "email-password": true
+            },
+            "security": {
+                "duration": 31536000,
+                "limit": 0,
+                "sessionsLimit": 10,
+                "passwordHistory": 0,
+                "passwordDictionary": false,
+                "personalDataCheck": false,
+                "sessionAlerts": false,
+                "mockNumbers": []
+            }
+        }
+    },
+    "databases": [
+        {
+            "$id": "tarratiski",
+            "name": "Tarratiski",
+            "enabled": true
+        },
+        {
+            "$id": "nettisivu",
+            "name": "Nettisivu",
+            "enabled": true
+        }
+    ],
+    "collections": [
+        {
+            "$id": "tuotteet",
+            "$permissions": [],
+            "databaseId": "tarratiski",
+            "name": "Tuotteet",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [],
+            "indexes": []
+        },
+        {
+            "$id": "tuotepaketit",
+            "$permissions": [],
+            "databaseId": "tarratiski",
+            "name": "Tuotepaketit",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [],
+            "indexes": []
+        },
+        {
+            "$id": "tilaukset",
+            "$permissions": [],
+            "databaseId": "tarratiski",
+            "name": "Tilaukset",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [],
+            "indexes": []
+        },
+        {
+            "$id": "postaukset",
+            "$permissions": [],
+            "databaseId": "tarratiski",
+            "name": "Postaukset",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [],
+            "indexes": []
+        },
+        {
+            "$id": "asetukset",
+            "$permissions": [],
+            "databaseId": "tarratiski",
+            "name": "Asetukset",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [],
+            "indexes": []
+        },
+        {
+            "$id": "asetukset",
+            "$permissions": [],
+            "databaseId": "nettisivu",
+            "name": "Asetukset",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [],
+            "indexes": []
+        },
+        {
+            "$id": "sivut",
+            "$permissions": [],
+            "databaseId": "nettisivu",
+            "name": "Sivut",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [],
+            "indexes": []
+        }
+    ],
+    "functions": [
+        {
+            "$id": "luoTilausKoodi",
+            "execute": [],
+            "name": "Luo tilauskoodi",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-21.0",
+            "scopes": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "",
+            "commands": "",
+            "path": "functions/Luo tilauskoodi"
+        },
+        {
+            "$id": "sdfsdf",
+            "name": "Luo",
+            "runtime": "node-21.0",
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "scopes": [
+                "users.read"
+            ],
+            "schedule": "",
+            "timeout": 15,
+            "enabled": true,
+            "logging": true,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "path": "functions/Luo"
+        },
+        {
+            "$id": "uusiTilauskoodi",
+            "name": "Uusi tilauskoodi",
+            "runtime": "go-1.23",
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "scopes": [
+                "users.read"
+            ],
+            "schedule": "",
+            "timeout": 15,
+            "enabled": true,
+            "logging": true,
+            "entrypoint": "main.go",
+            "commands": "",
+            "path": "functions/Uusi tilauskoodi"
+        }
+    ]
+}
