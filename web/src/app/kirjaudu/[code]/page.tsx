@@ -11,6 +11,10 @@ const KooditPage = async ({ params }: Props) => {
 
   const { secret, userId } = await loginWithCode(code);
 
+  if (!secret || !userId) {
+    redirect("/login");
+  }
+
   await createTokenSession(userId, secret);
 
   redirect("/");
