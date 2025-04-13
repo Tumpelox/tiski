@@ -1,12 +1,10 @@
 "use server";
 
-import { Client, Databases } from "node-appwrite";
+import { Databases } from "node-appwrite";
+import { createAdminClient } from "./createAdminClient";
 
 export async function getAdminDatabases() {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT as string)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT as string)
-    .setKey(process.env.NEXT_APPWRITE_KEY as string);
+  const client = await createAdminClient();
 
-  return new Databases(client);
+  return new Databases(client.account.client);
 }

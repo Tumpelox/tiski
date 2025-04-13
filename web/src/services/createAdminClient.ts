@@ -4,9 +4,9 @@ import { Account, Client } from "node-appwrite";
 
 export async function createAdminClient() {
   const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT as string)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT as string)
-    .setKey(process.env.NEXT_APPWRITE_KEY as string);
+    .setEndpoint(process.env.APPWRITE_ENDPOINT as string)
+    .setProject(process.env.APPWRITE_PROJECT as string)
+    .setKey(process.env.APPWRITE_API_KEY as string);
 
   return {
     get account() {

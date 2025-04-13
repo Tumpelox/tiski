@@ -20,8 +20,8 @@ export async function getLoggedInUser() {
 
 export async function createSessionClient() {
   const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT as string)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT as string);
+    .setEndpoint(process.env.APPWRITE_ENDPOINT as string)
+    .setProject(process.env.APPWRITE_PROJECT as string);
 
   const session = (await cookies()).get(Keys.SessionCookie);
   if (!session || !session.value) {
@@ -39,8 +39,8 @@ export async function createSessionClient() {
 
 export async function createTokenSession(userId: string, secret: string) {
   const client = new Client()
-    .setEndpoint("https://cloud.appwrite.io/v1")
-    .setProject("<PROJECT_ID>");
+    .setEndpoint(process.env.APPWRITE_ENDPOINT as string)
+    .setProject(process.env.APPWRITE_PROJECT as string);
 
   const account = new Account(client);
 
