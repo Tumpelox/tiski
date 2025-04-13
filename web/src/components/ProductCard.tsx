@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Product } from "@/interfaces/product.interface";
-import Image from "next/image";
+import { Product } from '@/interfaces/product.interface';
+import Image from 'next/image';
 import {
   Card,
   CardContent,
@@ -9,9 +9,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import Link from "next/link";
-import AddToCard from "./AddToCard";
+} from './ui/card';
+import Link from 'next/link';
+import AddToCard from './AddToCard';
 
 const ProductCard = ({ product }: { product: Product }) => {
   const productPicture = product.pictures[0] ?? null;

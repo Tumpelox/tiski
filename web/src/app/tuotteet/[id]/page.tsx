@@ -1,10 +1,10 @@
-import AddToCard from "@/components/AddToCard";
+import AddToCard from '@/components/AddToCard';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Carousel,
   CarouselContent,

@@ -1,4 +1,4 @@
-import { ProductDocument } from "@/interfaces/product.interface";
+import { ProductDocument } from '@/interfaces/product.interface';
 
 export const clientSideProduct = (productDocument: ProductDocument) => ({
   $id: productDocument.$id,

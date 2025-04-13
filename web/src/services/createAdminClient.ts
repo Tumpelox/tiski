@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { Account, Client } from "node-appwrite";
+import { Account, Client } from 'node-appwrite';
 
 export async function createAdminClient() {
   const client = new Client()

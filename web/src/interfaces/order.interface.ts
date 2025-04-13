@@ -1,11 +1,11 @@
-import { Models } from "node-appwrite";
-import { Bundle } from "./bundle.interface";
-import { OrderCode } from "./orderCode.interface";
-import { Product } from "./product.interface";
+import { Models } from 'node-appwrite';
+import { Bundle } from './bundle.interface';
+import { OrderCode } from './orderCode.interface';
+import { Product } from './product.interface';
 
 export enum OrderDatabase {
-  DatabaseId = "tarratiski",
-  CollectionId = "tilaukset",
+  DatabaseId = 'tarratiski',
+  CollectionId = 'tilaukset',
 }
 
 export interface Order extends Models.Document {

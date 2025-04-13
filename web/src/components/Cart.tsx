@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useCartStore } from "@/store";
-import { Button } from "./ui/button";
-import Image from "next/image";
-import Link from "next/link";
+import { useCartStore } from '@/store';
+import { Button } from './ui/button';
+import Image from 'next/image';
+import Link from 'next/link';
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from './ui/card';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, clearCart, getTotalItems } =

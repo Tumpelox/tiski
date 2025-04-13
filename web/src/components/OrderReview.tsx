@@ -1,9 +1,9 @@
-"use client"; // Important: This needs to be a Client Component
+'use client'; // Important: This needs to be a Client Component
 
-import React, { useEffect, useState } from "react";
-import { useCartStore } from "@/store"; //
-import { fetchProducts } from "@/actions/product";
-import { Product } from "@/interfaces/product.interface"; //
+import React, { useEffect, useState } from 'react';
+import { useCartStore } from '@/store'; //
+import { fetchProducts } from '@/actions/product';
+import { Product } from '@/interfaces/product.interface'; //
 
 // Geminin settiä mut vois olla järkevämpää vaa käyttää tRPC:tä tuotteiden hakuun. Server actionit ei oo tarkotettu varsinaisesti tähän
 
@@ -48,8 +48,8 @@ export function CartReview() {
         });
         setItemsWithAvailability(updatedItems);
       } catch (err) {
-        console.error("Failed to check availability:", err);
-        setError("Could not update product availability. Please try again.");
+        console.error('Failed to check availability:', err);
+        setError('Could not update product availability. Please try again.');
         // Keep existing items but maybe flag them as unchecked
         setItemsWithAvailability(
           cartItems.map((item) => ({
@@ -82,7 +82,7 @@ export function CartReview() {
     <div>
       <h2>Review Your Cart</h2>
       {isLoading && <p>Checking product availability...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <ul>
         {itemsWithAvailability.map((item) => (
           <li
@@ -91,16 +91,16 @@ export function CartReview() {
           >
             {item.title} - Quantity: {item.quantity} {/* */}
             {item.isAvailable === false && (
-              <span style={{ color: "red", marginLeft: "10px" }}>
-                {" "}
+              <span style={{ color: 'red', marginLeft: '10px' }}>
+                {' '}
                 (Out of Stock)
               </span>
             )}
             {item.isAvailable === true &&
               item.availableStock !== undefined &&
               item.availableStock < item.quantity && (
-                <span style={{ color: "orange", marginLeft: "10px" }}>
-                  {" "}
+                <span style={{ color: 'orange', marginLeft: '10px' }}>
+                  {' '}
                   (Insufficient Stock: {item.availableStock} available)
                 </span>
               )}
@@ -108,14 +108,14 @@ export function CartReview() {
               item.availableStock !== undefined &&
               item.availableStock < 5 &&
               item.availableStock >= item.quantity && (
-                <span style={{ color: "orange", marginLeft: "10px" }}>
-                  {" "}
+                <span style={{ color: 'orange', marginLeft: '10px' }}>
+                  {' '}
                   (Low Stock!)
                 </span>
               )}
             {item.isAvailable === undefined && !isLoading && !error && (
-              <span style={{ color: "grey", marginLeft: "10px" }}>
-                {" "}
+              <span style={{ color: 'grey', marginLeft: '10px' }}>
+                {' '}
                 (Availability unknown)
               </span>
             )}
@@ -123,10 +123,10 @@ export function CartReview() {
         ))}
       </ul>
       <button disabled={!canProceed || itemsWithAvailability.length === 0}>
-        {isLoading ? "Checking..." : "Proceed to Checkout"}
+        {isLoading ? 'Checking...' : 'Proceed to Checkout'}
       </button>
       {!canProceed && !isLoading && itemsWithAvailability.length > 0 && (
-        <p style={{ color: "red", marginTop: "10px" }}>
+        <p style={{ color: 'red', marginTop: '10px' }}>
           Cannot proceed: Some items are unavailable or have insufficient stock.
         </p>
       )}

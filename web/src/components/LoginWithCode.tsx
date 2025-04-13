@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { handleCodeLogin } from "@/actions/auth";
-import { Button } from "./ui/button";
+import { handleCodeLogin } from '@/actions/auth';
+import { Button } from './ui/button';
 
 //Geminisettiä vähä fixailtuna
 export function LoginComponent() {

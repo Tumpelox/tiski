@@ -1,6 +1,6 @@
-import ProductCard from "@/components/ProductCard";
-import { exampleProduct } from "@/interfaces/product.interface";
-import { clientSideProduct } from "@/lib/clientSideProduct";
+import ProductCard from '@/components/ProductCard';
+import { exampleProduct } from '@/interfaces/product.interface';
+import { clientSideProduct } from '@/lib/clientSideProduct';
 
 const KooditPage = () => {
   return (
@@ -9,7 +9,7 @@ const KooditPage = () => {
       <div className="grid grid-cols-3 gap-4 mx-auto w-fit">
         {[...Array(10)].map((_, index) => (
           <ProductCard
-            key={index + "pulla"}
+            key={index + 'pulla'}
             product={clientSideProduct(exampleProduct)}
           />
         ))}

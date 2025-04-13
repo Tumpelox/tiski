@@ -20,19 +20,19 @@ export const createNewOrderCode = async (newOrderCode: NewOrderCode) => {
   const user = await getLoggedInUser();
 
   if (!user) {
-    console.error("User not found. Cannot create order code.");
+    console.error('User not found. Cannot create order code.');
     return null;
   }
 
   const adminLabel = process.env.APPWRITE_ADMIN_LABEL_ID;
 
   if (!adminLabel) {
-    console.error("Admin team ID is not set in environment variables.");
+    console.error('Admin team ID is not set in environment variables.');
     return null;
   }
 
   if (!user.labels.includes(adminLabel)) {
-    console.error("User is not an admin. Cannot create order code.");
+    console.error('User is not an admin. Cannot create order code.');
     return null;
   }
 

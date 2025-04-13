@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 import { Databases } from "node-appwrite";
 import { createAdminClient } from "./createAdminClient";
