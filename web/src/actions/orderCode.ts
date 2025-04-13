@@ -1,10 +1,10 @@
-import { OrderDatabase } from "@/interfaces/order.interface";
-import { OrderCode } from "@/interfaces/orderCode.interface";
-import { createAdminClient } from "@/services/createAdminClient";
-import { getAdminDatabases } from "@/services/databases";
-import { getLoggedInUser } from "@/services/userSession";
-import { redirect } from "next/navigation";
-import { ID, Permission, Role, Users } from "node-appwrite";
+import { OrderDatabase } from '@/interfaces/order.interface';
+import { OrderCode } from '@/interfaces/orderCode.interface';
+import { createAdminClient } from '@/services/createAdminClient';
+import { getAdminDatabases } from '@/services/databases';
+import { getLoggedInUser } from '@/services/userSession';
+import { redirect } from 'next/navigation';
+import { ID, Permission, Role, Users } from 'node-appwrite';
 
 export interface NewOrderCode {
   name: string;
@@ -18,19 +18,19 @@ export const createNewOrderCode = async (newOrderCode: NewOrderCode) => {
   const user = await getLoggedInUser();
 
   if (!user) {
-    console.error("User not found. Cannot create order code.");
+    console.error('User not found. Cannot create order code.');
     return null;
   }
 
   const adminLabel = process.env.APPWRITE_ADMIN_LABEL_ID;
 
   if (!adminLabel) {
-    console.error("Admin team ID is not set in environment variables.");
+    console.error('Admin team ID is not set in environment variables.');
     return null;
   }
 
   if (!user.labels.includes(adminLabel)) {
-    console.error("User is not an admin. Cannot create order code.");
+    console.error('User is not an admin. Cannot create order code.');
     return null;
   }
 

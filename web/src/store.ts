@@ -1,7 +1,7 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
-import { Product } from "@/interfaces/product.interface"; // Assuming you have this interface
-import { produce } from "immer";
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { Product } from '@/interfaces/product.interface'; // Assuming you have this interface
+import { produce } from 'immer';
 
 //Geminin generoimaa koodia. Vaikutti ihan fiksulta mut lisäsin immerin
 
@@ -65,7 +65,7 @@ export const useCartStore = create<CartState>()(
         get().items.reduce((total, item) => total + item.quantity, 0),
     }),
     {
-      name: "cart-storage",
+      name: 'cart-storage',
       storage: createJSONStorage(() => localStorage),
     }
   )

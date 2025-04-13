@@ -4,7 +4,7 @@ interface Props {
 
 const TilausYhteenvetoPage = async ({ params }: Props) => {
   const { slug } = await params;
-  console.log("Sivu: " + slug);
+  console.log('Sivu: ' + slug);
   return (
     <div>
       <h1>Artikkelisivu</h1>

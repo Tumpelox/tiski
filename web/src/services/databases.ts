@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { Client, Databases } from "node-appwrite";
+import { Client, Databases } from 'node-appwrite';
 
 export async function getAdminDatabases() {
   const client = new Client()

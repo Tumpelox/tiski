@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { cookies } from "next/headers";
-import { Account, Client } from "node-appwrite";
+import { cookies } from 'next/headers';
+import { Account, Client } from 'node-appwrite';
 
 enum Keys {
-  SessionCookie = "Tiski_Session_Cookie",
+  SessionCookie = 'Tiski_Session_Cookie',
 }
 
 export async function getLoggedInUser() {
@@ -25,7 +25,7 @@ export async function createSessionClient() {
 
   const session = (await cookies()).get(Keys.SessionCookie);
   if (!session || !session.value) {
-    throw new Error("No session");
+    throw new Error('No session');
   }
 
   client.setSession(session.value);
@@ -39,17 +39,17 @@ export async function createSessionClient() {
 
 export async function createTokenSession(userId: string, secret: string) {
   const client = new Client()
-    .setEndpoint("https://cloud.appwrite.io/v1")
-    .setProject("<PROJECT_ID>");
+    .setEndpoint('https://cloud.appwrite.io/v1')
+    .setProject('<PROJECT_ID>');
 
   const account = new Account(client);
 
   const session = await account.createSession(userId, secret);
 
   (await cookies()).set(Keys.SessionCookie, session.secret, {
-    path: "/",
+    path: '/',
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: 'strict',
     secure: true,
   });
 }

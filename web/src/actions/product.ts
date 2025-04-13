@@ -1,14 +1,14 @@
 // src/actions/productAvailability.ts (New File)
-"use server";
+'use server';
 
-import { Query } from "node-appwrite";
-import { getAdminDatabases } from "@/services/databases"; //
+import { Query } from 'node-appwrite';
+import { getAdminDatabases } from '@/services/databases'; //
 import {
   Product,
   ProductDatabase,
   ProductDocument,
-} from "@/interfaces/product.interface";
-import { clientSideProduct } from "@/lib/clientSideProduct";
+} from '@/interfaces/product.interface';
+import { clientSideProduct } from '@/lib/clientSideProduct';
 
 // Geminin settiä mut vois olla järkevämpää vaa käyttää tRPC:tä tuotteiden hakuun. Server actionit ei oo tarkotettu varsinaisesti tähän
 
@@ -30,7 +30,7 @@ export const fetchProducts = async (
     const response = await databases.listDocuments<ProductDocument>(
       ProductDatabase.DatabaseId,
       ProductDatabase.CollectionId,
-      [Query.equal("$id", productIds), Query.limit(productIds.length)]
+      [Query.equal('$id', productIds), Query.limit(productIds.length)]
     );
 
     // Map the results to the simplified ProductAvailability interface
@@ -40,9 +40,9 @@ export const fetchProducts = async (
 
     return availabilityData;
   } catch (error) {
-    console.error("Error fetching product availability:", error);
+    console.error('Error fetching product availability:', error);
     // Depending on your error handling strategy, you might throw the error
     // or return an empty array or a specific error indicator.
-    throw new Error("Failed to fetch product availability.");
+    throw new Error('Failed to fetch product availability.');
   }
 };

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "next lint --fix"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@radix-ui/react-navigation-menu": "^1.2.5",

@@ -1,19 +1,19 @@
-import AddToCard from "@/components/AddToCard";
+import AddToCard from '@/components/AddToCard';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import { exampleProduct } from "@/interfaces/product.interface";
-import Image from "next/image";
+} from '@/components/ui/carousel';
+import { exampleProduct } from '@/interfaces/product.interface';
+import Image from 'next/image';
 
 interface Props {
   params: Promise<{ id: string }>;

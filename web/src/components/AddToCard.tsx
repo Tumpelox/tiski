@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Product } from "@/interfaces/product.interface";
-import { Button } from "./ui/button";
-import { useCartStore } from "@/store";
+import { Product } from '@/interfaces/product.interface';
+import { Button } from './ui/button';
+import { useCartStore } from '@/store';
 
 const AddToCard = ({ product }: { product: Product }) => {
   const { addItem } = useCartStore();

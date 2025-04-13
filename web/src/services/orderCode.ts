@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { Query, Users } from "node-appwrite";
-import { getAdminDatabases } from "./databases";
-import { OrderCode, OrderCodeDatabase } from "@/interfaces/orderCode.interface";
-import { createAdminClient } from "./createAdminClient";
+import { Query, Users } from 'node-appwrite';
+import { getAdminDatabases } from './databases';
+import { OrderCode, OrderCodeDatabase } from '@/interfaces/orderCode.interface';
+import { createAdminClient } from './createAdminClient';
 
 export const loginWithCode = async (code: string) => {
   const databases = await getAdminDatabases();
@@ -13,7 +13,7 @@ export const loginWithCode = async (code: string) => {
   const codes = await databases.listDocuments<OrderCode>(
     OrderCodeDatabase.DatabaseId,
     OrderCodeDatabase.CollectionId,
-    [Query.equal("code", code)]
+    [Query.equal('code', code)]
   );
 
   if (codes.documents.length === 0) return { secret: null, userId: null };
@@ -33,7 +33,7 @@ export const getOrderCode = async (userId: string) => {
   const codes = await databases.listDocuments<OrderCode>(
     OrderCodeDatabase.DatabaseId,
     OrderCodeDatabase.CollectionId,
-    [Query.equal("userId", userId)]
+    [Query.equal('userId', userId)]
   );
 
   if (codes.documents.length === 0) return null;

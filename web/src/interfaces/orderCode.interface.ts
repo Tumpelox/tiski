@@ -1,8 +1,8 @@
-import { Models } from "node-appwrite";
+import { Models } from 'node-appwrite';
 
 export enum OrderCodeDatabase {
-  DatabaseId = "tarratiski",
-  CollectionId = "tilauskoodit",
+  DatabaseId = 'tarratiski',
+  CollectionId = 'tilauskoodit',
 }
 
 export interface OrderCode extends Models.Document {
