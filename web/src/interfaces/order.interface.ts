@@ -14,4 +14,7 @@ export interface Order extends Models.Document {
   bundles: Bundle[];
   shippingName: string;
   shippingAddress: string;
+  notes: string | null;
+  shipped: Date | null;
+  canceled: Date | null;
 }
