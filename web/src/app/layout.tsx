@@ -7,6 +7,8 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@radix-ui/react-navigation-menu";
+import * as React from "react";
+import NavigationMenuButton from "@/components/NavigationMenuButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,22 +30,26 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-b from-blue-30 to-blue-300 min-h-screen`}
       >
-        <NavigationMenu>
-          <NavigationMenuList>
-            {/*
+        <NavigationMenuButton>
+
+          <NavigationMenu>
+            <NavigationMenuList>
+              {/*
               Lista kaikki linkit asetuksista
               <NavigationMenuLink className={navigationMenuTriggerStyle()}> next/link käyttö näin
                 Teksti
               </NavigationMenuLink>
-            */}
-            <NavigationMenuItem></NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+              */}
+              <NavigationMenuItem></NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </NavigationMenuButton>
         {/* Väliaikainen navigointi */}
         <nav className="bg-yellow-300">
           <p>Layout osassa kaikilla sivuilla näkyvät osat kuten valikko</p>
