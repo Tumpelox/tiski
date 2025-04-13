@@ -1,6 +1,6 @@
 {
-    "projectId": "kesaseurahassakka",
-    "projectName": "Kesäseurahässäkkä",
+    "projectId": "tarratoimikunta",
+    "projectName": "Tarratoimikunta",
     "settings": {
         "services": {
             "account": true,
@@ -57,7 +57,52 @@
             "name": "Tuotteet",
             "enabled": true,
             "documentSecurity": false,
-            "attributes": [],
+            "attributes": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 320,
+                    "default": null
+                },
+                {
+                    "key": "available",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "stock",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 9223372036854775807,
+                    "default": 0
+                },
+                {
+                    "key": "pictures",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "pictures",
+                    "relationType": "oneToMany",
+                    "twoWay": false,
+                    "twoWayKey": "67fbf4cf003bd516d240",
+                    "onDelete": "restrict",
+                    "side": "parent"
+                }
+            ],
             "indexes": []
         },
         {
@@ -67,7 +112,36 @@
             "name": "Tuotepaketit",
             "enabled": true,
             "documentSecurity": false,
-            "attributes": [],
+            "attributes": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 640,
+                    "default": null
+                },
+                {
+                    "key": "products",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tuotteet",
+                    "relationType": "manyToMany",
+                    "twoWay": false,
+                    "twoWayKey": "67aa0a4e0001f944b2bc",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                }
+            ],
             "indexes": []
         },
         {
@@ -77,17 +151,84 @@
             "name": "Tilaukset",
             "enabled": true,
             "documentSecurity": false,
-            "attributes": [],
-            "indexes": []
-        },
-        {
-            "$id": "postaukset",
-            "$permissions": [],
-            "databaseId": "tarratiski",
-            "name": "Postaukset",
-            "enabled": true,
-            "documentSecurity": false,
-            "attributes": [],
+            "attributes": [
+                {
+                    "key": "shippingName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
+                },
+                {
+                    "key": "shippingAddress",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 320,
+                    "default": null
+                },
+                {
+                    "key": "bundle",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tuotepaketit",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "67aa06f900345afcceef",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                },
+                {
+                    "key": "products",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tuotteet",
+                    "relationType": "oneToMany",
+                    "twoWay": false,
+                    "twoWayKey": "67d1aaa90025ea511786",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                },
+                {
+                    "key": "notes",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 1024,
+                    "default": null
+                },
+                {
+                    "key": "shipped",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "canceled",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "orderCode",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tilauskoodit",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "orders",
+                    "onDelete": "cascade",
+                    "side": "child"
+                }
+            ],
             "indexes": []
         },
         {
@@ -119,61 +260,119 @@
             "documentSecurity": false,
             "attributes": [],
             "indexes": []
-        }
-    ],
-    "functions": [
-        {
-            "$id": "luoTilausKoodi",
-            "execute": [],
-            "name": "Luo tilauskoodi",
-            "enabled": true,
-            "logging": true,
-            "runtime": "node-21.0",
-            "scopes": [],
-            "events": [],
-            "schedule": "",
-            "timeout": 15,
-            "entrypoint": "",
-            "commands": "",
-            "path": "functions/Luo tilauskoodi"
         },
         {
-            "$id": "sdfsdf",
-            "name": "Luo",
-            "runtime": "node-21.0",
-            "execute": [
-                "any"
-            ],
-            "events": [],
-            "scopes": [
-                "users.read"
-            ],
-            "schedule": "",
-            "timeout": 15,
+            "$id": "tilauskoodit",
+            "$permissions": [],
+            "databaseId": "tarratiski",
+            "name": "Tilauskoodit",
             "enabled": true,
-            "logging": true,
-            "entrypoint": "src/main.js",
-            "commands": "npm install",
-            "path": "functions/Luo"
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
+                },
+                {
+                    "key": "availableOrders",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 9999,
+                    "default": null
+                },
+                {
+                    "key": "orders",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tilaukset",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "orderCode",
+                    "onDelete": "cascade",
+                    "side": "parent"
+                },
+                {
+                    "key": "creator",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 256,
+                    "default": null
+                },
+                {
+                    "key": "code",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
+                },
+                {
+                    "key": "userId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 128,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "codes",
+                    "type": "unique",
+                    "status": "available",
+                    "attributes": [
+                        "code"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
         },
         {
-            "$id": "uusiTilauskoodi",
-            "name": "Uusi tilauskoodi",
-            "runtime": "go-1.23",
-            "execute": [
-                "any"
-            ],
-            "events": [],
-            "scopes": [
-                "users.read"
-            ],
-            "schedule": "",
-            "timeout": 15,
+            "$id": "pictures",
+            "$permissions": [],
+            "databaseId": "tarratiski",
+            "name": "Kuvat",
             "enabled": true,
-            "logging": true,
-            "entrypoint": "main.go",
-            "commands": "",
-            "path": "functions/Uusi tilauskoodi"
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "url",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "height",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": -9223372036854775808,
+                    "max": 9223372036854775807,
+                    "default": null
+                },
+                {
+                    "key": "width",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": -9223372036854775808,
+                    "max": 9223372036854775807,
+                    "default": null
+                }
+            ],
+            "indexes": []
         }
     ]
 }
