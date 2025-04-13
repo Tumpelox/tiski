@@ -1,3 +1,5 @@
+"use server";
+
 import { OrderDatabase } from "@/interfaces/order.interface";
 import { OrderCode } from "@/interfaces/orderCode.interface";
 import { createAdminClient } from "@/services/createAdminClient";
