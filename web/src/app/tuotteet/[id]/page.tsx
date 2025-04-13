@@ -12,7 +12,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Picture } from "@/interfaces/picture.interface";
 import { exampleProduct } from "@/interfaces/product.interface";
+import { clientSideProduct } from "@/lib/clientSideProduct";
 import Image from "next/image";
 
 interface Props {
@@ -23,7 +25,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
   const { id } = await params;
   const { title, description, stock } = exampleProduct;
 
-  const pictures = exampleProduct.pictures ?? [];
+  const pictures = (exampleProduct.pictures ?? []) as Picture[];
   const productPicture = pictures.length > 0;
   return (
     <div className="px-4 md:px-8 ">
@@ -59,7 +61,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
                 <p>{description}</p>
               </div>
 
-              <AddToCard product={exampleProduct} />
+              <AddToCard product={clientSideProduct(exampleProduct)} />
             </CardHeader>
           </div>
         </CardContent>
