@@ -1,5 +1,5 @@
-import { Order, OrderDatabase } from "@/interfaces/order.interface";
-import { getAdminDatabases } from "@/services/databases";
+import { Order, OrderDatabase } from '@/interfaces/order.interface';
+import { getAdminDatabases } from '@/services/databases';
 
 interface Props {
   params: Promise<{ orderId: string }>;
@@ -26,8 +26,8 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
           Tilauksen tuotteet {order.products.map((product) => product.$id)}
         </li>
         <li>
-          Tilauksen tila{" "}
-          {order.shipped ? "Lähetetty" : order.canceled ? "Peruttu" : "Odottaa"}
+          Tilauksen tila{' '}
+          {order.shipped ? 'Lähetetty' : order.canceled ? 'Peruttu' : 'Odottaa'}
         </li>
         <li>Tilauksen yhteystiedot</li>
       </ul>

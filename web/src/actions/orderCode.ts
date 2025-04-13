@@ -1,12 +1,12 @@
-"use server";
+'use server';
 
-import { OrderDatabase } from "@/interfaces/order.interface";
-import { OrderCode } from "@/interfaces/orderCode.interface";
-import { createAdminClient } from "@/services/createAdminClient";
-import { getAdminDatabases } from "@/services/databases";
-import { getLoggedInUser } from "@/services/userSession";
-import { redirect } from "next/navigation";
-import { ID, Permission, Role, Users } from "node-appwrite";
+import { OrderDatabase } from '@/interfaces/order.interface';
+import { OrderCode } from '@/interfaces/orderCode.interface';
+import { createAdminClient } from '@/services/createAdminClient';
+import { getAdminDatabases } from '@/services/databases';
+import { getLoggedInUser } from '@/services/userSession';
+import { redirect } from 'next/navigation';
+import { ID, Permission, Role, Users } from 'node-appwrite';
 
 export interface NewOrderCode {
   name: string;

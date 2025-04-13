@@ -11,11 +11,11 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Picture } from "@/interfaces/picture.interface";
-import { exampleProduct } from "@/interfaces/product.interface";
-import { clientSideProduct } from "@/lib/clientSideProduct";
-import Image from "next/image";
+} from '@/components/ui/carousel';
+import { Picture } from '@/interfaces/picture.interface';
+import { exampleProduct } from '@/interfaces/product.interface';
+import { clientSideProduct } from '@/lib/clientSideProduct';
+import Image from 'next/image';
 
 interface Props {
   params: Promise<{ id: string }>;

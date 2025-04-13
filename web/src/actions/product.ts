@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 import { Query } from 'node-appwrite';
 import { getAdminDatabases } from '@/services/databases'; //

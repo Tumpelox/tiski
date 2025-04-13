@@ -5,18 +5,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Order, OrderDatabase } from "@/interfaces/order.interface";
-import { getAdminDatabases } from "@/services/databases";
-import { getLoggedInUser } from "@/services/userSession";
+} from '@/components/ui/table';
+import { Order, OrderDatabase } from '@/interfaces/order.interface';
+import { getAdminDatabases } from '@/services/databases';
+import { getLoggedInUser } from '@/services/userSession';
 
-import Link from "next/link";
+import Link from 'next/link';
 //import { redirect } from "next/navigation";
 
 const KooditPage = async () => {
   const user = await getLoggedInUser();
 
-  if (!user || !user.labels.includes("admin")) {
+  if (!user || !user.labels.includes('admin')) {
     //redirect("/kirjaudu");
   }
 
@@ -52,10 +52,10 @@ const KooditPage = async () => {
               <TableCell>{order.orderCode.code}</TableCell>
               <TableCell>
                 {order.shipped
-                  ? "Lähetetty"
+                  ? 'Lähetetty'
                   : order.canceled
-                  ? "Peruutettu"
-                  : "Odottamassa"}
+                    ? 'Peruutettu'
+                    : 'Odottamassa'}
               </TableCell>
             </TableRow>
           ))}
