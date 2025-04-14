@@ -5,8 +5,11 @@ import { OrderCode } from '@/interfaces/orderCode.interface';
 import { createAdminClient } from '@/services/createAdminClient';
 import { getAdminDatabases } from '@/services/databases';
 import { getLoggedInUser } from '@/services/userSession';
+import { ToastType } from '@/store';
 import { redirect } from 'next/navigation';
 import { ID, Permission, Role, Users } from 'node-appwrite';
+import { z } from 'zod';
+import { codeSchema } from './auth';
 
 export interface NewOrderCode {
   name: string;
@@ -16,25 +19,36 @@ export interface NewOrderCode {
   userId: string;
 }
 
+const newOrderCodeSchema = z.object({
+  name: z.string().min(2).max(128),
+  availableOrders: z.number().min(1).max(100),
+  creator: z.string().min(2).max(128),
+  code: codeSchema,
+  userId: z.string().min(3).max(32),
+});
+
 export const createNewOrderCode = async (newOrderCode: NewOrderCode) => {
   const user = await getLoggedInUser();
 
   if (!user) {
-    console.error('User not found. Cannot create order code.');
-    return null;
+    return { message: 'Kirjaudu sisään', type: ToastType.ERROR };
   }
 
-  const adminLabel = process.env.APPWRITE_ADMIN_LABEL_ID;
-
-  if (!adminLabel) {
-    console.error('Admin team ID is not set in environment variables.');
-    return null;
+  if (!user.labels.includes('admin')) {
+    return {
+      message: 'Sinulla ei ole riittäviä käyttöoikeuksia',
+      type: ToastType.ERROR,
+    };
   }
 
-  if (!user.labels.includes(adminLabel)) {
-    console.error('User is not an admin. Cannot create order code.');
-    return null;
+  const parsedOrderCode = newOrderCodeSchema.safeParse(newOrderCode);
+  if (parsedOrderCode.success === false) {
+    return {
+      message: 'Virheellinen pyyntö',
+      type: ToastType.ERROR,
+    };
   }
+  const { name, availableOrders, code } = parsedOrderCode.data;
 
   const adminClient = await createAdminClient();
 
@@ -49,16 +63,16 @@ export const createNewOrderCode = async (newOrderCode: NewOrderCode) => {
     OrderDatabase.CollectionId,
     ID.unique(),
     {
-      name: newOrderCode.name,
-      availableOrders: newOrderCode.availableOrders,
+      name: name,
+      availableOrders: availableOrders,
       creator: user.$id,
-      code: newOrderCode.code,
+      code: code,
       userId: newUser.$id,
     },
     [
-      Permission.read(Role.label(adminLabel)),
-      Permission.update(Role.label(adminLabel)),
-      Permission.delete(Role.label(adminLabel)),
+      Permission.read(Role.label('admin')),
+      Permission.update(Role.label('admin')),
+      Permission.delete(Role.label('admin')),
     ]
   );
 

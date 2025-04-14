@@ -70,3 +70,55 @@ export const useCartStore = create<CartState>()(
     }
   )
 );
+
+export enum ToastType {
+  SUCCESS = 'success',
+  ERROR = 'error',
+  INFO = 'info',
+}
+interface Message {
+  uuid: string;
+  text: string;
+  type: ToastType;
+}
+
+interface ToastMessageStore {
+  messages: Message[];
+  addMessage: (message: string, type: ToastType) => void;
+  removeMessage: (uuid: string) => void;
+  clearMessages: () => void;
+}
+
+export const useToastMessageStore = create<ToastMessageStore>()(
+  persist(
+    (set) => ({
+      messages: [],
+      addMessage: (message, type) =>
+        set(
+          produce((draft: ToastMessageStore) => {
+            draft.messages.push({
+              uuid: crypto.randomUUID(),
+              text: message,
+              type: type,
+            });
+          })
+        ),
+      removeMessage: (uuid: string) =>
+        set(
+          produce((draft: ToastMessageStore) => {
+            draft.messages = draft.messages.filter((m) => m.uuid !== uuid);
+          })
+        ),
+      clearMessages: () =>
+        set(
+          produce((draft: ToastMessageStore) => {
+            draft.messages = [];
+          })
+        ),
+    }),
+    {
+      name: 'toast-storage',
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);

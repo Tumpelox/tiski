@@ -7,17 +7,18 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
+import { isProduction } from '@/lib/utils';
 import { getAdminDatabases } from '@/services/databases';
 import { getLoggedInUser } from '@/services/userSession';
 
 import Link from 'next/link';
-//import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
 
 const KooditPage = async () => {
   const user = await getLoggedInUser();
 
-  if (!user || !user.labels.includes('admin')) {
-    //redirect("/kirjaudu");
+  if (!user || (!user.labels.includes('admin') && isProduction)) {
+    redirect('/kirjaudu');
   }
 
   const database = await getAdminDatabases();

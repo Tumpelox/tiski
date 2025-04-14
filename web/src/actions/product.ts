@@ -8,8 +8,12 @@ import {
   ProductDocument,
 } from '@/interfaces/product.interface';
 import { clientSideProduct } from '@/lib/clientSideProduct';
+import { z } from 'zod';
+import { ToastType } from '@/store';
 
 // Geminin settiä mut vois olla järkevämpää vaa käyttää tRPC:tä tuotteiden hakuun. Server actionit ei oo tarkotettu varsinaisesti tähän
+
+const productIdSchema = z.string().min(1).max(32);
 
 /**
  * Fetches the current stock and availability for a list of product IDs.
@@ -18,9 +22,14 @@ import { clientSideProduct } from '@/lib/clientSideProduct';
  */
 export const fetchProducts = async (
   productIds: string[]
-): Promise<Product[]> => {
-  if (!productIds || productIds.length === 0) {
-    return [];
+): Promise<Product[] | { message: string; type: ToastType }> => {
+  const parsedProductIds = productIdSchema.array().safeParse(productIds);
+
+  if (
+    parsedProductIds.success === false ||
+    parsedProductIds.data.length === 0
+  ) {
+    return { message: 'Virheellinen pyyntö', type: ToastType.ERROR };
   }
 
   try {
@@ -39,9 +48,10 @@ export const fetchProducts = async (
 
     return availabilityData;
   } catch (error) {
-    console.error('Error fetching product availability:', error);
-    // Depending on your error handling strategy, you might throw the error
-    // or return an empty array or a specific error indicator.
-    throw new Error('Failed to fetch product availability.');
+    console.error('Error fetching products:', error);
+    return {
+      message: 'Tuotteiden hakeminen epäonnistui',
+      type: ToastType.ERROR,
+    };
   }
 };

@@ -4,6 +4,8 @@ import './globals.css';
 import Link from 'next/link';
 import * as React from 'react';
 import NavigationMenuButton from '@/components/NavigationMenuButton';
+import ToastMessage, { NewToastMessage } from '@/components/ToastMessage';
+import { isDevelopment } from '@/lib/utils';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,6 +32,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-b from-blue-30 to-blue-300 min-h-screen`}
       >
+        <ToastMessage />
+        {
+          isDevelopment && (
+            <NewToastMessage />
+          ) /* Jos devausympäristö niin näyttää viestin testauksen */
+        }
         <NavigationMenuButton>
           <nav className="bg-yellow-300">
             <ul>

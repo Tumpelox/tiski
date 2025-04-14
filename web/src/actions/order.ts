@@ -5,8 +5,10 @@ import { Product } from '@/interfaces/product.interface';
 import { getAdminDatabases } from '@/services/databases';
 import { getOrderCode } from '@/services/orderCode';
 import { getLoggedInUser } from '@/services/userSession';
+import { ToastType } from '@/store';
 import { redirect } from 'next/navigation';
 import { ID, Permission, Role } from 'node-appwrite';
+import { z } from 'zod';
 
 export interface Order {
   items: Product[];
@@ -14,31 +16,37 @@ export interface Order {
   shippingAddress: string;
 }
 
+const orderSchema = z.object({
+  items: z.array(z.object({ $id: z.string() })),
+  shippingName: z.string(),
+  shippingAddress: z.string(),
+});
+
 export const newOrder = async (order: Order) => {
-  const { items } = order;
+  const parsedOrder = orderSchema.safeParse(order);
+
+  if (parsedOrder.success === false) {
+    return {
+      message: 'Virheellinen pyyntö',
+      type: ToastType.ERROR,
+    };
+  }
+
+  const { items, shippingAddress, shippingName } = parsedOrder.data;
 
   const user = await getLoggedInUser();
 
   if (!user) {
-    console.error('User not found. Cannot create order.');
-    return 'hölöpölö';
+    return { message: 'Syötä koodi', type: ToastType.ERROR };
   }
 
   const orderCode = await getOrderCode(user.$id);
 
   if (!orderCode) {
-    console.error('Order code not found for user:', user.$id);
-    return 'hölöpölö';
+    return { message: 'Syötä koodi', type: ToastType.ERROR };
   }
 
   const databases = await getAdminDatabases();
-
-  const adminLabel = process.env.APPWRITE_ADMIN_LABEL_ID;
-
-  if (!adminLabel) {
-    console.error('Admin team ID is not set in environment variables.');
-    return 'hölöpölö';
-  }
 
   const newOrder = await databases.createDocument(
     OrderDatabase.DatabaseId,
@@ -48,14 +56,14 @@ export const newOrder = async (order: Order) => {
       orderCode: orderCode.$id,
       products: items.map((item) => item.$id),
       bundles: [],
-      shippingName: order.shippingName,
-      shippingAddress: order.shippingAddress,
+      shippingName: shippingName,
+      shippingAddress: shippingAddress,
     },
     [
       Permission.read(Role.user(user.$id)),
-      Permission.read(Role.label(adminLabel)),
-      Permission.update(Role.label(adminLabel)),
-      Permission.delete(Role.label(adminLabel)),
+      Permission.read(Role.label('admin')),
+      Permission.update(Role.label('admin')),
+      Permission.delete(Role.label('admin')),
     ]
   );
 
