@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getLoggedInUser } from './services/userSession';
-import { isProduction } from './lib/utils';
+import isAdmin from './lib/isAdmin';
 
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/hallinta')) {
@@ -10,8 +10,7 @@ export async function middleware(request: NextRequest) {
     try {
       const user = await getLoggedInUser();
 
-      if ((!user || !user.labels.includes('admin')) && isProduction) {
-        loginUrl.searchParams.set('from', request.nextUrl.pathname);
+      if (!isAdmin(user)) {
         return NextResponse.redirect(loginUrl);
       }
     } catch (error) {
@@ -20,9 +19,16 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (request.nextUrl.pathname === '/kirjaudu') {
+    const user = await getLoggedInUser();
+    if (user) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: '/hallinta/:path*',
+  matcher: ['/hallinta/:path*', '/kirjaudu'],
 };

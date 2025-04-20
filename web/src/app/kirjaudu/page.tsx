@@ -1,12 +1,11 @@
-const KooditPage = () => {
+import LoginWithEmailAndPassword from '@/components/LoginWithEmailAndPassword';
+
+const KirjauduPage = () => {
   return (
     <div>
-      <h1>Kirjautuminen</h1>
-      <p>
-        <strong>Vain admin kirjautumiseen</strong>
-      </p>
+      <LoginWithEmailAndPassword />
     </div>
   );
 };
 
-export default KooditPage;
+export default KirjauduPage;

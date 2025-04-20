@@ -6,7 +6,7 @@ interface Props {
   params: Promise<{ code: string }>;
 }
 
-const KooditPage = async ({ params }: Props) => {
+const MagicPage = async ({ params }: Props) => {
   const { code } = await params;
 
   const { secret, userId } = await loginWithCode(code);
@@ -20,4 +20,4 @@ const KooditPage = async ({ params }: Props) => {
   redirect('/');
 };
 
-export default KooditPage;
+export default MagicPage;
