@@ -1,5 +1,7 @@
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
-import { getAdminDatabases } from '@/services/databases';
+
+import { getDocument } from '@/services/databases';
+import { notFound } from 'next/navigation';
 
 interface Props {
   params: Promise<{ orderId: string }>;
@@ -8,28 +10,32 @@ interface Props {
 const TilausYhteenvetoPage = async ({ params }: Props) => {
   const { orderId } = await params;
 
-  const databases = await getAdminDatabases();
-  const order = await databases.getDocument<Order>(
+  const { data } = await getDocument<Order>(
     OrderDatabase.DatabaseId,
     OrderDatabase.CollectionId,
     orderId
   );
+
+  if (!data) notFound();
+
   return (
     <div>
       <h1>Tilauksen perustiedot</h1>
+      {data.$permissions}
       <p>
         <strong>Vain adminilla</strong>
       </p>
       <ul>
-        <li>Tilausnumero: {order.$id}</li>
+        <li>Tilausnumero: {data.$id}</li>
         <li>
-          Tilauksen tuotteet {order.products.map((product) => product.$id)}
+          Tilauksen tuotteet {data.products.map((product) => product.$id)}
         </li>
         <li>
           Tilauksen tila{' '}
-          {order.shipped ? 'Lähetetty' : order.canceled ? 'Peruttu' : 'Odottaa'}
+          {data.shipped ? 'Lähetetty' : data.canceled ? 'Peruttu' : 'Odottaa'}
         </li>
         <li>Tilauksen yhteystiedot</li>
+        {data.contacts && JSON.stringify(data.contacts)}
       </ul>
     </div>
   );
