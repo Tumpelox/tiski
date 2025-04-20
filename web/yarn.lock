@@ -2914,6 +2914,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"markdown-to-jsx@npm:^7.7.4":
+  version: 7.7.4
+  resolution: "markdown-to-jsx@npm:7.7.4"
+  peerDependencies:
+    react: ">= 0.14.0"
+  checksum: 10c0/692323e3cb5573ecce5f1f40c3b1a8d67bca40f2b4907ec266c23e7dffa2dcab466f738ea6569f8a5e6234ddcdccacbfeeb97b5e2f647b94bf29fa441f0083be
+  languageName: node
+  linkType: hard
+
 "math-intrinsics@npm:^1.1.0":
   version: 1.1.0
   resolution: "math-intrinsics@npm:1.1.0"
@@ -3047,12 +3056,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-appwrite@npm:^15.0.0":
-  version: 15.0.0
-  resolution: "node-appwrite@npm:15.0.0"
+"node-appwrite@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "node-appwrite@npm:16.0.0"
   dependencies:
     node-fetch-native-with-agent: "npm:1.7.2"
-  checksum: 10c0/a0c65ac324b2581a6e49ffeeb4e89997f68bbdf7dbe6b3201cf03f3f8d585a5acb79ad2a17e4afd39f64b021eb1e5c8dd862ddfe75688d93835d5466ace8f6ae
+  checksum: 10c0/c732c47a0767c49b1b6f3a9ed3440dffd3f616add0c6ae857bee69c0dd3ba84078013b4dc2b9261cd6d6c52f9036c5f4bdddfe78e2f1b3ce763d5a46c9577ee3
   languageName: node
   linkType: hard
 
@@ -3903,8 +3912,9 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.2.6"
     immer: "npm:^10.1.1"
     lucide-react: "npm:^0.479.0"
+    markdown-to-jsx: "npm:^7.7.4"
     next: "npm:15.1.6"
-    node-appwrite: "npm:^15.0.0"
+    node-appwrite: "npm:^16.0.0"
     postcss: "npm:^8"
     prettier: "npm:^3.5.3"
     react: "npm:^19.0.0"
