@@ -17,12 +17,25 @@ export interface Order {
 }
 
 const orderSchema = z.object({
-  items: z.array(z.object({ $id: z.string() })),
+  products: z.array(z.object({ $id: z.string() })),
+  bundles: z.array(z.object({ $id: z.string() })),
   shippingName: z.string(),
   shippingAddress: z.string(),
 });
 
 export const newOrder = async (order: Order) => {
+  const user = await getLoggedInUser();
+
+  if (!user) {
+    return { message: 'Syötä koodi', type: ToastType.ERROR };
+  }
+
+  const orderCode = await getOrderCode(user);
+
+  if (!orderCode) {
+    return { message: 'Syötä koodi', type: ToastType.ERROR };
+  }
+
   const parsedOrder = orderSchema.safeParse(order);
 
   if (parsedOrder.success === false) {
@@ -32,40 +45,36 @@ export const newOrder = async (order: Order) => {
     };
   }
 
-  const { items, shippingAddress, shippingName } = parsedOrder.data;
+  const { products, bundles, shippingAddress, shippingName } = parsedOrder.data;
 
-  const user = await getLoggedInUser();
+  try {
+    const databases = await getAdminDatabases();
 
-  if (!user) {
-    return { message: 'Syötä koodi', type: ToastType.ERROR };
+    const newOrder = await databases.createDocument(
+      OrderDatabase.DatabaseId,
+      OrderDatabase.CollectionId,
+      ID.unique(),
+      {
+        orderCode: orderCode.$id,
+        products: products.map((product) => product.$id),
+        bundles: bundles.map((bundle) => bundle.$id),
+        shippingName: shippingName,
+        shippingAddress: shippingAddress,
+      },
+      [
+        Permission.read(Role.user(user.$id)),
+        Permission.read(Role.label('admin')),
+        Permission.update(Role.label('admin')),
+        Permission.delete(Role.label('admin')),
+      ]
+    );
+
+    return redirect(`/tilaus/${newOrder.$id}`);
+  } catch (error) {
+    console.error('Error creating order:', error);
+    return {
+      message: 'Tilauksen luonti epäonnistui',
+      type: ToastType.ERROR,
+    };
   }
-
-  const orderCode = await getOrderCode(user.$id);
-
-  if (!orderCode) {
-    return { message: 'Syötä koodi', type: ToastType.ERROR };
-  }
-
-  const databases = await getAdminDatabases();
-
-  const newOrder = await databases.createDocument(
-    OrderDatabase.DatabaseId,
-    OrderDatabase.CollectionId,
-    ID.unique(),
-    {
-      orderCode: orderCode.$id,
-      products: items.map((item) => item.$id),
-      bundles: [],
-      shippingName: shippingName,
-      shippingAddress: shippingAddress,
-    },
-    [
-      Permission.read(Role.user(user.$id)),
-      Permission.read(Role.label('admin')),
-      Permission.update(Role.label('admin')),
-      Permission.delete(Role.label('admin')),
-    ]
-  );
-
-  redirect(`/tilaus/${newOrder.$id}`);
 };

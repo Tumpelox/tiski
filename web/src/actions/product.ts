@@ -22,14 +22,18 @@ const productIdSchema = z.string().min(1).max(32);
  */
 export const fetchProducts = async (
   productIds: string[]
-): Promise<Product[] | { message: string; type: ToastType }> => {
+): Promise<{ data: Product[] | null; message: string; type: ToastType }> => {
   const parsedProductIds = productIdSchema.array().safeParse(productIds);
 
   if (
     parsedProductIds.success === false ||
     parsedProductIds.data.length === 0
   ) {
-    return { message: 'Virheellinen pyyntö', type: ToastType.ERROR };
+    return {
+      data: null,
+      message: 'Virheellinen pyyntö',
+      type: ToastType.ERROR,
+    };
   }
 
   try {
@@ -46,10 +50,11 @@ export const fetchProducts = async (
       clientSideProduct(doc)
     );
 
-    return availabilityData;
+    return { data: availabilityData, message: '', type: ToastType.SUCCESS };
   } catch (error) {
     console.error('Error fetching products:', error);
     return {
+      data: null,
       message: 'Tuotteiden hakeminen epäonnistui',
       type: ToastType.ERROR,
     };
