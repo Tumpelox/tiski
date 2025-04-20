@@ -4,16 +4,16 @@
     "settings": {
         "services": {
             "account": true,
-            "avatars": true,
+            "avatars": false,
             "databases": true,
-            "locale": true,
-            "health": true,
-            "storage": true,
-            "teams": true,
-            "users": true,
-            "functions": true,
-            "graphql": true,
-            "messaging": true
+            "locale": false,
+            "health": false,
+            "storage": false,
+            "teams": false,
+            "users": false,
+            "functions": false,
+            "graphql": false,
+            "messaging": false
         },
         "auth": {
             "methods": {
@@ -26,7 +26,7 @@
                 "email-password": true
             },
             "security": {
-                "duration": 31536000,
+                "duration": 43200,
                 "limit": 0,
                 "sessionsLimit": 10,
                 "passwordHistory": 0,
@@ -52,7 +52,13 @@
     "collections": [
         {
             "$id": "tuotteet",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")",
+                "delete(\"label:admin\")",
+                "read(\"any\")"
+            ],
             "databaseId": "tarratiski",
             "name": "Tuotteet",
             "enabled": true,
@@ -107,7 +113,13 @@
         },
         {
             "$id": "tuotepaketit",
-            "$permissions": [],
+            "$permissions": [
+                "read(\"users\")",
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")",
+                "delete(\"label:admin\")"
+            ],
             "databaseId": "tarratiski",
             "name": "Tuotepaketit",
             "enabled": true,
@@ -146,28 +158,18 @@
         },
         {
             "$id": "tilaukset",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")",
+                "delete(\"label:admin\")",
+                "read(\"users\")"
+            ],
             "databaseId": "tarratiski",
             "name": "Tilaukset",
             "enabled": true,
-            "documentSecurity": false,
+            "documentSecurity": true,
             "attributes": [
-                {
-                    "key": "shippingName",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 128,
-                    "default": null
-                },
-                {
-                    "key": "shippingAddress",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 320,
-                    "default": null
-                },
                 {
                     "key": "bundle",
                     "type": "relationship",
@@ -227,6 +229,18 @@
                     "twoWayKey": "orders",
                     "onDelete": "cascade",
                     "side": "child"
+                },
+                {
+                    "key": "contacts",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "yhteystiedot",
+                    "relationType": "oneToOne",
+                    "twoWay": true,
+                    "twoWayKey": "orders",
+                    "onDelete": "cascade",
+                    "side": "child"
                 }
             ],
             "indexes": []
@@ -248,22 +262,74 @@
             "name": "Asetukset",
             "enabled": true,
             "documentSecurity": false,
-            "attributes": [],
+            "attributes": [
+                {
+                    "key": "etusivu",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "sivut",
+                    "relationType": "oneToOne",
+                    "twoWay": false,
+                    "twoWayKey": "68054311003da85349d1",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                }
+            ],
             "indexes": []
         },
         {
             "$id": "sivut",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")",
+                "delete(\"label:admin\")"
+            ],
             "databaseId": "nettisivu",
             "name": "Sivut",
             "enabled": true,
             "documentSecurity": false,
-            "attributes": [],
+            "attributes": [
+                {
+                    "key": "internationalText",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tekstikentta",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "page",
+                    "onDelete": "cascade",
+                    "side": "parent"
+                },
+                {
+                    "key": "text",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2048,
+                    "default": null
+                },
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
+                }
+            ],
             "indexes": []
         },
         {
             "$id": "tilauskoodit",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")",
+                "delete(\"label:admin\")"
+            ],
             "databaseId": "tarratiski",
             "name": "Tilauskoodit",
             "enabled": true,
@@ -321,6 +387,13 @@
                     "array": false,
                     "size": 128,
                     "default": null
+                },
+                {
+                    "key": "isActive",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
                 }
             ],
             "indexes": [
@@ -339,7 +412,13 @@
         },
         {
             "$id": "pictures",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")",
+                "delete(\"label:admin\")",
+                "read(\"any\")"
+            ],
             "databaseId": "tarratiski",
             "name": "Kuvat",
             "enabled": true,
@@ -370,6 +449,94 @@
                     "min": -9223372036854775808,
                     "max": 9223372036854775807,
                     "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "tekstikentta",
+            "$permissions": [
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")",
+                "delete(\"label:admin\")"
+            ],
+            "databaseId": "nettisivu",
+            "name": "Tekstikenttä",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "language",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 5,
+                    "default": null
+                },
+                {
+                    "key": "text",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2048,
+                    "default": null
+                },
+                {
+                    "key": "page",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "sivut",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "internationalText",
+                    "onDelete": "cascade",
+                    "side": "child"
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "yhteystiedot",
+            "$permissions": [
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")",
+                "delete(\"label:admin\")"
+            ],
+            "databaseId": "tarratiski",
+            "name": "Yhteystiedot",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "address",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 248,
+                    "default": null
+                },
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 248,
+                    "default": null
+                },
+                {
+                    "key": "orders",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tilaukset",
+                    "relationType": "oneToOne",
+                    "twoWay": true,
+                    "twoWayKey": "contacts",
+                    "onDelete": "cascade",
+                    "side": "parent"
                 }
             ],
             "indexes": []
