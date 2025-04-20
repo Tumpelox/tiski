@@ -1,21 +1,38 @@
 import ProductCard from '@/components/ProductCard';
-import { exampleProduct } from '@/interfaces/product.interface';
+import {
+  ProductDatabase,
+  ProductDocument,
+} from '@/interfaces/product.interface';
 import { clientSideProduct } from '@/lib/clientSideProduct';
+import { listDocumentsWithApi } from '@/services/databases';
+import { Suspense } from 'react';
 
-const KooditPage = () => {
+const getProducts = async () => {
+  const products = await listDocumentsWithApi<ProductDocument>(
+    ProductDatabase.DatabaseId,
+    ProductDatabase.CollectionId
+  );
+
+  return (products.data ?? []).map((product) => {
+    return clientSideProduct(product);
+  });
+};
+
+const TuotteetPage = async () => {
+  const products = await getProducts();
+
   return (
     <div className="w-full">
       <h1>Listaus tuotteista</h1>
       <div className="grid grid-cols-3 gap-4 mx-auto w-fit">
-        {[...Array(10)].map((_, index) => (
-          <ProductCard
-            key={index + 'pulla'}
-            product={clientSideProduct(exampleProduct)}
-          />
-        ))}
+        <Suspense fallback={<div>Ladataan tuotteita...</div>}>
+          {products.map((product, index) => (
+            <ProductCard key={index} product={product} />
+          ))}
+        </Suspense>
       </div>
     </div>
   );
 };
 
-export default KooditPage;
+export default TuotteetPage;
