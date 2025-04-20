@@ -1,44 +1,58 @@
 'use server';
 
-import { Query, Users } from 'node-appwrite';
+import { Models, Query, Users } from 'node-appwrite';
 import { getAdminDatabases } from './databases';
 import { OrderCode, OrderCodeDatabase } from '@/interfaces/orderCode.interface';
 import { createAdminClient } from './createAdminClient';
 
 export const loginWithCode = async (code: string) => {
-  const databases = await getAdminDatabases();
+  try {
+    const databases = await getAdminDatabases();
 
-  const adminClient = await createAdminClient();
+    const adminClient = await createAdminClient();
 
-  const codes = await databases.listDocuments<OrderCode>(
-    OrderCodeDatabase.DatabaseId,
-    OrderCodeDatabase.CollectionId,
-    [Query.equal('code', code)]
-  );
+    const codes = await databases.listDocuments<OrderCode>(
+      OrderCodeDatabase.DatabaseId,
+      OrderCodeDatabase.CollectionId,
+      [Query.equal('code', code)]
+    );
 
-  if (codes.documents.length === 0) return { secret: null, userId: null };
+    if (codes.documents.length === 0) return { secret: null, userId: null };
 
-  const orderCode = codes.documents[0];
+    const orderCode = codes.documents[0];
 
-  const users = new Users(adminClient.account.client);
+    const users = new Users(adminClient.account.client);
 
-  const token = await users.createToken(orderCode.userId, 32, 43200);
+    const token = await users.createToken(orderCode.userId, 32, 43200);
 
-  return { secret: token.secret, userId: orderCode.userId };
+    return { secret: token.secret, userId: orderCode.userId };
+  } catch (error) {
+    console.error('Error logging in with code:', error);
+    return { secret: null, userId: null };
+  }
 };
 
-export const getOrderCode = async (userId: string) => {
-  const databases = await getAdminDatabases();
+export const getOrderCode = async (
+  user: Models.User<Models.Preferences> | null
+) => {
+  if (!user) return null;
 
-  const codes = await databases.listDocuments<OrderCode>(
-    OrderCodeDatabase.DatabaseId,
-    OrderCodeDatabase.CollectionId,
-    [Query.equal('userId', userId)]
-  );
+  try {
+    const databases = await getAdminDatabases();
 
-  if (codes.documents.length === 0) return null;
+    const codes = await databases.listDocuments<OrderCode>(
+      OrderCodeDatabase.DatabaseId,
+      OrderCodeDatabase.CollectionId,
+      [Query.equal('userId', user.$id), Query.limit(1)]
+    );
 
-  const orderCode = codes.documents[0];
+    if (codes.documents.length === 0) return null;
 
-  return orderCode;
+    const orderCode = codes.documents[0];
+
+    return orderCode;
+  } catch (error) {
+    console.error('Error fetching order code:', error);
+    return null;
+  }
 };

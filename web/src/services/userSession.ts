@@ -1,31 +1,42 @@
-'use server';
-
 import { cookies } from 'next/headers';
-import { Account, Client } from 'node-appwrite';
+import { Account, Client, Databases } from 'node-appwrite';
+import { createAdminClient } from './createAdminClient';
 
 enum Keys {
   SessionCookie = 'Tiski_Session_Cookie',
 }
 
-export async function getLoggedInUser() {
-  try {
-    const { account } = await createSessionClient();
+export enum AuthenicationErrors {
+  SessionNotFound = 'Session not found',
+  SessionFailed = 'Session failed',
+}
 
-    return await account.get();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
-    return null;
-  }
+const client = new Client()
+  .setEndpoint(process.env.APPWRITE_ENDPOINT as string)
+  .setProject(process.env.APPWRITE_PROJECT as string);
+
+const account = new Account(client);
+
+export async function getLoggedInUser() {
+  const sessionClient = await createSessionClient();
+
+  if (!sessionClient.account) return null;
+
+  return await sessionClient.account.get();
 }
 
 export async function createSessionClient() {
-  const client = new Client()
-    .setEndpoint(process.env.APPWRITE_ENDPOINT as string)
-    .setProject(process.env.APPWRITE_PROJECT as string);
-
   const session = (await cookies()).get(Keys.SessionCookie);
+
   if (!session || !session.value) {
-    throw new Error('No session');
+    return {
+      get account() {
+        return null;
+      },
+      get databases() {
+        return null;
+      },
+    };
   }
 
   client.setSession(session.value);
@@ -34,22 +45,45 @@ export async function createSessionClient() {
     get account() {
       return new Account(client);
     },
+    get databases() {
+      return new Databases(client);
+    },
   };
 }
 
 export async function createTokenSession(userId: string, secret: string) {
-  const client = new Client()
-    .setEndpoint(process.env.APPWRITE_ENDPOINT as string)
-    .setProject(process.env.APPWRITE_PROJECT as string);
+  try {
+    const session = await account.createSession(userId, secret);
 
-  const account = new Account(client);
+    (await cookies()).set(Keys.SessionCookie, session.secret, {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: true,
+    });
+  } catch (error) {
+    console.error('Error creating session:', error);
+    throw new Error(AuthenicationErrors.SessionFailed);
+  }
+}
 
-  const session = await account.createSession(userId, secret);
-
-  (await cookies()).set(Keys.SessionCookie, session.secret, {
-    path: '/',
-    httpOnly: true,
-    sameSite: 'strict',
-    secure: true,
-  });
+export async function createEmailAndPasswordSession(
+  email: string,
+  password: string
+) {
+  try {
+    const { account } = await createAdminClient();
+    const session = await account.createEmailPasswordSession(email, password);
+    console.log('Session to be created:', session);
+    (await cookies()).set(Keys.SessionCookie, session.secret, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      expires: new Date(session.expire),
+      path: '/',
+    });
+  } catch (error) {
+    console.error('Error creating session:', error);
+    throw new Error(AuthenicationErrors.SessionFailed);
+  }
 }

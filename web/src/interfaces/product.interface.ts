@@ -15,9 +15,7 @@ export interface Product {
   $id: string;
 }
 
-export interface ProductDocument
-  extends Omit<Product, keyof Models.Document>,
-    Models.Document {}
+export interface ProductDocument extends Models.Document, Product {}
 
 export const exampleProduct: ProductDocument = {
   $id: '1',

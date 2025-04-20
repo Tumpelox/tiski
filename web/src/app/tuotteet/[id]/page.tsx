@@ -12,30 +12,39 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { Picture } from '@/interfaces/picture.interface';
-import { exampleProduct } from '@/interfaces/product.interface';
+import {
+  exampleProduct,
+  ProductDatabase,
+  ProductDocument,
+} from '@/interfaces/product.interface';
 import { clientSideProduct } from '@/lib/clientSideProduct';
+import { getDocument } from '@/services/databases';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
-const TilausYhteenvetoPage = async ({ params }: Props) => {
+const ProductPage = async ({ params }: Props) => {
   const { id } = await params;
-  const { title, description, stock } = exampleProduct;
 
-  const pictures = (exampleProduct.pictures ?? []) as Picture[];
-  const productPicture = pictures.length > 0;
+  const { data } = await getDocument<ProductDocument>(
+    ProductDatabase.DatabaseId,
+    ProductDatabase.CollectionId,
+    id
+  );
+
+  if (!data) notFound();
   return (
     <div className="px-4 md:px-8 ">
       <Card className="max-w-5xl mx-auto">
         <CardContent className="flex flex-col md:grid md:grid-cols-5 gap-16">
-          {productPicture && (
+          {data.pictures && (
             <div className="col-span-3 px-10">
               <Carousel className="w-full">
                 <CarouselContent>
-                  {pictures.map((picture) => {
+                  {data.pictures.map((picture) => {
                     return (
                       <CarouselItem key={picture.url}>
                         <Image
@@ -57,8 +66,8 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
           <div className="col-span-2">
             <CardHeader className="h-full justify-between">
               <div>
-                <h2>{title}</h2>
-                <p>{description}</p>
+                <h2>{data.title}</h2>
+                <p>{data.description}</p>
               </div>
 
               <AddToCard product={clientSideProduct(exampleProduct)} />
@@ -68,7 +77,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
         <CardFooter>
           <div>
             <p>Tuotenumero: {id}</p>
-            <p>Varastossa: {stock}</p>
+            <p>Varastossa: {data.stock}</p>
           </div>
         </CardFooter>
       </Card>
@@ -76,4 +85,4 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
   );
 };
 
-export default TilausYhteenvetoPage;
+export default ProductPage;

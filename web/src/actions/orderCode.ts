@@ -9,7 +9,8 @@ import { ToastType } from '@/store';
 import { redirect } from 'next/navigation';
 import { ID, Permission, Role, Users } from 'node-appwrite';
 import { z } from 'zod';
-import { codeSchema } from './auth';
+import isAdmin from '@/lib/isAdmin';
+import { codeSchema } from '@/lib/schemas';
 
 export interface NewOrderCode {
   name: string;
@@ -30,11 +31,7 @@ const newOrderCodeSchema = z.object({
 export const createNewOrderCode = async (newOrderCode: NewOrderCode) => {
   const user = await getLoggedInUser();
 
-  if (!user) {
-    return { message: 'Kirjaudu sisään', type: ToastType.ERROR };
-  }
-
-  if (!user.labels.includes('admin')) {
+  if (!user || isAdmin(user)) {
     return {
       message: 'Sinulla ei ole riittäviä käyttöoikeuksia',
       type: ToastType.ERROR,
@@ -42,6 +39,7 @@ export const createNewOrderCode = async (newOrderCode: NewOrderCode) => {
   }
 
   const parsedOrderCode = newOrderCodeSchema.safeParse(newOrderCode);
+
   if (parsedOrderCode.success === false) {
     return {
       message: 'Virheellinen pyyntö',
@@ -50,31 +48,39 @@ export const createNewOrderCode = async (newOrderCode: NewOrderCode) => {
   }
   const { name, availableOrders, code } = parsedOrderCode.data;
 
-  const adminClient = await createAdminClient();
+  try {
+    const adminClient = await createAdminClient();
 
-  const users = new Users(adminClient.account.client);
+    const users = new Users(adminClient.account.client);
 
-  const newUser = await users.create(ID.unique());
+    const newUser = await users.create(ID.unique());
 
-  const databases = await getAdminDatabases();
+    const databases = await getAdminDatabases();
 
-  const orderCode = await databases.createDocument<OrderCode>(
-    OrderDatabase.DatabaseId,
-    OrderDatabase.CollectionId,
-    ID.unique(),
-    {
-      name: name,
-      availableOrders: availableOrders,
-      creator: user.$id,
-      code: code,
-      userId: newUser.$id,
-    },
-    [
-      Permission.read(Role.label('admin')),
-      Permission.update(Role.label('admin')),
-      Permission.delete(Role.label('admin')),
-    ]
-  );
+    const orderCode = await databases.createDocument<OrderCode>(
+      OrderDatabase.DatabaseId,
+      OrderDatabase.CollectionId,
+      ID.unique(),
+      {
+        name: name,
+        availableOrders: availableOrders,
+        creator: user.$id,
+        code: code,
+        userId: newUser.$id,
+      },
+      [
+        Permission.read(Role.label('admin')),
+        Permission.update(Role.label('admin')),
+        Permission.delete(Role.label('admin')),
+      ]
+    );
 
-  redirect(`/tilauskoodit/${orderCode.$id}`);
+    return redirect(`/tilauskoodit/${orderCode.$id}`);
+  } catch (error) {
+    console.error('Error creating order code:', error);
+    return {
+      message: 'Tilauksen koodin luonti epäonnistui',
+      type: ToastType.ERROR,
+    };
+  }
 };

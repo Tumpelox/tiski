@@ -12,9 +12,14 @@ export interface Order extends Models.Document {
   orderCode: OrderCode;
   products: Product[];
   bundles: Bundle[];
-  shippingName: string;
-  shippingAddress: string;
+  contacts: Contacts;
   notes: string | null;
   shipped: Date | null;
   canceled: Date | null;
+}
+
+export interface Contacts extends Models.Document {
+  address: string;
+  name: string;
+  orders: Order;
 }

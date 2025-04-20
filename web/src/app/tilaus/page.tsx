@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 const TilausPage = async () => {
   const user = await getLoggedInUser();
-  const orderCode = user ? await getOrderCode(user.$id as string) : null;
+
+  const orderCode = await getOrderCode(user);
 
   return (
     <div>
@@ -21,7 +22,25 @@ const TilausPage = async () => {
         <li>Käytettävän tilauskoodin syöttö jos linkkiä ei käytetty</li>
         <li>Aiemmat tilaukset ja linkki niihin</li>
       </ul>
+      {orderCode &&
+        orderCode.orders.length > 0 &&
+        orderCode.orders.map((order) => (
+          <div key={order.$id}>
+            <Link href={`/tilaus/${order.$id}`}>
+              <p>{order.$id}</p>
+              <p>
+                {order.shipped
+                  ? 'Lähetetty'
+                  : order.canceled
+                    ? 'Peruttu'
+                    : 'Odottaa'}
+              </p>
+              <p>{order.products.map((product) => product.title).join(', ')}</p>
+            </Link>
+          </div>
+        ))}
       <Cart />
+
       <div>{orderCode ? <p>{orderCode.code}</p> : <p>Koodin syöttö</p>}</div>
     </div>
   );
