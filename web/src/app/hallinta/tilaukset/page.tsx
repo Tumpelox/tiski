@@ -1,67 +1,20 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { listDocuments } from '@/services/databases';
+import TilauksetTable from './TilauksetTable';
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
-import { isProduction } from '@/lib/utils';
-import { getAdminDatabases } from '@/services/databases';
-import { getLoggedInUser } from '@/services/userSession';
-
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-const KooditPage = async () => {
-  const user = await getLoggedInUser();
-
-  if (!user || (!user.labels.includes('admin') && isProduction)) {
-    redirect('/kirjaudu');
-  }
-
-  const database = await getAdminDatabases();
-
-  const orders = await database.listDocuments<Order>(
+const TilauksetPage = async () => {
+  const { data } = await listDocuments<Order>(
     OrderDatabase.DatabaseId,
     OrderDatabase.CollectionId
   );
 
+  if (!data) redirect('/');
+
   return (
-    <div>
+    <div className="container mx-auto">
       <h1>Listaus tilauksista</h1>
-      <Table className="w-full">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Tilausnumero</TableHead>
-            <TableHead>Käytetty koodi</TableHead>
-            <TableHead>Tila</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {orders.documents.map((order) => (
-            <TableRow key={order.$id}>
-              <TableCell>
-                <Link
-                  href={`/hallinta/tilaukset/${order.$id}`}
-                  className="text-blue-500 hover:underline"
-                >
-                  {order.$id}
-                </Link>
-              </TableCell>
-              <TableCell>{order.orderCode.code}</TableCell>
-              <TableCell>
-                {order.shipped
-                  ? 'Lähetetty'
-                  : order.canceled
-                    ? 'Peruutettu'
-                    : 'Odottamassa'}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <TilauksetTable orders={data} />
     </div>
   );
   // return (
@@ -84,4 +37,4 @@ const KooditPage = async () => {
   // );
 };
 
-export default KooditPage;
+export default TilauksetPage;
