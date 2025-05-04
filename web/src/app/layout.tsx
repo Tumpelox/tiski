@@ -6,6 +6,8 @@ import * as React from 'react';
 import NavigationMenuButton from '@/components/NavigationMenuButton';
 import ToastMessage, { NewToastMessage } from '@/components/ToastMessage';
 import { isDevelopment } from '@/lib/utils';
+import { listDocumentsWithApi } from '@/services/databases';
+import { Settings, SettingsDatabase } from '@/interfaces/settings.interface';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -22,11 +24,18 @@ export const metadata: Metadata = {
   description: 'Tarratoimikunnan verkkosivut tarratilauksia varten',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await listDocumentsWithApi<Settings>(
+    SettingsDatabase.DatabaseId,
+    SettingsDatabase.CollectionId
+  );
+
+  const menuItems = settings.data?.[0].mainMenu.menuItems ?? [];
+
   return (
     <html lang="en">
       <body
@@ -41,21 +50,11 @@ export default function RootLayout({
         <NavigationMenuButton>
           <nav className="bg-yellow-300">
             <ul>
-              <li>
-                <Link href={`/hallinta/tilaukset`}>Tilaukset</Link>
-              </li>
-              <li>
-                <Link href={`/hallinta/koodit`}>Koodit</Link>
-              </li>
-              <li>
-                <Link href={`/tuotteet`}>Tuotteet</Link>
-              </li>
-              <li>
-                <Link href={`/tilaus`}>Tilaus</Link>
-              </li>
-              <li>
-                <Link href={`/`}>Etusivu</Link>
-              </li>
+              {menuItems.map((item) => (
+                <li key={item.$id}>
+                  <Link href={item.url}>{item.name}</Link>
+                </li>
+              ))}
             </ul>
           </nav>
         </NavigationMenuButton>
