@@ -7,7 +7,7 @@ import { ToastType, useToastMessageStore } from '@/store';
 import { redirect } from 'next/navigation';
 
 //Geminisettiä vähä fixailtuna
-export const LoginComponent = () => {
+export const LoginWithCode = () => {
   const [message, formAction] = useActionState(handleCodeLogin, null);
 
   const { addMessage } = useToastMessageStore();
@@ -46,3 +46,5 @@ export const LoginComponent = () => {
     </form>
   );
 };
+
+export default LoginWithCode;
