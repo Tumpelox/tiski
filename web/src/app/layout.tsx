@@ -41,12 +41,6 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-b from-blue-30 to-blue-300 min-h-screen`}
       >
-        <ToastMessage />
-        {
-          isDevelopment && (
-            <NewToastMessage />
-          ) /* Jos devausympäristö niin näyttää viestin testauksen */
-        }
         <NavigationMenuButton>
           <NavigationMenu menuItems={menuItems} />
         </NavigationMenuButton>
