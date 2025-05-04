@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import Link from 'next/link';
 import * as React from 'react';
 import NavigationMenuButton from '@/components/NavigationMenuButton';
+import NavigationMenu from '@/components/NavigationMenu';
 import ToastMessage, { NewToastMessage } from '@/components/ToastMessage';
 import { isDevelopment } from '@/lib/utils';
 import { listDocumentsWithApi } from '@/services/databases';
@@ -48,15 +48,7 @@ export default async function RootLayout({
           ) /* Jos devausympäristö niin näyttää viestin testauksen */
         }
         <NavigationMenuButton>
-          <nav className="bg-yellow-300">
-            <ul>
-              {menuItems.map((item) => (
-                <li key={item.$id}>
-                  <Link href={item.url}>{item.name}</Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <NavigationMenu menuItems={menuItems} />
         </NavigationMenuButton>
 
         <main className="my-4">{children}</main>
