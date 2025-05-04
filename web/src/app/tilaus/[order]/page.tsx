@@ -65,7 +65,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Tuote</TableHead>
-                    <TableHead>Kuvaus</TableHead>
+                    <TableHead>Määrä</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
