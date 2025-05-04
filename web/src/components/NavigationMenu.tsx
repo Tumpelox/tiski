@@ -13,7 +13,12 @@ const NavigationMenu = (props: { menuItems: MenuItem[] }) => {
             href={item.url}
             className="relative w-48 h-24 block"
           >
-            <Image src={cloudImage} alt="" fill className="object-contain" />
+            <Image
+              src={cloudImage}
+              alt=""
+              fill
+              className="object-contain brightness-[200]"
+            />
             <span className="absolute inset-0 flex items-center justify-center text-center text-xl font-semibold text-gray-800">
               {item.name}
             </span>
