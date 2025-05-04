@@ -2,16 +2,24 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { Product } from '@/interfaces/product.interface'; // Assuming you have this interface
 import { produce } from 'immer';
+import { Bundle } from './interfaces/bundle.interface';
 
 //Geminin generoimaa koodia. Vaikutti ihan fiksulta mut lisäsin immerin
 
-interface CartItem extends Product {
+interface CartItem {
+  $id: string;
+  item: Product | Bundle;
+  type: 'product' | 'bundle';
   quantity: number;
 }
 
 interface CartState {
   items: CartItem[];
-  addItem: (product: Product, quantity?: number) => void;
+  addItem: (
+    newItem: Product | Bundle,
+    type: 'product' | 'bundle',
+    quantity?: number
+  ) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -23,16 +31,21 @@ export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
-      addItem: (product, quantity = 1) =>
+      addItem: (newItem, type, quantity = 1) =>
         set(
           produce((draft: CartState) => {
             const existingItem = draft.items.find(
-              (item) => item.$id === product.$id
+              (item) => newItem.$id === item.$id
             );
             if (existingItem) {
               existingItem.quantity += quantity;
             } else {
-              draft.items.push({ ...product, quantity });
+              draft.items.push({
+                item: newItem,
+                type,
+                $id: newItem.$id,
+                quantity,
+              });
             }
           })
         ),
