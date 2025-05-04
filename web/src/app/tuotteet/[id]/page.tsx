@@ -35,7 +35,7 @@ const ProductPage = async ({ params }: Props) => {
     id
   );
 
-  if (!data) notFound();
+  if (!data || !data.available) notFound();
   return (
     <div className="px-4 md:px-8 ">
       <Card className="max-w-5xl mx-auto">

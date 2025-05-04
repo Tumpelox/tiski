@@ -52,6 +52,8 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
     return 'Odottaa käsittelyä';
   };
 
+  console.log(data);
+
   return (
     <Card className="max-w-4xl mx-auto my-4">
       <CardHeader>
@@ -74,7 +76,6 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
             <p>
               <strong>Osoite:</strong> {data.contacts.address}
             </p>
-            {/* Add other contact fields if available */}
           </section>
         )}
 
