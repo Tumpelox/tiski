@@ -1,6 +1,6 @@
 'use server';
 
-import { OrderDatabase } from '@/interfaces/order.interface';
+import { Order, OrderDatabase } from '@/interfaces/order.interface';
 import { Product } from '@/interfaces/product.interface';
 import { getAdminDatabases } from '@/services/databases';
 import { getOrderCode } from '@/services/orderCode';
@@ -10,10 +10,11 @@ import { redirect } from 'next/navigation';
 import { ID, Permission, Role } from 'node-appwrite';
 import { z } from 'zod';
 
-export interface Order {
+export interface NewOrder {
   items: Product[];
   shippingName: string;
   shippingAddress: string;
+  notes: string;
 }
 
 const orderSchema = z.object({
@@ -21,9 +22,10 @@ const orderSchema = z.object({
   bundles: z.array(z.object({ $id: z.string() })),
   shippingName: z.string(),
   shippingAddress: z.string(),
+  notes: z.string().max(1024).optional(),
 });
 
-export const newOrder = async (order: Order) => {
+export const newOrder = async (order: NewOrder) => {
   const user = await getLoggedInUser();
 
   if (!user) {
@@ -50,16 +52,21 @@ export const newOrder = async (order: Order) => {
   try {
     const databases = await getAdminDatabases();
 
-    const newOrder = await databases.createDocument(
+    const newOrder = await databases.createDocument<Order>(
       OrderDatabase.DatabaseId,
       OrderDatabase.CollectionId,
-      ID.unique(),
+      ID.custom(orderCode.$id),
       {
         orderCode: orderCode.$id,
         products: products.map((product) => product.$id),
         bundles: bundles.map((bundle) => bundle.$id),
-        shippingName: shippingName,
-        shippingAddress: shippingAddress,
+        contacts: {
+          address: shippingAddress,
+          name: shippingName,
+        },
+        notes: null,
+        shipped: null,
+        canceled: null,
       },
       [
         Permission.read(Role.user(user.$id)),
