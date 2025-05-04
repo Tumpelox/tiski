@@ -1,11 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import navigationMenuButton from '../../assets/valikko.webp';
 import { Button } from '@/components/ui/button';
+import { usePathname } from 'next/navigation';
 
 const NavigationMenuButton = (props: { children: React.ReactNode }) => {
   const [visible, setVisible] = React.useState(false);
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setVisible(false);
+  }, [pathname]);
 
   const toggleNavigationMenu = () => {
     setVisible((prev) => !prev);
