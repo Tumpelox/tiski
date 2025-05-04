@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from './ui/card';
+import { Product } from '@/interfaces/product.interface';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, clearCart, getTotalItems } =
@@ -48,20 +49,21 @@ const Cart = () => {
               key={item.$id}
               className="flex items-center gap-4 border-b pb-4"
             >
-              {item.pictures && item.pictures[0] && (
-                <div className="w-16 h-16 relative flex-shrink-0">
-                  <Image
-                    src={item.pictures[0].url}
-                    alt={item.pictures[0].alt}
-                    fill
-                    className="object-cover rounded"
-                  />
-                </div>
-              )}
+              {item.type === 'product' &&
+                (item.item as Product).pictures[0] && (
+                  <div className="w-16 h-16 relative flex-shrink-0">
+                    <Image
+                      src={(item.item as Product).pictures[0].url}
+                      alt={(item.item as Product).pictures[0].alt}
+                      fill
+                      className="object-cover rounded"
+                    />
+                  </div>
+                )}
               <div className="flex-grow">
-                <h3 className="font-medium">{item.title}</h3>
+                <h3 className="font-medium">{item.item.title}</h3>
                 <p className="text-sm text-gray-500 line-clamp-1">
-                  {item.description}
+                  {item.item.description}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -78,7 +80,12 @@ const Cart = () => {
                   size="sm"
                   variant="outline"
                   onClick={() => updateQuantity(item.$id, item.quantity + 1)}
-                  disabled={item.quantity >= item.stock}
+                  disabled={
+                    item.quantity >=
+                    (item.type === 'product'
+                      ? (item.item as Product).stock
+                      : 100)
+                  }
                 >
                   +
                 </Button>

@@ -1,4 +1,5 @@
-import { Product } from './product.interface';
+import { Models } from 'node-appwrite';
+import { Product, ProductDocument } from './product.interface';
 
 export enum BundleDatabase {
   DatabaseId = 'tarratiski',
@@ -6,7 +7,12 @@ export enum BundleDatabase {
 }
 
 export interface Bundle {
+  $id: string;
   title: string;
   description: string;
   products: Product[];
+}
+
+export interface BundleDocument extends Models.Document, Bundle {
+  products: ProductDocument[];
 }
