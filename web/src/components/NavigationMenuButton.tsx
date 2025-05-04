@@ -15,7 +15,7 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
     <div>
       <Button
         onClick={toggleNavigationMenu}
-        className="absolute top-4 right-4 w-10 h-10 p-0 rounded"
+        className="absolute top-4 right-4 w-10 h-10 p-0 rounded z-50"
         variant="ghost"
       >
         <img
@@ -25,7 +25,7 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
         />
       </Button>
       {visible && (
-        <div className="absolute top-0 right-0 bg-white shadow-lg p-4">
+        <div className="absolute top-0 right-0 bg-white shadow-lg p-4 z-40">
           <div className="flex flex-col gap-2">{props.children}</div>
         </div>
       )}
