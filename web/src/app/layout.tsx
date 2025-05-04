@@ -6,6 +6,7 @@ import NavigationMenuButton from '@/components/NavigationMenuButton';
 import NavigationMenu from '@/components/NavigationMenu';
 import { listDocumentsWithApi } from '@/services/databases';
 import { Settings, SettingsDatabase } from '@/interfaces/settings.interface';
+import ToastMessage from '@/components/ToastMessage';
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
@@ -34,6 +35,7 @@ export default async function RootLayout({
       <body
         className={`${montserrat.variable} ${montserrat.variable} antialiased bg-gradient-to-b from-blue-30 to-blue-300 min-h-screen`}
       >
+        <ToastMessage />
         <NavigationMenuButton>
           <NavigationMenu menuItems={menuItems} />
         </NavigationMenuButton>
