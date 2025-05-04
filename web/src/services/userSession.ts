@@ -51,6 +51,10 @@ export async function createSessionClient() {
   };
 }
 
+export async function deleteSession() {
+  (await cookies()).delete(Keys.SessionCookie);
+}
+
 export async function createTokenSession(userId: string, secret: string) {
   try {
     const session = await account.createSession(userId, secret);
