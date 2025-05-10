@@ -23,7 +23,7 @@ const MessageVariants = cva(
   }
 );
 
-const toastMessageDuration = 1500; // millisekunttia
+const toastMessageDuration = 10000; // millisekunttia
 
 const ToastMessage = () => {
   const { messages, removeMessage } = useToastMessageStore();

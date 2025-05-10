@@ -32,7 +32,7 @@ export const createNewOrderCode = async (
 ) => {
   const user = await getLoggedInUser();
 
-  if (!user || isAdmin(user)) {
+  if (!user || !isAdmin(user)) {
     return {
       message: 'Sinulla ei ole riittäviä käyttöoikeuksia',
       type: ToastType.ERROR,
@@ -42,7 +42,7 @@ export const createNewOrderCode = async (
 
   const parsedOrderCode = newOrderCodeSchema.safeParse({
     code: form.get('code'),
-    availableOrders: form.get('availableOrders'),
+    availableOrders: Number(form.get('availableOrders')),
     name: form.get('name'),
   });
 
