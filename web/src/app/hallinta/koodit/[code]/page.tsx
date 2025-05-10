@@ -50,7 +50,7 @@ const KooditPage = async ({ params }: Props) => {
             <div>{data.code}</div>
             <div>Tekijä:</div>
             <div>{data.userId}</div>
-            <div>Käytettävissä olevat tilaukset:</div>
+            <div>Maksimimäärä paketteja / tuotteita yhteensä</div>
             <div>{data.availableOrders}</div>
             <div>Aktiivinen:</div>
             <div>

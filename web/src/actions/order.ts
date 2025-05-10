@@ -83,6 +83,14 @@ export const newOrder = async (
       };
     }
 
+    if (productsList.length + bundlesList.length > orderCode.availableOrders) {
+      return {
+        message: 'Tilauksessa on liikaa tuotteita',
+        type: ToastType.ERROR,
+        data: null,
+      };
+    }
+
     const newOrder = await databases.createDocument<Order>(
       OrderDatabase.DatabaseId,
       OrderDatabase.CollectionId,

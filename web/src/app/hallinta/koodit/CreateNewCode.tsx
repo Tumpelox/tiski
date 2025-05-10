@@ -37,7 +37,7 @@ const CreateNewCode = () => {
           <Label htmlFor="code">Koodi</Label>
           <Input type="text" name="code" placeholder="Syötä koodi" />
           <Label htmlFor="availableOrders">
-            Käytettävissä olevat tilaukset
+            Maksimimäärä paketteja / tuotteita yhteensä
           </Label>
           <Input
             type="number"
