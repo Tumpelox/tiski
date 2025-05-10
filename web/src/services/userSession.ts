@@ -49,10 +49,6 @@ export async function createSessionClient() {
   };
 }
 
-export async function deleteSession() {
-  (await cookies()).delete(Keys.SessionCookie);
-}
-
 export async function createTokenSession(userId: string, secret: string) {
   try {
     const { account } = await createAdminClient();
@@ -89,5 +85,17 @@ export async function createEmailAndPasswordSession(
   } catch (error) {
     console.error('Error creating session:', error);
     throw new Error(AuthenicationErrors.SessionFailed);
+  }
+}
+
+export async function deleteSession() {
+  const { account } = await createSessionClient();
+
+  if (account) {
+    const session = await account.getSession('current');
+
+    await account.deleteSession(session.$id);
+
+    (await cookies()).delete(Keys.SessionCookie);
   }
 }
