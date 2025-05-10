@@ -1,6 +1,5 @@
 'use server';
 
-import { codeSchema, emailSchema, passwordSchema } from '@/lib/schemas';
 import { loginWithCode } from '@/services/orderCode';
 import {
   createEmailAndPasswordSession,
@@ -8,21 +7,22 @@ import {
 } from '@/services/userSession';
 import { ToastType } from '@/store';
 import { deleteSession } from '@/services/userSession';
+import { z } from 'zod';
+import { emailAndPassword, orderCodeSchema } from '@/schemas/auth.schema';
 
 // Uudelleenohjaukset kuntoon
 
 export async function handleCodeLogin(
-  _prevState: { message: string; type: ToastType } | null | undefined,
-  formData: FormData
+  loginData: z.infer<typeof orderCodeSchema>
 ) {
-  const code = codeSchema.safeParse(formData.get('code') as string);
+  const { data, success } = orderCodeSchema.safeParse(loginData);
 
-  if (code.success === false) {
+  if (success === false) {
     return { message: 'Virheellinen pyyntö', type: ToastType.ERROR };
   }
 
   try {
-    const { secret, userId } = await loginWithCode(code.data);
+    const { secret, userId } = await loginWithCode(data.code);
 
     if (!secret || !userId) {
       return { message: 'Koodia ei löytynyt', type: ToastType.ERROR };
@@ -41,16 +41,14 @@ export async function handleCodeLogin(
 }
 
 export async function loginWithEmailAndPasword(
-  _prevState: { message: string; type: ToastType } | null | undefined,
-  formData: FormData
+  loginData: z.infer<typeof emailAndPassword>
 ) {
-  const email = emailSchema.safeParse(formData.get('email') as string);
-  const password = passwordSchema.safeParse(formData.get('password') as string);
-  if (email.success === false || password.success === false)
+  const { data, success } = emailAndPassword.safeParse(loginData);
+  if (success === false)
     return { message: 'Virheellinen pyyntö', type: ToastType.ERROR };
 
   try {
-    await createEmailAndPasswordSession(email.data, password.data);
+    await createEmailAndPasswordSession(data.email, data.password);
 
     return {
       message: 'Kirjautuminen onnistui',

@@ -2,43 +2,71 @@
 
 import { handleCodeLogin } from '@/actions/auth';
 import { Button } from './ui/button';
-import { useActionState, useEffect } from 'react';
 import { useToastMessageStore } from '@/store';
-import { Label } from './ui/label';
 import { Input } from './ui/input';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from './ui/form';
+import { orderCodeSchema } from '@/schemas/auth.schema';
 
 export const LoginWithCode = () => {
-  const [message, formAction] = useActionState(handleCodeLogin, null);
-
   const { addMessage } = useToastMessageStore();
 
-  useEffect(() => {
-    if (message) {
-      addMessage(message.message, message.type);
+  const form = useForm<z.infer<typeof orderCodeSchema>>({
+    resolver: zodResolver(orderCodeSchema),
+    defaultValues: {
+      code: '',
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof orderCodeSchema>) => {
+    const result = await handleCodeLogin(values);
+
+    if (result) {
+      addMessage(result.message, result.type);
     }
-  }, [message, addMessage]);
+  };
 
   return (
-    <form action={formAction}>
-      <Label htmlFor="code" className="block mb-1 font-medium">
-        Syötä koodi:
-      </Label>
-      <Input
-        type="text"
-        id="code"
-        name="code" // Name must match the key expected in the server action (formData.get('code'))
-        required
-        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        aria-describedby="code-error"
-      />
-
-      <Button
-        type="submit"
-        className="mt-4 w-full bg-blue-500 text-white hover:bg-blue-600"
-      >
-        Kirjaudu
-      </Button>
-    </form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="code"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="code" className="block mb-1 font-medium">
+                Syötä koodi:
+              </FormLabel>
+              <FormControl>
+                <Input
+                  id="code"
+                  type="text"
+                  required
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  aria-describedby="code-error"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>Syötä saamasi tilauskoodi</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? 'Kirjaudutaan...' : 'Kirjaudu'}
+        </Button>
+      </form>
+    </Form>
   );
 };
 
