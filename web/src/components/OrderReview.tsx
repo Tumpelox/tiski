@@ -1,23 +1,30 @@
 'use client'; // Important: This needs to be a Client Component
 
 import React, { useEffect, useState } from 'react';
-import { useCartStore } from '@/store'; //
+import { CartItem, useCartStore } from '@/store'; //
 import { fetchProducts } from '@/actions/product';
-import { Product } from '@/interfaces/product.interface'; //
 
 // Geminin settiä mut vois olla järkevämpää vaa käyttää tRPC:tä tuotteiden hakuun. Server actionit ei oo tarkotettu varsinaisesti tähän
 
 // Interface to hold availability status along with cart item
-interface CartItemWithAvailability extends Product {
+interface CartItemWithAvailability extends CartItem {
   quantity: number;
-  isAvailable?: boolean; // Optional: true if available, false if not, undefined if not checked yet
-  availableStock?: number; // Optional: the current stock level
+  isAvailable?: boolean;
+  availableStock?: number;
 }
 
 export function CartReview() {
-  const cartItems = useCartStore((state) => state.items); //
-  const [itemsWithAvailability, setItemsWithAvailability] =
-    useState<CartItemWithAvailability[]>(cartItems);
+  const cartItems = useCartStore((state) => state.items);
+  const [itemsWithAvailability, setItemsWithAvailability] = useState<
+    CartItemWithAvailability[]
+  >(
+    cartItems.map((item) => ({
+      ...item,
+      quantity: 1, // Default quantity
+      isAvailable: undefined, // Initially unknown
+      availableStock: undefined, // Initially unknown
+    }))
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,20 +40,21 @@ export function CartReview() {
       const productIds = cartItems.map((item) => item.$id); //
 
       try {
-        const availabilityData = await fetchProducts(productIds);
+        const { data } = await fetchProducts(productIds);
 
-        // Merge availability data with cart items
-        const updatedItems = cartItems.map((cartItem) => {
-          const availability = availabilityData.find(
-            (avail) => avail.$id === cartItem.$id
-          );
-          return {
-            ...cartItem,
-            isAvailable: availability ? availability.available : false, // Assume unavailable if not found in results
-            availableStock: availability ? availability.stock : 0, // Assume 0 stock if not found
-          };
-        });
-        setItemsWithAvailability(updatedItems);
+        if (data) {
+          const updatedItems = cartItems.map((cartItem) => {
+            const availability = data.find(
+              (avail) => avail.$id === cartItem.$id
+            );
+            return {
+              ...cartItem,
+              isAvailable: availability ? availability.available : false, // Assume unavailable if not found in results
+              availableStock: availability ? availability.stock : 0, // Assume 0 stock if not found
+            };
+          });
+          setItemsWithAvailability(updatedItems);
+        }
       } catch (err) {
         console.error('Failed to check availability:', err);
         setError('Could not update product availability. Please try again.');
@@ -89,7 +97,7 @@ export function CartReview() {
             key={item.$id}
             style={{ opacity: item.isAvailable === false ? 0.5 : 1 }}
           >
-            {item.title} - Quantity: {item.quantity} {/* */}
+            {item.item.title} - Quantity: {item.quantity} {/* */}
             {item.isAvailable === false && (
               <span style={{ color: 'red', marginLeft: '10px' }}>
                 {' '}

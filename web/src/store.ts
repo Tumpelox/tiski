@@ -6,7 +6,7 @@ import { Bundle } from './interfaces/bundle.interface';
 
 //Geminin generoimaa koodia. Vaikutti ihan fiksulta mut lisäsin immerin
 
-interface CartItem {
+export interface CartItem {
   $id: string;
   item: Product | Bundle;
   type: 'product' | 'bundle';

@@ -1,5 +1,5 @@
 {
-    "projectId": "tarratoimikunta",
+    "projectId": "tarratoimikunta-prod",
     "projectName": "Tarratoimikunta",
     "settings": {
         "services": {
@@ -177,6 +177,8 @@
                 "read(\"label:admin\")",
                 "update(\"label:admin\")",
                 "delete(\"label:admin\")",
+                "read(\"label:postittaja\")",
+                "update(\"label:postittaja\")",
                 "read(\"users\")"
             ],
             "databaseId": "tarratiski",
@@ -358,7 +360,8 @@
                 "create(\"label:admin\")",
                 "read(\"label:admin\")",
                 "update(\"label:admin\")",
-                "delete(\"label:admin\")"
+                "delete(\"label:admin\")",
+                "read(\"label:postittaja\")"
             ],
             "databaseId": "tarratiski",
             "name": "Tilauskoodit",
