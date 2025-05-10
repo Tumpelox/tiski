@@ -1,7 +1,6 @@
 'use server';
 
-import { OrderDatabase } from '@/interfaces/order.interface';
-import { OrderCode } from '@/interfaces/orderCode.interface';
+import { OrderCode, OrderCodeDatabase } from '@/interfaces/orderCode.interface';
 import { createAdminClient } from '@/services/createAdminClient';
 import { createDocument, listDocumentsWithApi } from '@/services/databases';
 import { getLoggedInUser } from '@/services/userSession';
@@ -58,8 +57,8 @@ export const createNewOrderCode = async (
   const adminClient = await createAdminClient();
 
   const existingCode = await listDocumentsWithApi<OrderCode>(
-    OrderDatabase.DatabaseId,
-    OrderDatabase.CollectionId,
+    OrderCodeDatabase.DatabaseId,
+    OrderCodeDatabase.CollectionId,
     [Query.equal('code', code)]
   );
 
@@ -82,8 +81,8 @@ export const createNewOrderCode = async (
   );
 
   const { data } = await createDocument<OrderCode>(
-    OrderDatabase.DatabaseId,
-    OrderDatabase.CollectionId,
+    OrderCodeDatabase.DatabaseId,
+    OrderCodeDatabase.CollectionId,
     ID.unique(),
     {
       name: name,
