@@ -2,6 +2,7 @@
 
 import { signOut } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
+import { useToastMessageStore } from '@/store';
 
 import { Models } from 'node-appwrite';
 
@@ -10,9 +11,10 @@ type SignOutButtonProps = {
 };
 
 const SignOutButton = ({ user }: SignOutButtonProps) => {
+  const { addMessage } = useToastMessageStore();
   const handleSignOut = async () => {
     const result = await signOut(null); // Pass `null` for `_prevState`
-    console.log(result.message); // Optional: Handle the result (e.g., show a toast)
+    if (result) addMessage(result.message, result.type); // Optional: Handle the result (e.g., show a toast)
   };
 
   if (!user) {
