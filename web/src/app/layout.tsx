@@ -4,8 +4,6 @@ import './globals.css';
 import * as React from 'react';
 import NavigationMenuButton from '@/components/NavigationMenuButton';
 import NavigationMenu from '@/components/NavigationMenu';
-import { signOut } from '@/actions/auth';
-import { Button } from '@/components/ui/button';
 import { listDocumentsWithApi } from '@/services/databases';
 import { Settings, SettingsDatabase } from '@/interfaces/settings.interface';
 import ToastMessage from '@/components/ToastMessage';
