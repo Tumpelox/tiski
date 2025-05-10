@@ -7,7 +7,7 @@ import {
   ProductDatabase,
   ProductDocument,
 } from '@/interfaces/product.interface';
-import { getAdminDatabases } from '@/services/databases';
+import { getAdminDatabases, listDocumentsWithApi } from '@/services/databases';
 import { getOrderCode } from '@/services/orderCode';
 import { getLoggedInUser } from '@/services/userSession';
 import { ToastType } from '@/store';
@@ -32,8 +32,7 @@ const orderSchema = z.object({
 });
 
 export const newOrder = async (
-  _prevState: { message: string; type: ToastType; data: string | null } | null,
-  form: FormData
+  data: z.infer<typeof orderSchema>
 ): Promise<{ message: string; type: ToastType; data: string | null }> => {
   const user = await getLoggedInUser();
 
@@ -47,13 +46,7 @@ export const newOrder = async (
     return { message: 'Syötä koodi', type: ToastType.ERROR, data: null };
   }
 
-  const parsedOrder = orderSchema.safeParse({
-    products: (form.get('products')?.toString() ?? '').split(','),
-    bundles: (form.get('bundles')?.toString() ?? '').split(','),
-    shippingName: form.get('shippingName'),
-    shippingAddress: form.get('shippingAddress'),
-    notes: form.get('notes'),
-  });
+  const parsedOrder = orderSchema.safeParse(data);
 
   if (parsedOrder.success === false) {
     return {
@@ -76,26 +69,29 @@ export const newOrder = async (
   try {
     const databases = await getAdminDatabases();
 
-    const productsList = await databases.listDocuments<ProductDocument>(
-      ProductDatabase.DatabaseId,
-      ProductDatabase.CollectionId,
-      [Query.equal('$id', products)]
-    );
+    const productsList =
+      products.length > 0
+        ? ((
+            await listDocumentsWithApi<ProductDocument>(
+              ProductDatabase.DatabaseId,
+              ProductDatabase.CollectionId,
+              [Query.equal('$id', products)]
+            )
+          ).data ?? [])
+        : [];
 
-    console.log('Products List:', productsList);
+    const bundlesList =
+      bundles.length > 0
+        ? ((
+            await listDocumentsWithApi<ProductDocument>(
+              BundleDatabase.DatabaseId,
+              BundleDatabase.CollectionId,
+              [Query.equal('$id', bundles)]
+            )
+          ).data ?? [])
+        : [];
 
-    const bundlesList = await databases.listDocuments<ProductDocument>(
-      BundleDatabase.DatabaseId,
-      BundleDatabase.CollectionId,
-      [Query.equal('$id', bundles)]
-    );
-
-    console.log('Bundles List:', bundlesList);
-
-    if (
-      productsList.documents.length === 0 &&
-      bundlesList.documents.length === 0
-    ) {
+    if (productsList.length === 0 && bundlesList.length === 0) {
       return {
         message: 'Tuotteita ei löytynyt',
         type: ToastType.ERROR,
@@ -106,11 +102,11 @@ export const newOrder = async (
     const newOrder = await databases.createDocument<Order>(
       OrderDatabase.DatabaseId,
       OrderDatabase.CollectionId,
-      ID.custom(orderCode.$id),
+      ID.custom(orderCode.code),
       {
         orderCode: orderCode.$id,
-        products: productsList.documents.map((product) => product.$id),
-        bundles: bundlesList.documents.map((bundle) => bundle.$id),
+        products: productsList.map((product) => product.$id),
+        bundles: bundlesList.map((bundle) => bundle.$id),
         contacts: {
           address: shippingAddress,
           name: shippingName,
