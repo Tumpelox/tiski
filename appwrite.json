@@ -8,7 +8,7 @@
             "databases": true,
             "locale": false,
             "health": false,
-            "storage": false,
+            "storage": true,
             "teams": false,
             "users": false,
             "functions": false,
@@ -107,6 +107,13 @@
                     "twoWayKey": "67fbf4cf003bd516d240",
                     "onDelete": "restrict",
                     "side": "parent"
+                },
+                {
+                    "key": "hidden",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
                 }
             ],
             "indexes": []
@@ -114,11 +121,11 @@
         {
             "$id": "tuotepaketit",
             "$permissions": [
-                "read(\"users\")",
                 "create(\"label:admin\")",
                 "read(\"label:admin\")",
                 "update(\"label:admin\")",
-                "delete(\"label:admin\")"
+                "delete(\"label:admin\")",
+                "read(\"any\")"
             ],
             "databaseId": "tarratiski",
             "name": "Tuotepaketit",
@@ -152,6 +159,13 @@
                     "twoWayKey": "67aa0a4e0001f944b2bc",
                     "onDelete": "setNull",
                     "side": "parent"
+                },
+                {
+                    "key": "available",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
                 }
             ],
             "indexes": []
@@ -170,18 +184,6 @@
             "enabled": true,
             "documentSecurity": true,
             "attributes": [
-                {
-                    "key": "bundle",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedCollection": "tuotepaketit",
-                    "relationType": "manyToOne",
-                    "twoWay": false,
-                    "twoWayKey": "67aa06f900345afcceef",
-                    "onDelete": "setNull",
-                    "side": "parent"
-                },
                 {
                     "key": "products",
                     "type": "relationship",
@@ -237,10 +239,22 @@
                     "array": false,
                     "relatedCollection": "yhteystiedot",
                     "relationType": "oneToOne",
-                    "twoWay": true,
-                    "twoWayKey": "orders",
+                    "twoWay": false,
+                    "twoWayKey": "68177e670032a1396ea8",
                     "onDelete": "cascade",
-                    "side": "child"
+                    "side": "parent"
+                },
+                {
+                    "key": "bundles",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tuotepaketit",
+                    "relationType": "oneToMany",
+                    "twoWay": false,
+                    "twoWayKey": "681d1d87000ecf9f85be",
+                    "onDelete": "setNull",
+                    "side": "parent"
                 }
             ],
             "indexes": []
@@ -257,14 +271,18 @@
         },
         {
             "$id": "asetukset",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")"
+            ],
             "databaseId": "nettisivu",
             "name": "Asetukset",
             "enabled": true,
             "documentSecurity": false,
             "attributes": [
                 {
-                    "key": "etusivu",
+                    "key": "frontpage",
                     "type": "relationship",
                     "required": false,
                     "array": false,
@@ -272,6 +290,18 @@
                     "relationType": "oneToOne",
                     "twoWay": false,
                     "twoWayKey": "68054311003da85349d1",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                },
+                {
+                    "key": "mainMenu",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "valikko",
+                    "relationType": "oneToOne",
+                    "twoWay": false,
+                    "twoWayKey": "681762c2000b771d6e42",
                     "onDelete": "setNull",
                     "side": "parent"
                 }
@@ -449,6 +479,14 @@
                     "min": -9223372036854775808,
                     "max": 9223372036854775807,
                     "default": null
+                },
+                {
+                    "key": "alt",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
                 }
             ],
             "indexes": []
@@ -525,21 +563,91 @@
                     "array": false,
                     "size": 248,
                     "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "valikko",
+            "$permissions": [],
+            "databaseId": "nettisivu",
+            "name": "Valikko",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
                 },
                 {
-                    "key": "orders",
+                    "key": "menuItems",
                     "type": "relationship",
                     "required": false,
                     "array": false,
-                    "relatedCollection": "tilaukset",
-                    "relationType": "oneToOne",
-                    "twoWay": true,
-                    "twoWayKey": "contacts",
-                    "onDelete": "cascade",
+                    "relatedCollection": "menuItem",
+                    "relationType": "oneToMany",
+                    "twoWay": false,
+                    "twoWayKey": "681765c0003bdceb744e",
+                    "onDelete": "setNull",
                     "side": "parent"
                 }
             ],
             "indexes": []
+        },
+        {
+            "$id": "menuItem",
+            "$permissions": [],
+            "databaseId": "nettisivu",
+            "name": "Valikko linkki",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 128,
+                    "default": null
+                },
+                {
+                    "key": "url",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 248,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        }
+    ],
+    "buckets": [
+        {
+            "$id": "Images",
+            "$permissions": [
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")",
+                "delete(\"label:admin\")",
+                "read(\"guests\")"
+            ],
+            "fileSecurity": false,
+            "name": "Kuvat",
+            "enabled": true,
+            "maximumFileSize": 30000000,
+            "allowedFileExtensions": [
+                "jpg",
+                "png",
+                "svg"
+            ],
+            "compression": "gzip",
+            "encryption": true,
+            "antivirus": true
         }
     ]
 }
