@@ -4,8 +4,12 @@ import { listDocuments } from '@/services/databases';
 import { OrderCode, OrderCodeDatabase } from '@/interfaces/orderCode.interface';
 import { redirect } from 'next/navigation';
 import CreateNewCode from './CreateNewCode';
+import { getLoggedInUser } from '@/services/userSession';
+import isAdmin from '@/lib/isAdmin';
 
 const KooditPage = async () => {
+  const user = await getLoggedInUser();
+
   const { data } = await listDocuments<OrderCode>(
     OrderCodeDatabase.DatabaseId,
     OrderCodeDatabase.CollectionId
@@ -17,9 +21,11 @@ const KooditPage = async () => {
     <div className="container mx-auto">
       <h1>Listaus aktiivisista tilauskoodeista</h1>
       <KooditTable orderCodes={data} />
-      <div className="mt-4">
-        <CreateNewCode />
-      </div>
+      {isAdmin(user) && (
+        <div className="mt-4">
+          <CreateNewCode />
+        </div>
+      )}
       <p>
         Esimerkki: <Link href={`/hallinta/koodit/1234`}>1234</Link>
       </p>

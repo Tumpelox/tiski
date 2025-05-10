@@ -22,7 +22,7 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <Card className="w-full max-w-md mx-auto">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Ostoskori</CardTitle>
           <CardDescription>Ostoskorisi on tyhjä</CardDescription>

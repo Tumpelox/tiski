@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getLoggedInUser } from './services/userSession';
-import isAdmin from './lib/isAdmin';
+import isAdmin, { isPostittaja } from './lib/isAdmin';
 
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/hallinta')) {
@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
     try {
       const user = await getLoggedInUser();
 
-      if (!isAdmin(user)) {
+      if (!isAdmin(user) && !isPostittaja(user)) {
         return NextResponse.redirect(loginUrl);
       }
     } catch (error) {
@@ -21,7 +21,8 @@ export async function middleware(request: NextRequest) {
 
   if (request.nextUrl.pathname === '/kirjaudu') {
     const user = await getLoggedInUser();
-    if (user) {
+
+    if (!isAdmin(user) && !isPostittaja(user)) {
       return NextResponse.redirect(new URL('/', request.url));
     }
   }
