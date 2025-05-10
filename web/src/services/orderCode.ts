@@ -1,8 +1,10 @@
-'use server';
-
 import { Models, Query, Users } from 'node-appwrite';
 import { getAdminDatabases } from './databases';
-import { OrderCode, OrderCodeDatabase } from '@/interfaces/orderCode.interface';
+import {
+  CanAddToCart,
+  OrderCode,
+  OrderCodeDatabase,
+} from '@/interfaces/orderCode.interface';
 import { createAdminClient } from './createAdminClient';
 import { getLoggedInUser } from './userSession';
 
@@ -60,9 +62,12 @@ export const getOrderCode = async (
 
 export const canAddToCart = async () => {
   const user = await getLoggedInUser();
-  if (!user) return false;
+  if (!user) return CanAddToCart.CodeNotFound;
+
   const orderCode = await getOrderCode(user);
-  if (!orderCode) return false;
-  if (orderCode.orders.length >= 1) return false;
-  return true;
+
+  if (!orderCode) return CanAddToCart.CodeNotFound;
+
+  if (orderCode.orders.length >= 1) return CanAddToCart.AlreadyOrdedered;
+  return CanAddToCart.Ok;
 };

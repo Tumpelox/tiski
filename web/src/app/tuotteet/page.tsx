@@ -1,5 +1,6 @@
 import BundleCard from '@/components/BundleCard';
 import ProductCard from '@/components/ProductCard';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import {
   Bundle,
   BundleDatabase,
@@ -39,7 +40,7 @@ const getProducts = async () => {
   }
 
   return data
-    .filter((product) => product.available)
+    .filter((product) => product.hidden === false)
     .map((product) => clientSideProduct(product));
 };
 
@@ -50,35 +51,37 @@ const TuotteetPage = async () => {
   const canAdd = await canAddToCart();
 
   return (
-    <div className="w-full my-8">
-      <h1>Listaus tuotteista</h1>
-      <div className="grid grid-cols-3 gap-4 mx-auto w-fit">
-        <Suspense fallback={<div>Ladataan tuotteita...</div>}>
-          {[...products, ...bundles]
-            .sort((a, b) => a.title.localeCompare(b.title))
-            .map((item: Product | Bundle, index) => {
-              if (Object.hasOwn(item, 'products')) {
-                return (
-                  <BundleCard
-                    key={index}
-                    bundle={item as Bundle}
-                    canAddToCart={canAdd}
-                  />
-                );
-              }
-              if (Object.hasOwn(item, 'pictures')) {
-                return (
-                  <ProductCard
-                    key={index}
-                    product={item as Product}
-                    canAddToCart={canAdd}
-                  />
-                );
-              }
-            })}
-        </Suspense>
-      </div>
-    </div>
+    <Card className="w-full">
+      <CardContent className="flex flex-col gap-4">
+        <CardTitle>Listaus tuotteista</CardTitle>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-fit">
+          <Suspense fallback={<div>Ladataan tuotteita...</div>}>
+            {[...products, ...bundles]
+              .sort((a, b) => a.title.localeCompare(b.title))
+              .map((item: Product | Bundle, index) => {
+                if (Object.hasOwn(item, 'products')) {
+                  return (
+                    <BundleCard
+                      key={index}
+                      bundle={item as Bundle}
+                      canAddToCart={canAdd}
+                    />
+                  );
+                }
+                if (Object.hasOwn(item, 'pictures')) {
+                  return (
+                    <ProductCard
+                      key={index}
+                      product={item as Product}
+                      canAddToCart={canAdd}
+                    />
+                  );
+                }
+              })}
+          </Suspense>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

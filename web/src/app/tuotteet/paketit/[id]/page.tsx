@@ -2,8 +2,8 @@ import AddToCart from '@/components/AddToCart';
 import {
   Card,
   CardContent,
-  CardFooter,
-  CardHeader,
+  CardDescription,
+  CardTitle,
 } from '@/components/ui/card';
 import {
   Carousel,
@@ -37,6 +37,9 @@ const BundlePage = async ({ params }: Props) => {
   const stock = data.products
     .map((product) => product.stock)
     .sort((a, b) => a - b)[0];
+
+  const canAdd = await canAddToCart();
+
   return (
     <div className="px-4 md:px-8 ">
       <Card className="max-w-5xl mx-auto">
@@ -46,9 +49,14 @@ const BundlePage = async ({ params }: Props) => {
               <Carousel className="w-full">
                 <CarouselContent>
                   {data.products
-                    .map((product) => product.pictures)
+                    .map((product) =>
+                      product.pictures.map((picture) => ({
+                        picture,
+                        title: product.title,
+                      }))
+                    )
                     .flat()
-                    .map((picture, index) => {
+                    .map(({ picture, title }, index) => {
                       return (
                         <CarouselItem key={index}>
                           <Image
@@ -58,6 +66,9 @@ const BundlePage = async ({ params }: Props) => {
                             height={picture.height}
                             width={picture.width}
                           />
+                          <p className="text-muted-foreground text-sm">
+                            {title}
+                          </p>
                         </CarouselItem>
                       );
                     })}
@@ -67,26 +78,24 @@ const BundlePage = async ({ params }: Props) => {
               </Carousel>
             </div>
           )}
-          <div className="col-span-2">
-            <CardHeader className="h-full justify-between">
-              <div>
-                <h2>{data.title}</h2>
-                <p>{data.description}</p>
-              </div>
-
-              <AddToCart
-                bundle={clientSideBundle(data)}
-                canAddToCart={await canAddToCart()}
-              />
-            </CardHeader>
+          <div className="col-span-2 flex flex-col gap-4 items-end md:flex-col-reverse">
+            <AddToCart bundle={clientSideBundle(data)} canAddToCart={canAdd} />
+            <div className="w-full h-full">
+              <CardTitle>{data.title}</CardTitle>
+              <CardDescription>{data.description}</CardDescription>
+            </div>
           </div>
         </CardContent>
-        <CardFooter>
+        <CardContent>
+          <p>Tuotenumero: {id}</p>
+          <p>Varastossa: {stock}</p>
           <div>
-            <p>Tuotenumero: {id}</p>
-            <p>Varastossa: {stock}</p>
+            <p>Paketin tuotteet:</p>
+            {data.products.map((product) => (
+              <p key={product.$id}>{product.title}</p>
+            ))}
           </div>
-        </CardFooter>
+        </CardContent>
       </Card>
     </div>
   );

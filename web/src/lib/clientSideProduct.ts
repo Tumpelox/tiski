@@ -8,14 +8,16 @@ export const clientSideProduct = (productDocument: ProductDocument) => ({
   stock: productDocument.stock,
   available: productDocument.available,
   pictures: productDocument.pictures,
+  hidden: productDocument.hidden,
 });
 
-export const clientSideBundle = (productDocument: BundleDocument) => ({
-  $id: productDocument.$id,
-  title: productDocument.title,
-  description: productDocument.description,
-  products: productDocument.products.map((product) =>
+export const clientSideBundle = (bundleDocument: BundleDocument) => ({
+  $id: bundleDocument.$id,
+  title: bundleDocument.title,
+  description: bundleDocument.description,
+  products: bundleDocument.products.map((product) =>
     clientSideProduct(product)
   ),
-  available: productDocument.available,
+  available: bundleDocument.available,
+  hidden: bundleDocument.hidden,
 });

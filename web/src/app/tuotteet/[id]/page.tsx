@@ -2,8 +2,8 @@ import AddToCart from '@/components/AddToCart';
 import {
   Card,
   CardContent,
-  CardFooter,
-  CardHeader,
+  CardDescription,
+  CardTitle,
 } from '@/components/ui/card';
 import {
   Carousel,
@@ -13,7 +13,6 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import {
-  exampleProduct,
   ProductDatabase,
   ProductDocument,
 } from '@/interfaces/product.interface';
@@ -36,9 +35,9 @@ const ProductPage = async ({ params }: Props) => {
     id
   );
 
-  const canAdd = await canAddToCart();
-
   if (!data || !data.available) notFound();
+
+  const canAdd = await canAddToCart();
   return (
     <div className="px-4 md:px-8 ">
       <Card className="max-w-5xl mx-auto">
@@ -66,26 +65,22 @@ const ProductPage = async ({ params }: Props) => {
               </Carousel>
             </div>
           )}
-          <div className="col-span-2">
-            <CardHeader className="h-full justify-between">
-              <div>
-                <h2>{data.title}</h2>
-                <p>{data.description}</p>
-              </div>
 
-              <AddToCart
-                product={clientSideProduct(exampleProduct)}
-                canAddToCart={canAdd}
-              />
-            </CardHeader>
+          <div className="col-span-2 flex flex-col gap-4 items-end md:flex-col-reverse">
+            <AddToCart
+              product={clientSideProduct(data)}
+              canAddToCart={canAdd}
+            />
+            <div className="w-full h-full justify-between">
+              <CardTitle>{data.title}</CardTitle>
+              <CardDescription>{data.description}</CardDescription>
+            </div>
           </div>
         </CardContent>
-        <CardFooter>
-          <div>
-            <p>Tuotenumero: {id}</p>
-            <p>Varastossa: {data.stock}</p>
-          </div>
-        </CardFooter>
+        <CardContent>
+          <p>Tuotenumero: {id}</p>
+          <p>Varastossa: {data.stock}</p>
+        </CardContent>
       </Card>
     </div>
   );

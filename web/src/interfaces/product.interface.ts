@@ -12,6 +12,7 @@ export interface Product {
   stock: number;
   pictures: Picture[];
   available: boolean;
+  hidden: boolean;
   $id: string;
 }
 
@@ -28,6 +29,7 @@ export const exampleProduct: ProductDocument = {
   title: 'Tuote',
   description: 'Tuotteen kuvaus',
   stock: 10,
+  hidden: false,
   pictures: [
     {
       url: 'https://res.cloudinary.com/lieka/images/f_webp,q_auto/v1713953440/Tarrat-tarrapaketti-kettu-tarra-noniin-saatana-01/Tarrat-tarrapaketti-kettu-tarra-noniin-saatana-01.webp',

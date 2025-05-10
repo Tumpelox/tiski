@@ -15,3 +15,9 @@ export interface OrderCode extends Models.Document {
   userId: string;
   isActive: boolean;
 }
+
+export enum CanAddToCart {
+  AlreadyOrdedered = 'Tilaus on jo tehty',
+  CodeNotFound = 'Kirjaudu sisään koodilla tehdäksesi tilauksen',
+  Ok = 'Ok',
+}

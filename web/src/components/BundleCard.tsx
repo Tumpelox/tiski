@@ -13,6 +13,7 @@ import {
 import Link from 'next/link';
 import AddToCart from './AddToCart';
 import { Bundle } from '@/interfaces/bundle.interface';
+import { CanAddToCart } from '@/interfaces/orderCode.interface';
 
 export const BundleImages = ({ products }: { products: Product[] | null }) => {
   return (
@@ -38,17 +39,17 @@ export const BundleImages = ({ products }: { products: Product[] | null }) => {
 
 const BundleCard = ({
   bundle,
-  canAddToCart = true,
+  canAddToCart = CanAddToCart.CodeNotFound,
 }: {
   bundle: Bundle;
-  canAddToCart?: boolean;
+  canAddToCart?: CanAddToCart;
 }) => {
   const stock = bundle.products
     .map((product) => product.stock)
     .sort((a, b) => a - b)[0];
 
   return (
-    <Card className="w-56">
+    <Card className="md:max-w-56">
       <Link href={`/tuotteet/paketit/${bundle.$id}`}>
         <CardContent className="grid grid-cols-2 gap-2">
           <BundleImages products={bundle.products} />
@@ -63,9 +64,11 @@ const BundleCard = ({
           </CardDescription>
         </CardHeader>
       </Link>
-      <CardFooter>
-        <AddToCart bundle={bundle} canAddToCart={canAddToCart} />
-      </CardFooter>
+      {canAddToCart !== CanAddToCart.CodeNotFound && bundle.available && (
+        <CardFooter>
+          <AddToCart bundle={bundle} canAddToCart={canAddToCart} />
+        </CardFooter>
+      )}
     </Card>
   );
 };

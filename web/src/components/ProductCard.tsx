@@ -12,17 +12,18 @@ import {
 } from './ui/card';
 import Link from 'next/link';
 import AddToCart from './AddToCart';
+import { CanAddToCart } from '@/interfaces/orderCode.interface';
 
 const ProductCard = ({
   product,
-  canAddToCart = true,
+  canAddToCart = CanAddToCart.CodeNotFound,
 }: {
   product: Product;
-  canAddToCart?: boolean;
+  canAddToCart?: CanAddToCart;
 }) => {
   const productPicture = product.pictures[0] ?? null;
   return (
-    <Card className="w-56">
+    <Card className="md:max-w-56">
       <Link href={`/tuotteet/${product.$id}`}>
         {productPicture && (
           <CardContent>
@@ -45,9 +46,11 @@ const ProductCard = ({
           </CardDescription>
         </CardHeader>
       </Link>
-      <CardFooter>
-        <AddToCart product={product} canAddToCart={canAddToCart} />
-      </CardFooter>
+      {canAddToCart !== CanAddToCart.CodeNotFound && product.available && (
+        <CardFooter>
+          <AddToCart product={product} canAddToCart={canAddToCart} />
+        </CardFooter>
+      )}
     </Card>
   );
 };
