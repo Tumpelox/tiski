@@ -1,7 +1,11 @@
 'use server';
 
-import { ArticleDatabase } from '@/interfaces/article.interface';
-import { getAdminDatabases } from '@/services/databases';
+import { Article, ArticleDatabase } from '@/interfaces/article.interface';
+import {
+  createDocument,
+  getDocumentWithApi,
+  updateDocument,
+} from '@/services/databases';
 import { ToastType } from '@/store';
 import { z } from 'zod';
 
@@ -19,13 +23,15 @@ const savePage = async (
 
   console.log(slug.success, title.success, text.success);
   if (!slug.success || !title.success || !text.success) {
-    return { message: 'Sivua ei voitu tallentaa', type: ToastType.ERROR };
+    let errorMessage = 'Sivua ei voitu tallentaa. Tarkista kentät:';
+    if (!slug.success) errorMessage += ' Slug';
+    if (!title.success) errorMessage += ' Otsikko';
+    if (!text.success) errorMessage += ' Teksti';
+    return { message: errorMessage, type: ToastType.ERROR };
   }
 
   try {
-    const database = await getAdminDatabases();
-
-    await database.updateDocument(
+    await updateDocument<Article>(
       ArticleDatabase.DatabaseId,
       ArticleDatabase.CollectionId,
       slug.data,
@@ -46,3 +52,62 @@ const savePage = async (
 };
 
 export default savePage;
+
+export const createPage = async (
+  _prevState:
+    | { message: string; type: ToastType; data: string | null }
+    | null
+    | undefined,
+  form: FormData
+) => {
+  const slug = slugSchema.safeParse(form.get('slug'));
+  const title = titleSchema.safeParse(form.get('title'));
+  const text = textSchema.safeParse(form.get('text'));
+
+  if (!slug.success || !title.success || !text.success) {
+    let errorMessage = 'Sivua ei voitu luoda. Tarkista kentät:';
+    if (!slug.success) errorMessage += ' Slug';
+    if (!title.success) errorMessage += ' Otsikko';
+    if (!text.success) errorMessage += ' Teksti';
+    return { message: errorMessage, type: ToastType.ERROR, data: null };
+  }
+
+  try {
+    const { data } = await getDocumentWithApi<Article>(
+      ArticleDatabase.DatabaseId,
+      ArticleDatabase.CollectionId,
+      slug.data
+    );
+
+    if (data) {
+      return {
+        message: 'Sivu on jo olemassa',
+        type: ToastType.ERROR,
+        data: slug.data,
+      };
+    }
+
+    await createDocument<Article>(
+      ArticleDatabase.DatabaseId,
+      ArticleDatabase.CollectionId,
+      slug.data, // Use provided slug as document ID
+      {
+        title: title.data,
+        text: text.data,
+      }
+    );
+
+    return {
+      message: 'Sivu luotu onnistuneesti',
+      type: ToastType.SUCCESS,
+      data: slug.data,
+    };
+  } catch (error) {
+    console.error('Error creating page:', error);
+    return {
+      message: 'Sivua ei voitu luoda palvelinvirheen vuoksi',
+      type: ToastType.ERROR,
+      data: null,
+    };
+  }
+};

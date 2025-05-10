@@ -29,7 +29,6 @@ const ProductCard = ({ product }: { product: Product }) => {
             />
           </CardContent>
         )}
-
         <CardHeader className="pt-4">
           <CardTitle>
             <h2>{product.title}</h2>

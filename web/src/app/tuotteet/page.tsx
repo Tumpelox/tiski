@@ -47,7 +47,7 @@ const TuotteetPage = async () => {
   const bundles = await getBundles();
 
   return (
-    <div className="w-full">
+    <div className="w-full my-8">
       <h1>Listaus tuotteista</h1>
       <div className="grid grid-cols-3 gap-4 mx-auto w-fit">
         <Suspense fallback={<div>Ladataan tuotteita...</div>}>

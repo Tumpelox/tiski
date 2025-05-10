@@ -3,8 +3,9 @@
 import { handleCodeLogin } from '@/actions/auth';
 import { Button } from './ui/button';
 import { useActionState, useEffect } from 'react';
-import { ToastType, useToastMessageStore } from '@/store';
-import { redirect } from 'next/navigation';
+import { useToastMessageStore } from '@/store';
+import { Label } from './ui/label';
+import { Input } from './ui/input';
 
 //Geminisettiä vähä fixailtuna
 export const LoginWithCode = () => {
@@ -15,7 +16,6 @@ export const LoginWithCode = () => {
   useEffect(() => {
     if (message) {
       addMessage(message.message, message.type);
-      if (message.type === ToastType.SUCCESS) redirect('/');
     }
   }, [message, addMessage]);
 
@@ -25,10 +25,10 @@ export const LoginWithCode = () => {
       className="p-4 border rounded shadow-md max-w-sm mx-auto mt-10"
     >
       <h2 className="text-xl font-semibold mb-4">Login with Code</h2>
-      <label htmlFor="code" className="block mb-1 font-medium">
-        Enter your login code:
-      </label>
-      <input
+      <Label htmlFor="code" className="block mb-1 font-medium">
+        Syötä koodi:
+      </Label>
+      <Input
         type="text"
         id="code"
         name="code" // Name must match the key expected in the server action (formData.get('code'))

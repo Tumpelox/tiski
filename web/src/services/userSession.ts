@@ -15,8 +15,6 @@ const client = new Client()
   .setEndpoint(process.env.APPWRITE_ENDPOINT as string)
   .setProject(process.env.APPWRITE_PROJECT as string);
 
-const account = new Account(client);
-
 export async function getLoggedInUser() {
   const sessionClient = await createSessionClient();
 
@@ -57,13 +55,15 @@ export async function deleteSession() {
 
 export async function createTokenSession(userId: string, secret: string) {
   try {
+    const { account } = await createAdminClient();
     const session = await account.createSession(userId, secret);
 
     (await cookies()).set(Keys.SessionCookie, session.secret, {
-      path: '/',
       httpOnly: true,
-      sameSite: 'strict',
       secure: true,
+      sameSite: 'strict',
+      expires: new Date(session.expire),
+      path: '/',
     });
   } catch (error) {
     console.error('Error creating session:', error);
@@ -78,7 +78,7 @@ export async function createEmailAndPasswordSession(
   try {
     const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
-    console.log('Session to be created:', session);
+
     (await cookies()).set(Keys.SessionCookie, session.secret, {
       httpOnly: true,
       secure: true,

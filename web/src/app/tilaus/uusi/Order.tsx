@@ -20,11 +20,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input'; // Assuming you have an Input component
 import { Label } from '@/components/ui/label'; // Assuming you have a Label component
 import { useCartStore, useToastMessageStore, ToastType } from '@/store';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useActionState } from 'react';
 import { newOrder } from '@/actions/order';
-import { useRouter } from 'next/navigation'; // Import useRouter
+import { redirect } from 'next/navigation'; // Import useRouter
 import { z } from 'zod';
-import { Textarea } from './ui/textarea';
+import { Textarea } from '../../../components/ui/textarea';
+import LoginWithCode from '@/components/LoginWithCode';
 
 // Define Zod schema for shipping details
 const shippingSchema = z.object({
@@ -33,79 +34,51 @@ const shippingSchema = z.object({
 });
 
 const Order = () => {
-  const { items, removeItem, updateQuantity, clearCart, getTotalItems } =
-    useCartStore();
-  const addMessage = useToastMessageStore((state) => state.addMessage);
+  const [message, formAction] = useActionState(newOrder, null);
 
-  const [shippingName, setShippingName] = useState('');
-  const [shippingAddress, setShippingAddress] = useState('');
-  const [notes, setNotes] = useState('');
+  const { items, removeItem, updateQuantity, getTotalItems } = useCartStore();
+  const addMessage = useToastMessageStore((state) => state.addMessage);
   const [errors, setErrors] = useState<{
     shippingName?: string[];
     shippingAddress?: string[];
     notes?: string[];
   }>({});
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // Ensure this component only renders client-side where localStorage is available
-    setIsClient(true);
-  }, []);
+    if (message) {
+      addMessage(message.message, message.type);
+      if (message.type === ToastType.SUCCESS) {
+        // Redirect to the order confirmation page
+        redirect(`/tilaus/${message.data}`);
+      } else if (message.type === ToastType.ERROR) {
+        // Handle error messages
+        const parsedErrors = message.data
+          ? shippingSchema.safeParse(message.data)
+          : null;
 
-  const handleOrderSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setErrors({}); // Clear previous errors
-
-    if (!isClient || items.length === 0) {
-      addMessage('Ostoskori on tyhjä.', ToastType.INFO);
-      return;
-    }
-
-    const validationResult = shippingSchema.safeParse({
-      shippingName,
-      shippingAddress,
-      notes,
-    });
-
-    if (!validationResult.success) {
-      setErrors(validationResult.error.flatten().fieldErrors);
-      addMessage('Tarkista toimitustiedot.', ToastType.ERROR);
-      return;
-    }
-
-    const orderData = {
-      products: items.map((item) => ({ $id: item.$id })), // Send only product IDs
-      bundles: [], // Assuming no bundles for now
-      shippingName: validationResult.data.shippingName,
-      shippingAddress: validationResult.data.shippingAddress,
-    };
-
-    try {
-      // The server action handles redirection on success
-      const result = await newOrder(orderData as any); // Type assertion might be needed depending on exact types
-      console.log(result);
-      if (result?.message) {
-        // If the server action returns a message (error or info)
-        addMessage(result.message, result.type || ToastType.ERROR);
+        if (parsedErrors && !parsedErrors.success) {
+          const errorMessages: { [key: string]: string[] } = {};
+          parsedErrors.error.errors.forEach((error) => {
+            const field = error.path[0];
+            if (!errorMessages[field]) {
+              errorMessages[field] = [];
+            }
+            errorMessages[field].push(error.message);
+          });
+          setErrors(errorMessages);
+        } else {
+          setErrors({
+            shippingName: ['Virheellinen nimi'],
+            shippingAddress: ['Virheellinen osoite'],
+            notes: ['Virheellinen lisätieto'],
+          });
+        }
       } else {
-        // Success case (handled by redirect in server action, but clear cart here)
-        addMessage('Tilaus lähetetty onnistuneesti!', ToastType.SUCCESS);
-        clearCart();
-        // Redirect is handled by the server action, no need for router.push here
+        // Clear errors if the message is not an error
+        setErrors({});
       }
-    } catch (error) {
-      console.error('Order submission failed:', error);
-      addMessage(
-        'Tilauksen lähettäminen epäonnistui. Yritä uudelleen.',
-        ToastType.ERROR
-      );
     }
-  };
-
-  // Render null or a loader on the server until the client hydrates
-  if (!isClient) {
-    return null; // Or a loading spinner
-  }
+  }, [message, addMessage]);
 
   const totalItems = getTotalItems();
 
@@ -117,8 +90,9 @@ const Order = () => {
           Tarkista ostoskorisi sisältö ja syötä toimitustiedot.
         </CardDescription>
       </CardHeader>
+      <LoginWithCode />
       <CardContent>
-        <form onSubmit={handleOrderSubmit}>
+        <form action={formAction}>
           <h3 className="text-lg font-semibold mb-4">Ostoskori</h3>
           {items.length > 0 ? (
             <Table className="mb-6">
@@ -172,17 +146,9 @@ const Order = () => {
             <div>
               <Label htmlFor="shippingName">Nimi</Label>
               <Input
-                id="shippingName"
-                value={shippingName}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setShippingName(e.target.value)
-                }
+                name="shippingName"
                 placeholder="Etunimi Sukunimi"
                 required
-                aria-invalid={!!errors.shippingName}
-                aria-describedby={
-                  errors.shippingName ? 'shippingName-error' : undefined
-                }
               />
               {errors.shippingName && (
                 <p
@@ -196,17 +162,9 @@ const Order = () => {
             <div>
               <Label htmlFor="shippingAddress">Osoite</Label>
               <Input
-                id="shippingAddress"
-                value={shippingAddress}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setShippingAddress(e.target.value)
-                }
+                name="shippingAddress"
                 placeholder="Katuosoite, Postinumero Postitoimipaikka"
                 required
-                aria-invalid={!!errors.shippingAddress}
-                aria-describedby={
-                  errors.shippingAddress ? 'shippingAddress-error' : undefined
-                }
               />
               {errors.shippingAddress && (
                 <p
@@ -220,15 +178,9 @@ const Order = () => {
             <div>
               <Label htmlFor="notes">Lisätiedot</Label>
               <Textarea
-                id="notes"
-                value={notes}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  setNotes(e.target.value)
-                }
+                name="notes"
                 placeholder="Tilauksen lisätiedot..."
                 required
-                aria-invalid={!!errors.notes}
-                aria-describedby={errors.notes ? 'notes-error' : undefined}
               />
               {errors.notes && (
                 <p id="notes-error" className="text-sm text-red-600 mt-1">
@@ -237,7 +189,20 @@ const Order = () => {
               )}
             </div>
           </div>
-
+          <input
+            type="hidden"
+            name="products"
+            value={items
+              .filter((item) => item.type === 'product')
+              .map((item) => item.$id)}
+          />
+          <input
+            type="hidden"
+            name="bundles"
+            value={items
+              .filter((item) => item.type === 'bundle')
+              .map((item) => item.$id)}
+          />
           <CardFooter className="flex justify-end p-0 pt-6">
             <Button type="submit" disabled={totalItems === 0}>
               Lähetä tilaus ({totalItems} tuotetta)

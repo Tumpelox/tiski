@@ -1,4 +1,4 @@
-import Order from '@/components/Order';
+import Order from '@/app/tilaus/uusi/Order';
 
 const UusiTilausPage = async () => {
   // Tilauksen luonti tapahtuu käyttäjän selaimessa

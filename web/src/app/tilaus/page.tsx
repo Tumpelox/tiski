@@ -23,6 +23,7 @@ import { Order } from '@/interfaces/order.interface'; // Import Order interface
 
 const TilausPage = async () => {
   const user = await getLoggedInUser();
+  console.log('User:', user);
   const orderCode = await getOrderCode(user);
 
   // Explicitly type the order parameter

@@ -35,12 +35,13 @@ export default async function RootLayout({
       <body
         className={`${montserrat.variable} ${montserrat.variable} antialiased bg-gradient-to-b from-blue-30 to-blue-300 min-h-screen`}
       >
-        <ToastMessage />
-        <NavigationMenuButton>
-          <NavigationMenu menuItems={menuItems} />
-        </NavigationMenuButton>
-
-        <main className="my-4">{children}</main>
+        <header className="w-full h-16">
+          <ToastMessage />
+          <NavigationMenuButton>
+            <NavigationMenu menuItems={menuItems} />
+          </NavigationMenuButton>
+        </header>
+        <main className="w-full">{children}</main>
       </body>
     </html>
   );
