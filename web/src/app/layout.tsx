@@ -41,7 +41,7 @@ export default async function RootLayout({
             <NavigationMenu menuItems={menuItems} />
           </NavigationMenuButton>
         </header>
-        <main className="w-full">{children}</main>
+        <main className="container max-w-3xl mx-auto">{children}</main>
       </body>
     </html>
   );
