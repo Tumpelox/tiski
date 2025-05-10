@@ -42,7 +42,8 @@ const TilausPage = async () => {
       )}
       {orderCode && (
         <>
-          <Cart />
+          {/* Only render the cart if no orders have been placed */}
+          {orderCode.orders.length === 0 && <Cart />}
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">

@@ -4,6 +4,7 @@ import { Models, Query, Users } from 'node-appwrite';
 import { getAdminDatabases } from './databases';
 import { OrderCode, OrderCodeDatabase } from '@/interfaces/orderCode.interface';
 import { createAdminClient } from './createAdminClient';
+import { getLoggedInUser } from './userSession';
 
 export const loginWithCode = async (code: string) => {
   try {
@@ -55,4 +56,13 @@ export const getOrderCode = async (
     console.error('Error fetching order code:', error);
     return null;
   }
+};
+
+export const canAddToCart = async () => {
+  const user = await getLoggedInUser();
+  if (!user) return false;
+  const orderCode = await getOrderCode(user);
+  if (!orderCode) return false;
+  if (orderCode.orders.length >= 1) return false;
+  return true;
 };

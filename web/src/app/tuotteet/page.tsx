@@ -12,6 +12,7 @@ import {
 } from '@/interfaces/product.interface';
 import { clientSideBundle, clientSideProduct } from '@/lib/clientSideProduct';
 import { listDocumentsWithApi } from '@/services/databases';
+import { canAddToCart } from '@/services/orderCode';
 import { Suspense } from 'react';
 
 const getBundles = async () => {
@@ -46,6 +47,8 @@ const TuotteetPage = async () => {
   const products = await getProducts();
   const bundles = await getBundles();
 
+  const canAdd = await canAddToCart();
+
   return (
     <div className="w-full my-8">
       <h1>Listaus tuotteista</h1>
@@ -55,10 +58,22 @@ const TuotteetPage = async () => {
             .sort((a, b) => a.title.localeCompare(b.title))
             .map((item: Product | Bundle, index) => {
               if (Object.hasOwn(item, 'products')) {
-                return <BundleCard key={index} bundle={item as Bundle} />;
+                return (
+                  <BundleCard
+                    key={index}
+                    bundle={item as Bundle}
+                    canAddToCart={canAdd}
+                  />
+                );
               }
               if (Object.hasOwn(item, 'pictures')) {
-                return <ProductCard key={index} product={item as Product} />;
+                return (
+                  <ProductCard
+                    key={index}
+                    product={item as Product}
+                    canAddToCart={canAdd}
+                  />
+                );
               }
             })}
         </Suspense>

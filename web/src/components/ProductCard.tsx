@@ -11,9 +11,15 @@ import {
   CardTitle,
 } from './ui/card';
 import Link from 'next/link';
-import AddToCard from './AddToCard';
+import AddToCart from './AddToCart';
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = ({
+  product,
+  canAddToCart = true,
+}: {
+  product: Product;
+  canAddToCart?: boolean;
+}) => {
   const productPicture = product.pictures[0] ?? null;
   return (
     <Card className="w-56">
@@ -40,7 +46,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         </CardHeader>
       </Link>
       <CardFooter>
-        <AddToCard product={product} />
+        <AddToCart product={product} canAddToCart={canAddToCart} />
       </CardFooter>
     </Card>
   );

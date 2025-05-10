@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from './ui/card';
 import Link from 'next/link';
-import AddToCard from './AddToCard';
+import AddToCart from './AddToCart';
 import { Bundle } from '@/interfaces/bundle.interface';
 
 export const BundleImages = ({ products }: { products: Product[] | null }) => {
@@ -36,7 +36,13 @@ export const BundleImages = ({ products }: { products: Product[] | null }) => {
   );
 };
 
-const BundleCard = ({ bundle }: { bundle: Bundle }) => {
+const BundleCard = ({
+  bundle,
+  canAddToCart = true,
+}: {
+  bundle: Bundle;
+  canAddToCart?: boolean;
+}) => {
   const stock = bundle.products
     .map((product) => product.stock)
     .sort((a, b) => a - b)[0];
@@ -58,7 +64,7 @@ const BundleCard = ({ bundle }: { bundle: Bundle }) => {
         </CardHeader>
       </Link>
       <CardFooter>
-        <AddToCard bundle={bundle} />
+        <AddToCart bundle={bundle} canAddToCart={canAddToCart} />
       </CardFooter>
     </Card>
   );
