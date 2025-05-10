@@ -1,4 +1,5 @@
 import BundleCard from '@/components/BundleCard';
+import LoginWithCode from '@/components/LoginWithCode';
 import ProductCard from '@/components/ProductCard';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import {
@@ -13,7 +14,8 @@ import {
 } from '@/interfaces/product.interface';
 import { clientSideBundle, clientSideProduct } from '@/lib/clientSideProduct';
 import { listDocumentsWithApi } from '@/services/databases';
-import { canAddToCart } from '@/services/orderCode';
+import { canAddToCart, getOrderCode } from '@/services/orderCode';
+import { getLoggedInUser } from '@/services/userSession';
 import { Suspense } from 'react';
 
 const getBundles = async () => {
@@ -45,43 +47,54 @@ const getProducts = async () => {
 };
 
 const TuotteetPage = async () => {
+  const user = await getLoggedInUser();
+  const orderCode = await getOrderCode(user);
   const products = await getProducts();
   const bundles = await getBundles();
 
   const canAdd = await canAddToCart();
 
   return (
-    <Card className="w-full">
-      <CardContent className="flex flex-col gap-4">
-        <CardTitle>Listaus tuotteista</CardTitle>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-fit">
-          <Suspense fallback={<div>Ladataan tuotteita...</div>}>
-            {[...products, ...bundles]
-              .sort((a, b) => a.title.localeCompare(b.title))
-              .map((item: Product | Bundle, index) => {
-                if (Object.hasOwn(item, 'products')) {
-                  return (
-                    <BundleCard
-                      key={index}
-                      bundle={item as Bundle}
-                      canAddToCart={canAdd}
-                    />
-                  );
-                }
-                if (Object.hasOwn(item, 'pictures')) {
-                  return (
-                    <ProductCard
-                      key={index}
-                      product={item as Product}
-                      canAddToCart={canAdd}
-                    />
-                  );
-                }
-              })}
-          </Suspense>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="flex flex-col gap-4">
+      {!orderCode && (
+        <Card className="w-full">
+          <CardContent>
+            <LoginWithCode />
+          </CardContent>
+        </Card>
+      )}
+      <Card className="w-full">
+        <CardContent className="flex flex-col gap-4">
+          <CardTitle>Listaus tuotteista</CardTitle>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-fit">
+            <Suspense fallback={<div>Ladataan tuotteita...</div>}>
+              {[...products, ...bundles]
+                .sort((a, b) => a.title.localeCompare(b.title))
+                .map((item: Product | Bundle, index) => {
+                  if (Object.hasOwn(item, 'products')) {
+                    return (
+                      <BundleCard
+                        key={index}
+                        bundle={item as Bundle}
+                        canAddToCart={canAdd}
+                      />
+                    );
+                  }
+                  if (Object.hasOwn(item, 'pictures')) {
+                    return (
+                      <ProductCard
+                        key={index}
+                        product={item as Product}
+                        canAddToCart={canAdd}
+                      />
+                    );
+                  }
+                })}
+            </Suspense>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
