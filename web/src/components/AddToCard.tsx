@@ -33,7 +33,9 @@ const AddToCard = ({
       .sort((a, b) => a - b)[0];
     return (
       <Button
-        disabled={bundle.products.length === 0 || stock === 0}
+        disabled={
+          !bundle.available || bundle.products.length === 0 || stock === 0
+        }
         onClick={() => {
           addItem(bundle, 'bundle');
           addMessage(`${bundle.title} lisätty ostoskoriin`, ToastType.SUCCESS);

@@ -11,6 +11,7 @@ export interface Bundle {
   title: string;
   description: string;
   products: Product[];
+  available: boolean;
 }
 
 export interface BundleDocument extends Models.Document, Bundle {

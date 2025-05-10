@@ -13,6 +13,8 @@ import {
   CardTitle,
 } from './ui/card';
 import { Product } from '@/interfaces/product.interface';
+import { BundleImages } from './BundleCard';
+import { Bundle } from '@/interfaces/bundle.interface';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, clearCart, getTotalItems } =
@@ -51,7 +53,7 @@ const Cart = () => {
             >
               {item.type === 'product' &&
                 (item.item as Product).pictures[0] && (
-                  <div className="w-16 h-16 relative flex-shrink-0">
+                  <div className="w-16 h-16 relative">
                     <Image
                       src={(item.item as Product).pictures[0].url}
                       alt={(item.item as Product).pictures[0].alt}
@@ -60,8 +62,19 @@ const Cart = () => {
                     />
                   </div>
                 )}
+              {item.type === 'bundle' && (
+                <div className="w-16 h-16 relative grid grid-cols-2 gap-2">
+                  <BundleImages products={(item.item as Bundle).products} />
+                </div>
+              )}
               <div className="flex-grow">
-                <h3 className="font-medium">{item.item.title}</h3>
+                <h3 className="font-medium">
+                  <Link
+                    href={`/tuotteet${item.type === 'bundle' ? '/paketit/' + item.$id : item.$id}`}
+                  >
+                    {item.item.title}
+                  </Link>
+                </h3>
                 <p className="text-sm text-gray-500 line-clamp-1">
                   {item.item.description}
                 </p>

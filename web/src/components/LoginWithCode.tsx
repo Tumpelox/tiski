@@ -7,7 +7,6 @@ import { useToastMessageStore } from '@/store';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 
-//Geminisettiä vähä fixailtuna
 export const LoginWithCode = () => {
   const [message, formAction] = useActionState(handleCodeLogin, null);
 
@@ -20,11 +19,7 @@ export const LoginWithCode = () => {
   }, [message, addMessage]);
 
   return (
-    <form
-      action={formAction}
-      className="p-4 border rounded shadow-md max-w-sm mx-auto mt-10"
-    >
-      <h2 className="text-xl font-semibold mb-4">Login with Code</h2>
+    <form action={formAction}>
       <Label htmlFor="code" className="block mb-1 font-medium">
         Syötä koodi:
       </Label>
@@ -41,7 +36,7 @@ export const LoginWithCode = () => {
         type="submit"
         className="mt-4 w-full bg-blue-500 text-white hover:bg-blue-600"
       >
-        Login with Code
+        Kirjaudu
       </Button>
     </form>
   );

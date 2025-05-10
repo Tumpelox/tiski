@@ -14,6 +14,28 @@ import Link from 'next/link';
 import AddToCard from './AddToCard';
 import { Bundle } from '@/interfaces/bundle.interface';
 
+export const BundleImages = ({ products }: { products: Product[] | null }) => {
+  return (
+    <>
+      {products &&
+        products.map((product) => {
+          const productPicture = product.pictures[0];
+          return (
+            <div className="w-full h-full" key={product.$id}>
+              <Image
+                className="rounded h-full"
+                src={productPicture.url}
+                alt={productPicture.alt}
+                height={productPicture.height}
+                width={productPicture.width}
+              />
+            </div>
+          );
+        })}
+    </>
+  );
+};
+
 const BundleCard = ({ bundle }: { bundle: Bundle }) => {
   const stock = bundle.products
     .map((product) => product.stock)
@@ -23,21 +45,7 @@ const BundleCard = ({ bundle }: { bundle: Bundle }) => {
     <Card className="w-56">
       <Link href={`/tuotteet/paketit/${bundle.$id}`}>
         <CardContent className="grid grid-cols-2 gap-2">
-          {bundle.products &&
-            bundle.products.map((product) => {
-              const productPicture = product.pictures[0];
-              return (
-                <div className="w-full h-full" key={product.$id}>
-                  <Image
-                    className="rounded h-full"
-                    src={productPicture.url}
-                    alt={productPicture.alt}
-                    height={productPicture.height}
-                    width={productPicture.width}
-                  />
-                </div>
-              );
-            })}
+          <BundleImages products={bundle.products} />
         </CardContent>
         <CardHeader className="pt-4">
           <CardTitle>

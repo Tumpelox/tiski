@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/carousel';
 import { BundleDatabase, BundleDocument } from '@/interfaces/bundle.interface';
 import { clientSideBundle } from '@/lib/clientSideProduct';
-import { getDocument } from '@/services/databases';
+import { getDocumentWithApi } from '@/services/databases';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
@@ -25,13 +25,13 @@ interface Props {
 const BundlePage = async ({ params }: Props) => {
   const { id } = await params;
 
-  const { data } = await getDocument<BundleDocument>(
+  const { data } = await getDocumentWithApi<BundleDocument>(
     BundleDatabase.DatabaseId,
     BundleDatabase.CollectionId,
     id
   );
 
-  if (!data) notFound();
+  if (!data || !data.available) notFound();
 
   const stock = data.products
     .map((product) => product.stock)

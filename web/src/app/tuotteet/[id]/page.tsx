@@ -18,7 +18,7 @@ import {
   ProductDocument,
 } from '@/interfaces/product.interface';
 import { clientSideProduct } from '@/lib/clientSideProduct';
-import { getDocument } from '@/services/databases';
+import { getDocumentWithApi } from '@/services/databases';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
@@ -29,7 +29,7 @@ interface Props {
 const ProductPage = async ({ params }: Props) => {
   const { id } = await params;
 
-  const { data } = await getDocument<ProductDocument>(
+  const { data } = await getDocumentWithApi<ProductDocument>(
     ProductDatabase.DatabaseId,
     ProductDatabase.CollectionId,
     id

@@ -17,4 +17,5 @@ export const clientSideBundle = (productDocument: BundleDocument) => ({
   products: productDocument.products.map((product) =>
     clientSideProduct(product)
   ),
+  available: productDocument.available,
 });
