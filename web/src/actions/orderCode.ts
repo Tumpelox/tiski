@@ -9,25 +9,10 @@ import { ToastType } from '@/store';
 import { ID, Query, Users } from 'node-appwrite';
 import { z } from 'zod';
 import isAdmin from '@/lib/isAdmin';
-import { codeSchema } from '@/lib/schemas';
-
-export interface NewOrderCode {
-  name: string;
-  availableOrders: number;
-  creator: string;
-  code: string;
-  userId: string;
-}
-
-const newOrderCodeSchema = z.object({
-  name: z.string().min(2).max(128),
-  availableOrders: z.number().min(1).max(100),
-  code: codeSchema,
-});
+import { createCodeSchema } from '@/schemas/orderCode.schema';
 
 export const createNewOrderCode = async (
-  _prevState: { message: string; type: ToastType; data: string | null } | null,
-  form: FormData
+  newCodeData: z.infer<typeof createCodeSchema>
 ) => {
   const user = await getLoggedInUser();
 
@@ -39,22 +24,20 @@ export const createNewOrderCode = async (
     };
   }
 
-  const parsedOrderCode = newOrderCodeSchema.safeParse({
-    code: form.get('code'),
-    availableOrders: Number(form.get('availableOrders')),
-    name: form.get('name'),
-  });
+  const { success, data } = createCodeSchema.safeParse(newCodeData);
 
-  if (parsedOrderCode.success === false) {
+  if (success === false) {
     return {
       message: 'Virheellinen pyyntö',
       type: ToastType.ERROR,
       data: null,
     };
   }
-  const { name, availableOrders, code } = parsedOrderCode.data;
+  const { name, availableOrders, code } = data;
 
   const adminClient = await createAdminClient();
+
+  const users = new Users(adminClient.account.client);
 
   const existingCode = await listDocumentsWithApi<OrderCode>(
     OrderCodeDatabase.DatabaseId,
@@ -68,42 +51,40 @@ export const createNewOrderCode = async (
       type: ToastType.ERROR,
       data: null,
     };
-  }
+  } else {
+    const newUser = await users.create(
+      code,
+      undefined,
+      undefined,
+      undefined,
+      name
+    );
 
-  const users = new Users(adminClient.account.client);
+    const { data } = await createDocument<OrderCode>(
+      OrderCodeDatabase.DatabaseId,
+      OrderCodeDatabase.CollectionId,
+      ID.unique(),
+      {
+        name: name,
+        availableOrders: availableOrders,
+        creator: user.email,
+        code: code,
+        userId: newUser.$id,
+        isActive: true,
+      }
+    );
 
-  const newUser = await users.create(
-    code,
-    undefined,
-    undefined,
-    undefined,
-    name
-  );
+    if (data)
+      return {
+        message: `Tilauskoodi ${code} luotu`,
+        type: ToastType.SUCCESS,
+        data: data.$id,
+      };
 
-  const { data } = await createDocument<OrderCode>(
-    OrderCodeDatabase.DatabaseId,
-    OrderCodeDatabase.CollectionId,
-    ID.unique(),
-    {
-      name: name,
-      availableOrders: availableOrders,
-      creator: user.email,
-      code: code,
-      userId: newUser.$id,
-      isActive: true,
-    }
-  );
-
-  if (data)
     return {
-      message: `Tilauskoodi ${code} luotu`,
-      type: ToastType.SUCCESS,
-      data: data.$id,
+      message: 'Tilauksen koodin luonti epäonnistui',
+      type: ToastType.ERROR,
+      data: null,
     };
-
-  return {
-    message: 'Tilauksen koodin luonti epäonnistui',
-    type: ToastType.ERROR,
-    data: null,
-  };
+  }
 };

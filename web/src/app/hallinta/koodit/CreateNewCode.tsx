@@ -2,57 +2,127 @@
 
 import { createNewOrderCode } from '@/actions/orderCode';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { useToastMessageStore } from '@/store';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { createCodeSchema } from '@/schemas/orderCode.schema';
+import { ToastType, useToastMessageStore } from '@/store';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useActionState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { z } from 'zod';
 
 const CreateNewCode = () => {
-  const { addMessage } = useToastMessageStore();
-  const [message, formAction] = useActionState(createNewOrderCode, null);
+  const addMessage = useToastMessageStore((state) => state.addMessage);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const form = useForm<z.infer<typeof createCodeSchema>>({
+    resolver: zodResolver(createCodeSchema),
+    defaultValues: {
+      name: '',
+      code: '',
+      availableOrders: 1,
+    },
+  });
+
+  // 3. Define a submit handler
+  const onSubmit = async (values: z.infer<typeof createCodeSchema>) => {
+    const result = await createNewOrderCode(values);
+
+    if (result) {
+      addMessage(result.message, result.type);
+      if (result.type === ToastType.SUCCESS) {
+        form.reset();
+        setIsDialogOpen(false);
+      }
+    }
+  };
 
   useEffect(() => {
-    if (message) {
-      addMessage(message.message, message.type);
+    if (!isDialogOpen) {
+      form.reset();
     }
-  }, [message, addMessage]);
+  }, [isDialogOpen, form]);
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button className="bg-blue-500 text-white hover:bg-blue-600">
-          Luo uusi koodi
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-96 p-4">
-        <form action={formAction} className="flex flex-col gap-4">
-          <Label htmlFor="name">Nimi</Label>
-          <Input type="text" name="name" placeholder="Syötä nimi" />
-          <Label htmlFor="code">Koodi</Label>
-          <Input type="text" name="code" placeholder="Syötä koodi" />
-          <Label htmlFor="availableOrders">
-            Käytettävissä olevat tilaukset
-          </Label>
-          <Input
-            type="number"
-            name="availableOrders"
-            placeholder="Syötä tilaukset"
-          />
-          <Button
-            type="submit"
-            className="bg-blue-500 text-white hover:bg-blue-600"
-          >
-            Luo uusi koodi
-          </Button>
-        </form>
-      </PopoverContent>
-    </Popover>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DialogTrigger asChild>
+        <Button>Luo uusi koodi</Button>
+      </DialogTrigger>
+      <DialogContent className="w-96 p-4">
+        <DialogHeader>
+          <DialogTitle>Luo tilauskoodi</DialogTitle>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nimi</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="code"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Koodi</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="availableOrders"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Käytettävissä olevat tilaukset</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      {...field}
+                      onChange={(e) =>
+                        field.onChange(parseInt(e.target.value, 10) || 0)
+                      } // Ensure value is number
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting ? 'Luodaan...' : 'Luo uusi koodi'}
+            </Button>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
