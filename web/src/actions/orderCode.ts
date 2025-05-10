@@ -90,6 +90,7 @@ export const createNewOrderCode = async (
       creator: user.email,
       code: code,
       userId: newUser.$id,
+      isActive: true,
     }
   );
 
