@@ -53,8 +53,6 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
     return 'Odottaa käsittelyä';
   };
 
-  console.log(data);
-
   return (
     <Card className="max-w-4xl mx-auto my-4">
       <CardHeader>
