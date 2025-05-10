@@ -3,10 +3,10 @@
 import { BundleDatabase } from '@/interfaces/bundle.interface';
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
 import {
-  Product,
   ProductDatabase,
   ProductDocument,
 } from '@/interfaces/product.interface';
+import orderSchema from '@/schemas/order.schema';
 import { getAdminDatabases, listDocumentsWithApi } from '@/services/databases';
 import { getOrderCode } from '@/services/orderCode';
 import { getLoggedInUser } from '@/services/userSession';
@@ -14,22 +14,6 @@ import { ToastType } from '@/store';
 
 import { ID, Permission, Query, Role } from 'node-appwrite';
 import { z } from 'zod';
-
-export interface NewOrder {
-  products: Product['$id'][];
-  bundles: Product['$id'][];
-  shippingName: string;
-  shippingAddress: string;
-  notes: string;
-}
-
-const orderSchema = z.object({
-  products: z.array(z.string()),
-  bundles: z.array(z.string()),
-  shippingName: z.string(),
-  shippingAddress: z.string(),
-  notes: z.string().max(1024).optional(),
-});
 
 export const newOrder = async (
   data: z.infer<typeof orderSchema>

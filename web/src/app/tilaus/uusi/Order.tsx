@@ -18,21 +18,21 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-
-// Define Zod schema for shipping details
-const shippingSchema = z.object({
-  shippingName: z.string().min(2, { message: 'Nimi vaaditaan' }),
-  shippingAddress: z.string().min(5, { message: 'Osoite vaaditaan' }),
-  notes: z.string().max(500, { message: 'Liian pitkä lisätieto' }).optional(),
-});
+import orderSchema from '@/schemas/order.schema';
 
 const Order = () => {
   const { items } = useCartStore();
   const addMessage = useToastMessageStore((state) => state.addMessage);
 
-  const form = useForm<z.infer<typeof shippingSchema>>({
-    resolver: zodResolver(shippingSchema),
+  const form = useForm<z.infer<typeof orderSchema>>({
+    resolver: zodResolver(orderSchema),
     defaultValues: {
+      products: items
+        .filter((item) => item.type === 'product')
+        .map((item) => item.$id),
+      bundles: items
+        .filter((item) => item.type === 'bundle')
+        .map((item) => item.$id),
       shippingName: '',
       shippingAddress: '',
       notes: '',
@@ -40,7 +40,7 @@ const Order = () => {
   });
 
   // 2. Define a submit handler.
-  const onSubmit = async (values: z.infer<typeof shippingSchema>) => {
+  const onSubmit = async (values: z.infer<typeof orderSchema>) => {
     const order = await newOrder({
       ...values,
       products: items
