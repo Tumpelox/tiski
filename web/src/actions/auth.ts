@@ -22,6 +22,8 @@ export async function handleCodeLogin(
   }
 
   try {
+    await deleteSession();
+
     const { secret, userId } = await loginWithCode(data.code);
 
     if (!secret || !userId) {
@@ -48,6 +50,8 @@ export async function loginWithEmailAndPasword(
     return { message: 'Virheellinen pyyntö', type: ToastType.ERROR };
 
   try {
+    await deleteSession();
+
     await createEmailAndPasswordSession(data.email, data.password);
 
     return {
