@@ -10,7 +10,6 @@ import { z } from 'zod';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -47,17 +46,16 @@ const LoginWithEmailAndPassword = () => {
       <div className="w-full max-w-md">
         <h1 className="text-5xl font-bold text-center mb-8">Kirjautuminen</h1>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tilaajan nimi</FormLabel>
+                  <FormLabel>Sähköposti</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="email" />
                   </FormControl>
-                  <FormDescription>Tilauksessa käytettävä nimi</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -67,11 +65,11 @@ const LoginWithEmailAndPassword = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tilaajan nimi</FormLabel>
+                  <FormLabel>Salasana</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="password" />
                   </FormControl>
-                  <FormDescription>Tilauksessa käytettävä nimi</FormDescription>
+
                   <FormMessage />
                 </FormItem>
               )}
