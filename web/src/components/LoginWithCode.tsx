@@ -45,7 +45,7 @@ export const LoginWithCode = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel htmlFor="code" className="block mb-1 font-medium">
-                Syötä koodi:
+                Koodi
               </FormLabel>
               <FormControl>
                 <Input
