@@ -62,9 +62,7 @@ export async function loginWithEmailAndPasword(
   }
 }
 
-export async function signOut(
-  _prevState: { message: string; type: ToastType } | null | undefined
-) {
+export async function signOut() {
   try {
     await deleteSession();
     return { message: 'Kirjauduttu ulos', type: ToastType.SUCCESS };

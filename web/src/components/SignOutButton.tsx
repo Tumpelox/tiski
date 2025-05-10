@@ -13,8 +13,8 @@ type SignOutButtonProps = {
 const SignOutButton = ({ user }: SignOutButtonProps) => {
   const { addMessage } = useToastMessageStore();
   const handleSignOut = async () => {
-    const result = await signOut(null); // Pass `null` for `_prevState`
-    if (result) addMessage(result.message, result.type); // Optional: Handle the result (e.g., show a toast)
+    const result = await signOut();
+    if (result) addMessage(result.message, result.type);
   };
 
   if (!user) {
@@ -22,10 +22,7 @@ const SignOutButton = ({ user }: SignOutButtonProps) => {
   }
 
   return (
-    <Button
-      onClick={handleSignOut}
-      className="absolute top-4 left-4 px-4 py-2 rounded-md z-50 bg-gray-100 border border-gray-400 text-gray-800 hover:bg-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-    >
+    <Button onClick={handleSignOut} className="absolute top-4 left-4">
       Kirjaudu ulos
     </Button>
   );

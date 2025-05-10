@@ -33,7 +33,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
 
   if (error || !data) notFound();
 
-  const { contacts, products, bundles, notes, shipped, canceled, $id } = data;
+  const { products, bundles, notes, shipped, canceled, $id } = data;
 
   const getStatusBadge = () => {
     if (canceled) {
