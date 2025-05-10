@@ -21,7 +21,7 @@ import { Input } from '@/components/ui/input';
 import { createCodeSchema } from '@/schemas/orderCode.schema';
 import { ToastType, useToastMessageStore } from '@/store';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,6 +30,7 @@ import { z } from 'zod';
 
 const CreateNewCode = () => {
   const addMessage = useToastMessageStore((state) => state.addMessage);
+  const router = useRouter();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -51,7 +52,7 @@ const CreateNewCode = () => {
       if (result.type === ToastType.SUCCESS) {
         form.reset();
         setIsDialogOpen(false);
-        redirect('/hallinta/koodit');
+        router.refresh();
       }
     }
   };

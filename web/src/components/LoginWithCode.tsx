@@ -2,7 +2,7 @@
 
 import { handleCodeLogin } from '@/actions/auth';
 import { Button } from './ui/button';
-import { useToastMessageStore } from '@/store';
+import { ToastType, useToastMessageStore } from '@/store';
 import { Input } from './ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,9 +17,11 @@ import {
   FormMessage,
 } from './ui/form';
 import { orderCodeSchema } from '@/schemas/auth.schema';
+import { useRouter } from 'next/navigation';
 
 export const LoginWithCode = () => {
   const { addMessage } = useToastMessageStore();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof orderCodeSchema>>({
     resolver: zodResolver(orderCodeSchema),
@@ -33,6 +35,9 @@ export const LoginWithCode = () => {
 
     if (result) {
       addMessage(result.message, result.type);
+      if (result.type === ToastType.SUCCESS) {
+        router.refresh();
+      }
     }
   };
 
