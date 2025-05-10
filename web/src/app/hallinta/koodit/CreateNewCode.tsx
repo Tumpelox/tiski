@@ -21,6 +21,7 @@ import { Input } from '@/components/ui/input';
 import { createCodeSchema } from '@/schemas/orderCode.schema';
 import { ToastType, useToastMessageStore } from '@/store';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { redirect } from 'next/navigation';
 
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -50,6 +51,7 @@ const CreateNewCode = () => {
       if (result.type === ToastType.SUCCESS) {
         form.reset();
         setIsDialogOpen(false);
+        redirect('/hallinta/koodit');
       }
     }
   };
