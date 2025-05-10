@@ -1,4 +1,4 @@
-import AddToCard from '@/components/AddToCard';
+import AddToCart from '@/components/AddToCart';
 import {
   Card,
   CardContent,
@@ -21,6 +21,7 @@ import { clientSideProduct } from '@/lib/clientSideProduct';
 import { getDocumentWithApi } from '@/services/databases';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { canAddToCart } from '@/services/orderCode';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -34,6 +35,8 @@ const ProductPage = async ({ params }: Props) => {
     ProductDatabase.CollectionId,
     id
   );
+
+  const canAdd = await canAddToCart();
 
   if (!data || !data.available) notFound();
   return (
@@ -70,7 +73,10 @@ const ProductPage = async ({ params }: Props) => {
                 <p>{data.description}</p>
               </div>
 
-              <AddToCard product={clientSideProduct(exampleProduct)} />
+              <AddToCart
+                product={clientSideProduct(exampleProduct)}
+                canAddToCart={canAdd}
+              />
             </CardHeader>
           </div>
         </CardContent>

@@ -1,4 +1,4 @@
-import AddToCard from '@/components/AddToCard';
+import AddToCart from '@/components/AddToCart';
 import {
   Card,
   CardContent,
@@ -15,6 +15,7 @@ import {
 import { BundleDatabase, BundleDocument } from '@/interfaces/bundle.interface';
 import { clientSideBundle } from '@/lib/clientSideProduct';
 import { getDocumentWithApi } from '@/services/databases';
+import { canAddToCart } from '@/services/orderCode';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
@@ -73,7 +74,10 @@ const BundlePage = async ({ params }: Props) => {
                 <p>{data.description}</p>
               </div>
 
-              <AddToCard bundle={clientSideBundle(data)} />
+              <AddToCart
+                bundle={clientSideBundle(data)}
+                canAddToCart={await canAddToCart()}
+              />
             </CardHeader>
           </div>
         </CardContent>
