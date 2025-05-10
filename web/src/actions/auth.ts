@@ -60,3 +60,9 @@ export async function loginWithEmailAndPasword(
     return { message: 'Kirjautuminen epäonnistui', type: ToastType.ERROR };
   }
 }
+
+export async function signOut(
+  _prevState: { message: string; type: ToastType } | null | undefined
+) {
+  return { message: 'Kirjauduttu ulos', type: ToastType.SUCCESS };
+}

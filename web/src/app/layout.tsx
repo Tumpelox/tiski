@@ -4,9 +4,12 @@ import './globals.css';
 import * as React from 'react';
 import NavigationMenuButton from '@/components/NavigationMenuButton';
 import NavigationMenu from '@/components/NavigationMenu';
+import { signOut } from '@/actions/auth';
+import { Button } from '@/components/ui/button';
 import { listDocumentsWithApi } from '@/services/databases';
 import { Settings, SettingsDatabase } from '@/interfaces/settings.interface';
 import ToastMessage from '@/components/ToastMessage';
+import SignOutButton from '@/components/SignOutButton';
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
@@ -37,6 +40,7 @@ export default async function RootLayout({
       >
         <header className="w-full h-16">
           <ToastMessage />
+          <SignOutButton />
           <NavigationMenuButton>
             <NavigationMenu menuItems={menuItems} />
           </NavigationMenuButton>
