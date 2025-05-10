@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === '/kirjaudu') {
     const user = await getLoggedInUser();
 
-    if (!isAdmin(user) && !isPostittaja(user)) {
+    if (user && !isAdmin(user) && !isPostittaja(user)) {
       return NextResponse.redirect(new URL('/', request.url));
     }
   }

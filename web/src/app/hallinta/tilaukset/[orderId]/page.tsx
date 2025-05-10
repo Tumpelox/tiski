@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/table';
 import { Product } from '@/interfaces/product.interface';
 import { Badge } from '@/components/ui/badge'; // Assuming Badge component exists for status
+import { Bundle } from '@/interfaces/bundle.interface';
 
 interface Props {
   params: Promise<{ orderId: string }>;
@@ -67,7 +68,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
         </Badge>
       </CardHeader>
       <CardContent className="space-y-6">
-        {data.contacts && (
+        {data.contacts?.name !== undefined && (
           <section>
             <h2 className="text-lg font-semibold mb-2">Yhteystiedot</h2>
             <p>
@@ -102,9 +103,28 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
             </Table>
           </section>
         )}
-
-        {/* Add similar section for bundles if needed */}
-        {/* {data.bundles && data.bundles.length > 0 && ( ... )} */}
+        {data.bundles && data.bundles.length > 0 && (
+          <section>
+            <h2 className="text-lg font-semibold mb-2">Tuotepaketit</h2>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Tuote</TableHead>
+                  <TableHead>ID</TableHead>
+                  {/* Add more relevant product columns if needed */}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data.bundles.map((bundle: Bundle) => (
+                  <TableRow key={bundle.$id}>
+                    <TableCell>{bundle.title}</TableCell>
+                    <TableCell>{bundle.$id}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </section>
+        )}
 
         {data.notes && (
           <section>

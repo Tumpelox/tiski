@@ -81,7 +81,7 @@ const KooditPage = async ({ params }: Props) => {
                         {order.$id}
                       </Link>
                     </TableCell>
-                    <TableCell>{order.customerName}</TableCell>
+                    <TableCell>{order.contacts?.name}</TableCell>
                     <TableCell>{order.status}</TableCell>
                     <TableCell>
                       {new Date(order.$createdAt).toLocaleDateString()}
