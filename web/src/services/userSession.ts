@@ -97,7 +97,5 @@ export async function deleteSession() {
     await account.deleteSession(session.$id);
 
     (await cookies()).delete(Keys.SessionCookie);
-  } else {
-    throw new Error(AuthenicationErrors.SessionNotFound);
   }
 }
