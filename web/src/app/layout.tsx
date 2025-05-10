@@ -10,6 +10,7 @@ import { listDocumentsWithApi } from '@/services/databases';
 import { Settings, SettingsDatabase } from '@/interfaces/settings.interface';
 import ToastMessage from '@/components/ToastMessage';
 import SignOutButton from '@/components/SignOutButton';
+import { getLoggedInUser } from '@/services/userSession';
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
@@ -31,6 +32,8 @@ export default async function RootLayout({
     SettingsDatabase.CollectionId
   );
 
+  const user = await getLoggedInUser();
+
   const menuItems = settings.data?.[0].mainMenu.menuItems ?? [];
 
   return (
@@ -40,7 +43,7 @@ export default async function RootLayout({
       >
         <header className="w-full h-16">
           <ToastMessage />
-          <SignOutButton />
+          <SignOutButton user={user} />
           <NavigationMenuButton>
             <NavigationMenu menuItems={menuItems} />
           </NavigationMenuButton>

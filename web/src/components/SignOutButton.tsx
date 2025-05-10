@@ -3,11 +3,21 @@
 import { signOut } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 
-const SignOutButton = () => {
+import { Models } from 'node-appwrite';
+
+type SignOutButtonProps = {
+  user: Models.User<Models.Preferences> | null;
+};
+
+const SignOutButton = ({ user }: SignOutButtonProps) => {
   const handleSignOut = async () => {
     const result = await signOut(null); // Pass `null` for `_prevState`
     console.log(result.message); // Optional: Handle the result (e.g., show a toast)
   };
+
+  if (!user) {
+    return null; // Don't render the button if the user is not logged in
+  }
 
   return (
     <Button

@@ -7,6 +7,7 @@ import {
   createTokenSession,
 } from '@/services/userSession';
 import { ToastType } from '@/store';
+import { deleteSession } from '@/services/userSession';
 
 // Uudelleenohjaukset kuntoon
 
@@ -64,5 +65,11 @@ export async function loginWithEmailAndPasword(
 export async function signOut(
   _prevState: { message: string; type: ToastType } | null | undefined
 ) {
-  return { message: 'Kirjauduttu ulos', type: ToastType.SUCCESS };
+  try {
+    await deleteSession();
+    return { message: 'Kirjauduttu ulos', type: ToastType.SUCCESS };
+  } catch (error) {
+    console.error('Error during sign out:', error);
+    return { message: 'Uloskirjautuminen epäonnistui', type: ToastType.ERROR };
+  }
 }
