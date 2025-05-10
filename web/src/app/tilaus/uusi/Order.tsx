@@ -109,7 +109,9 @@ const Order = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Tilaa</Button>
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting ? 'Lähetetään tilausta...' : 'Tilaa'}
+          </Button>
         </form>
       </Form>
     </div>
