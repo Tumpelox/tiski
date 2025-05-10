@@ -3,6 +3,7 @@ import KooditTable from './KooditTable';
 import { listDocuments } from '@/services/databases';
 import { OrderCode, OrderCodeDatabase } from '@/interfaces/orderCode.interface';
 import { redirect } from 'next/navigation';
+import CreateNewCode from './CreateNewCode';
 
 const KooditPage = async () => {
   const { data } = await listDocuments<OrderCode>(
@@ -16,6 +17,9 @@ const KooditPage = async () => {
     <div className="container mx-auto">
       <h1>Listaus aktiivisista tilauskoodeista</h1>
       <KooditTable orderCodes={data} />
+      <div className="mt-4">
+        <CreateNewCode />
+      </div>
       <p>
         Esimerkki: <Link href={`/hallinta/koodit/1234`}>1234</Link>
       </p>
