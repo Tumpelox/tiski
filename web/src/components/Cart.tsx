@@ -49,7 +49,7 @@ const Cart = () => {
           {items.map((item) => (
             <div
               key={item.$id}
-              className="flex items-center gap-4 border-b pb-4"
+              className="flex items-center flex-wrap gap-4 border-b pb-4"
             >
               {item.type === 'product' &&
                 (item.item as Product).pictures[0] && (

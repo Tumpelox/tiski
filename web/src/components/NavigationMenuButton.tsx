@@ -20,10 +20,10 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
   };
 
   return (
-    <div className="md:container md:mx-auto md:max-w-3xl">
+    <div className="relative">
       <Button
         onClick={toggleNavigationMenu}
-        className="absolute md:hidden top-4 right-4 w-10 h-10 p-0 rounded z-50"
+        className="absolute md:hidden top-4 right-0 w-10 h-10 p-0 rounded z-50"
         variant="ghost"
       >
         <Image
