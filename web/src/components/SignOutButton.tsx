@@ -21,11 +21,7 @@ const SignOutButton = ({ user }: SignOutButtonProps) => {
     return null; // Don't render the button if the user is not logged in
   }
 
-  return (
-    <Button onClick={handleSignOut} className="absolute top-4 left-4">
-      Kirjaudu ulos
-    </Button>
-  );
+  return <Button onClick={handleSignOut}>Kirjaudu ulos</Button>;
 };
 
 export default SignOutButton;

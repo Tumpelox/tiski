@@ -37,13 +37,13 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${montserrat.variable} ${montserrat.variable} antialiased bg-gradient-to-b from-blue-30 to-blue-300 min-h-screen`}
+        className={`${montserrat.variable} ${montserrat.variable} antialiased bg-gradient-to-b from-white to-blue-300 min-h-screen`}
       >
-        <header className="w-full h-16">
+        <header className="w-full min-h-16 md:h-fit">
           <ToastMessage />
-          <SignOutButton user={user} />
           <NavigationMenuButton>
             <NavigationMenu menuItems={menuItems} />
+            <SignOutButton user={user} />
           </NavigationMenuButton>
         </header>
         <main className="container max-w-3xl mx-auto">{children}</main>

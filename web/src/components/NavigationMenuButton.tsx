@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import navigationMenuButton from '../../assets/valikko.webp';
 import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 const NavigationMenuButton = (props: { children: React.ReactNode }) => {
   const [visible, setVisible] = React.useState(false);
@@ -19,23 +20,26 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
   };
 
   return (
-    <div>
+    <div className="md:container md:mx-auto md:max-w-3xl">
       <Button
         onClick={toggleNavigationMenu}
-        className="absolute top-4 right-4 w-10 h-10 p-0 rounded z-50"
+        className="absolute md:hidden top-4 right-4 w-10 h-10 p-0 rounded z-50"
         variant="ghost"
       >
-        <img
+        <Image
           src={navigationMenuButton.src}
           alt="Valikko"
           className="w-full h-full object-contain"
+          width={navigationMenuButton.width}
+          height={navigationMenuButton.height}
         />
       </Button>
-      {visible && (
-        <div className="absolute top-0 right-0 bg-white shadow-lg p-4 z-40">
-          <div className="flex flex-col gap-2">{props.children}</div>
-        </div>
-      )}
+
+      <div
+        className={`${!visible && 'hidden md:flex'} absolute md:relative z-40 top-0 right-0 h-screen md:h-fit w-dvw md:w-full flex flex-col md:flex-row gap-4 items-center justify-center md:justify-end bg-gradient-to-b md:bg-none from-white to-blue-300 md:py-2`}
+      >
+        {props.children}
+      </div>
     </div>
   );
 };
