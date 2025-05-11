@@ -35,7 +35,7 @@ const ProductPage = async ({ params }: Props) => {
     id
   );
 
-  if (!data || !data.hidden) notFound();
+  if (!data || data.hidden) notFound();
 
   const canAdd = await canAddToCart();
   return (

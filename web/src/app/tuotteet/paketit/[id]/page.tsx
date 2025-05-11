@@ -32,7 +32,7 @@ const BundlePage = async ({ params }: Props) => {
     id
   );
 
-  if (!data || !data.available) notFound();
+  if (!data || data.hidden) notFound();
 
   const stock = data.products
     .map((product) => product.stock)
