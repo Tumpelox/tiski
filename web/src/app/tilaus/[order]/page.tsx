@@ -6,7 +6,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import {
   Table,
@@ -17,6 +16,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import Title from '@/components/Title';
 
 interface Props {
   params: Promise<{ order: string }>;
@@ -51,7 +51,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle>Tilauksen tiedot</CardTitle>
+              <Title.h1 className="text-2xl">Tilauksen tiedot</Title.h1>
               <CardDescription>Tilausnumero: {$id}</CardDescription>
             </div>
             {getStatusBadge()}

@@ -18,6 +18,7 @@ export const ItemCount = ({
   stock: number;
   handleChange: (value: number) => void;
 }) => {
+  const [value, setValue] = useState(String(count));
   const handleItemCountChange = (value: number | string) => {
     if (!isNaN(Number(value)) && Number(value) > 0) {
       handleChange(Number(value));
@@ -38,8 +39,9 @@ export const ItemCount = ({
       <Input
         name="item-count"
         pattern="[0-9]]{2}"
-        value={count}
-        onChange={(e) => handleItemCountChange(e.target.value)}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={(e) => handleItemCountChange(e.target.value)}
         className="text-center w-[6ch] py-5 rounded-2xl px-0 bg-foreground"
       />
 

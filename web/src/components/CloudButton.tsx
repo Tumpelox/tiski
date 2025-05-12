@@ -44,12 +44,15 @@ const CloudButton = ({
   className?: string;
 }) => {
   const classes = cn([
-    small ? 'w-32' : 'w-48 md:w-32',
-    'relative block text-center tracking-widest transition-transform hover:opacity-70 hover:-translate-y-1 hover:saturate-150 focus:outline-none focus:opacity-80',
+    small ? 'w-22' : 'w-40 tracking-widest ',
+    'relative block text-center transition-transform hover:opacity-70 hover:-translate-y-1 hover:saturate-150 focus:outline-none focus:opacity-80',
     className,
   ]);
 
-  const text = 'absolute top-[14%] inset-0 flex items-center justify-center';
+  const text = cn([
+    small ? 'text-sm font-semibold' : 'text-base',
+    'absolute inset-0 top-[13%] flex items-center justify-center',
+  ]);
 
   if (link !== undefined)
     return (

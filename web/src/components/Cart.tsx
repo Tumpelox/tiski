@@ -10,12 +10,13 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from './ui/card';
 import { Product } from '@/interfaces/product.interface';
 import { Bundle } from '@/interfaces/bundle.interface';
 import CloudButton from './CloudButton';
 import { ItemCount } from './AddToCart';
+import { X } from 'lucide-react';
+import Title from './Title';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, clearCart, getTotalItems } =
@@ -25,7 +26,7 @@ const Cart = () => {
     return (
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>Ostoskori</CardTitle>
+          <Title.h2>Ostoskori</Title.h2>
           <CardDescription>Ostoskorisi on tyhjä</CardDescription>
         </CardHeader>
         <CardFooter>
@@ -40,7 +41,7 @@ const Cart = () => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Ostoskori</CardTitle>
+        <Title.h2>Ostoskori</Title.h2>
         <CardDescription>
           Ostoskorissasi on {getTotalItems()} tuotetta
         </CardDescription>
@@ -75,13 +76,13 @@ const Cart = () => {
               )}
 
               <div className="flex-grow">
-                <h3 className="font-medium">
+                <Title.h4>
                   <Link
                     href={`/tuotteet${item.type === 'bundle' ? '/paketit/' + item.$id : item.$id}`}
                   >
                     {item.item.title}
                   </Link>
-                </h3>
+                </Title.h4>
                 <p className="text-sm text-gray-500 line-clamp-1">
                   {item.item.description}
                 </p>
@@ -93,13 +94,8 @@ const Cart = () => {
                 }
                 stock={999}
               />
-              <Button
-                size="sm"
-                variant="outline"
-                className="text-red-500"
-                onClick={() => removeItem(item.$id)}
-              >
-                Poista
+              <Button variant="ghost" onClick={() => removeItem(item.$id)}>
+                <X className="size-6 text-destructive" />
               </Button>
             </div>
           ))}

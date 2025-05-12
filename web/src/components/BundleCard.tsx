@@ -8,12 +8,12 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from './ui/card';
 import Link from 'next/link';
 import AddToCart from './AddToCart';
 import { Bundle } from '@/interfaces/bundle.interface';
 import { CanAddToCart } from '@/interfaces/orderCode.interface';
+import Title from './Title';
 
 export const BundleImages = ({ products }: { products: Product[] | null }) => {
   return (
@@ -63,9 +63,7 @@ const BundleCard = ({
         )}
 
         <CardHeader className="pt-4 w-full text-center">
-          <CardTitle>
-            <h2>{bundle.title}</h2>
-          </CardTitle>
+          <Title.h3>{bundle.title}</Title.h3>
           <CardDescription>
             <p>{bundle.description}</p>
           </CardDescription>

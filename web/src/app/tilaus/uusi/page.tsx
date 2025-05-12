@@ -1,5 +1,6 @@
 import Order from '@/app/tilaus/uusi/Order';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Title from '@/components/Title';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { getOrderCode } from '@/services/orderCode';
 import { getLoggedInUser } from '@/services/userSession';
 import { redirect } from 'next/navigation';
@@ -13,7 +14,7 @@ const UusiTilausPage = async () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Uusi tilaus</CardTitle>
+        <Title.h1 className="text-2xl">Uusi tilaus</Title.h1>
       </CardHeader>
       <CardContent>
         <Order />

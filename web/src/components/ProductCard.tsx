@@ -8,11 +8,11 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from './ui/card';
 import Link from 'next/link';
 import AddToCart from './AddToCart';
 import { CanAddToCart } from '@/interfaces/orderCode.interface';
+import Title from './Title';
 
 const ProductCard = ({
   product,
@@ -37,9 +37,7 @@ const ProductCard = ({
           </CardContent>
         )}
         <CardHeader className="pt-4 w-full text-center">
-          <CardTitle>
-            <h2>{product.title}</h2>
-          </CardTitle>
+          <Title.h3>{product.title}</Title.h3>
           <CardDescription>
             <p>{product.description}</p>
           </CardDescription>

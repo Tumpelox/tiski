@@ -1,10 +1,6 @@
 import AddToCart from '@/components/AddToCart';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from '@/components/ui/card';
+import Title from '@/components/Title';
+import { Card, CardContent, CardDescription } from '@/components/ui/card';
 import {
   Carousel,
   CarouselContent,
@@ -66,9 +62,9 @@ const BundlePage = async ({ params }: Props) => {
                             height={picture.height}
                             width={picture.width}
                           />
-                          <p className="text-muted-foreground text-sm">
+                          <CardDescription className="text-center">
                             {title}
-                          </p>
+                          </CardDescription>
                         </CarouselItem>
                       );
                     })}
@@ -79,11 +75,13 @@ const BundlePage = async ({ params }: Props) => {
             </div>
           )}
           <div className="col-span-2 flex flex-col gap-4 items-end md:flex-col-reverse">
-            <AddToCart bundle={clientSideBundle(data)} canAddToCart={canAdd} />
-            <div className="w-full h-full">
-              <CardTitle>{data.title}</CardTitle>
-              <CardDescription>{data.description}</CardDescription>
+            <div className="flex flex-col gap-4 w-full">
+              <Title.h1 className="text-2xl text-center">{data.title}</Title.h1>
+              <CardDescription className="text-center">
+                {data.description}
+              </CardDescription>
             </div>
+            <AddToCart bundle={clientSideBundle(data)} canAddToCart={canAdd} />
           </div>
         </CardContent>
         <CardContent>

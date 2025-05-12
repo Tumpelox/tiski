@@ -118,7 +118,7 @@ const Order = () => {
             backgroundColor="var(--violetti)"
             className="text-white float-right"
           >
-            {form.formState.isSubmitting ? 'Lähetetään tilausta...' : 'Tilaa'}
+            {form.formState.isSubmitting ? 'Lähetetään tilausta...' : 'TILAA'}
           </CloudButton>
         </form>
       </Form>

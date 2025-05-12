@@ -2,7 +2,7 @@ import Cart from '@/components/Cart';
 import { getOrderCode } from '@/services/orderCode';
 import { getLoggedInUser } from '@/services/userSession';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Order } from '@/interfaces/order.interface'; // Import Order interface
 import LoginWithCode from '@/components/LoginWithCode';
+import Title from '@/components/Title';
 
 const TilausPage = async () => {
   const user = await getLoggedInUser();
@@ -48,7 +49,7 @@ const TilausPage = async () => {
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle>Tilaukset</CardTitle>
+                  <Title.h2>Tilaukset</Title.h2>
                 </div>
                 {orderCode && (
                   <Badge variant="outline">

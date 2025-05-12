@@ -16,8 +16,9 @@ import {
   FormMessage,
 } from './ui/form';
 import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardHeader } from './ui/card';
+import Title from './Title';
+import CloudButton from './CloudButton';
 
 const LoginWithEmailAndPassword = () => {
   const { addMessage } = useToastMessageStore();
@@ -46,16 +47,19 @@ const LoginWithEmailAndPassword = () => {
     <div className="flex items-center justify-center min-h-[90vh] px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Kirjaudu</CardTitle>
+          <Title.h1 className="text-2xl">Kirjaudu</Title.h1>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-4 items-center"
+            >
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-full">
                     <FormLabel>Sähköposti</FormLabel>
                     <FormControl>
                       <Input {...field} type="email" />
@@ -68,7 +72,7 @@ const LoginWithEmailAndPassword = () => {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-full">
                     <FormLabel>Salasana</FormLabel>
                     <FormControl>
                       <Input {...field} type="password" />
@@ -78,13 +82,17 @@ const LoginWithEmailAndPassword = () => {
                   </FormItem>
                 )}
               />
-              <Button
-                variant={'ghost'}
-                type="submit"
-                disabled={form.formState.isSubmitting}
+              <CloudButton
+                button={{
+                  type: 'submit',
+                  disabled: form.formState.isSubmitting,
+                }}
+                backgroundColor="var(--violetti)"
+                className="text-white mt-2"
+                small
               >
                 {form.formState.isSubmitting ? 'Kirjaudutaan...' : 'Kirjaudu'}
-              </Button>
+              </CloudButton>
             </form>
           </Form>
         </CardContent>

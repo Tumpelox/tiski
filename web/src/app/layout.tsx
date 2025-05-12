@@ -37,7 +37,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${montserrat.variable} ${montserrat.variable} antialiased bg-gradient-to-b from-white to-blue-300 min-h-screen flex flex-col`}
+        className={`${montserrat.variable} ${montserrat.variable} antialiased bg-gradient-to-b from-white to-blue-300 min-h-screen flex flex-col gap-4 md:gap-6`}
       >
         <header className="w-full min-h-16 md:h-fit px-4 sm:px-8 md:px-0 md:container md:mx-auto md:max-w-3xl">
           <ToastMessage />

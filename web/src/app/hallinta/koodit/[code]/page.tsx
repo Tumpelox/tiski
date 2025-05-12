@@ -6,7 +6,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -18,6 +17,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import Link from 'next/link';
+import Title from '@/components/Title';
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -37,7 +37,9 @@ const KooditPage = async ({ params }: Props) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Tilauskoodin tiedot: {data.name}</CardTitle>
+        <Title.h1 className="text-2xl">
+          Tilauskoodin tiedot: {data.name}
+        </Title.h1>
         <CardDescription>Koodi: {data.code}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

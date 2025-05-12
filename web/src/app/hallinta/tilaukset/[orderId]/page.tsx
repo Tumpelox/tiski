@@ -6,7 +6,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import {
   Table,
@@ -19,6 +18,7 @@ import {
 import { Product } from '@/interfaces/product.interface';
 import { Badge } from '@/components/ui/badge'; // Assuming Badge component exists for status
 import { Bundle } from '@/interfaces/bundle.interface';
+import Title from '@/components/Title';
 
 interface Props {
   params: Promise<{ orderId: string }>;
@@ -56,7 +56,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
   return (
     <Card className="max-w-4xl mx-auto my-4">
       <CardHeader>
-        <CardTitle>Tilaus #{data.$id}</CardTitle>
+        <Title.h3>Tilaus #{data.$id}</Title.h3>
         <CardDescription>
           Tilauskoodi: {data.orderCode?.code || 'N/A'} | Tilauspvm:{' '}
           {new Date(data.$createdAt).toLocaleDateString()}
