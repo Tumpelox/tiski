@@ -50,7 +50,7 @@ const backgroundVariants = cva(
     variants: {
       size: {
         default: 'w-40 tracking-widest',
-        small: 'w-22',
+        small: 'w-28',
       },
       variant: {
         primary: 'text-primary',

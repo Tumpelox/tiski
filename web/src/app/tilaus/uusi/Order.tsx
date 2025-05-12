@@ -113,7 +113,7 @@ const Order = () => {
             small
             type="submit"
             disabled={form.formState.isSubmitting}
-            className="text-white float-right"
+            className="float-right"
           >
             {form.formState.isSubmitting ? 'Lähetetään tilausta...' : 'TILAA'}
           </CloudButton>

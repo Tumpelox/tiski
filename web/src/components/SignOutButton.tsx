@@ -23,7 +23,7 @@ const SignOutButton = ({ user }: SignOutButtonProps) => {
   }
 
   return (
-    <CloudButton variant="accent" onClick={handleSignOut} className="md:w-36">
+    <CloudButton variant="accent" onClick={handleSignOut} className="md:w-32">
       <LogOut className="size-6 text-destructive" />
     </CloudButton>
   );

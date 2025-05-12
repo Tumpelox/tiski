@@ -8,12 +8,12 @@ import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const MessageVariants = cva(
-  'flex items-center justify-between gap-4 rounded shadow py-2 px-4 rounded shadow',
+  'flex items-center justify-between gap-4 rounded shadow py-2 px-4 rounded shadow w-fit',
   {
     variants: {
       type: {
         [ToastType.SUCCESS]: 'bg-background text-foreground',
-        [ToastType.ERROR]: 'bg-desctructive text-destructive-foreground',
+        [ToastType.ERROR]: 'bg-destructive text-white',
         [ToastType.INFO]: 'bg-accent text-accent-foreground',
       },
     },
@@ -39,7 +39,7 @@ const ToastMessage = () => {
   }, [messages, removeMessage]);
 
   return (
-    <div className="fixed flex flex-col gap-4 top-10 right-10 z-50">
+    <div className="fixed flex flex-col gap-4 items-end px-4 sm:px-8 left-0 top-10 z-50 w-full">
       {[...messages].reverse().map((message) => (
         <div
           key={message.uuid}

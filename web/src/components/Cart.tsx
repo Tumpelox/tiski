@@ -24,7 +24,7 @@ const Cart = () => {
           <Paragraph>Ostoskorisi on tyhjä</Paragraph>
         </CardHeader>
         <CardFooter>
-          <CloudLink small href="/tuotteet" className="text-white">
+          <CloudLink small href="/tuotteet">
             Selaa tuotteita
           </CloudLink>
         </CardFooter>
@@ -98,15 +98,10 @@ const Cart = () => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <CloudButton
-          small
-          onClick={clearCart}
-          variant={'secondary'}
-          className="text-white"
-        >
+        <CloudButton small onClick={clearCart} variant={'secondary'}>
           TYHJENNÄ
         </CloudButton>
-        <CloudLink small href="/tilaus/uusi" className="text-white">
+        <CloudLink small href="/tilaus/uusi">
           TILAA
         </CloudLink>
       </CardFooter>

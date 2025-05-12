@@ -48,7 +48,7 @@ export const ItemCount = ({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onBlur={(e) => handleItemCountChange(e.target.value)}
-        className="text-center w-[6ch] py-5 rounded-2xl px-0"
+        className="text-center w-[6ch] py-5 rounded-2xl px-0 bg-background text-foreground "
       />
 
       <Button

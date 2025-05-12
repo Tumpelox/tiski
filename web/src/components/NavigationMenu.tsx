@@ -15,7 +15,7 @@ const NavigationMenu = ({
           key={item.url}
           href={item.url}
           variant={'accent'}
-          className="md:w-36"
+          className="md:w-32"
         >
           {item.name.toUpperCase()}
         </CloudLink>

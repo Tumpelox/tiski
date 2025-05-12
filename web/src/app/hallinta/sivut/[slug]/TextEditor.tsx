@@ -53,7 +53,7 @@ const TextEditor = ({ data }: { data: Article }) => {
           className="border rounded-md p-2 h-64"
         ></textarea>
       </div>
-      <Button type="submit" className="bg-blue-500 text-white rounded-md p-2">
+      <Button type="submit" className="p-2">
         Tallenna
       </Button>
     </form>
