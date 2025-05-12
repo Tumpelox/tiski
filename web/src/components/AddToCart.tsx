@@ -24,6 +24,7 @@ export const ItemCount = ({
   const [value, setValue] = useState(String(count));
   const handleItemCountChange = (value: number | string) => {
     if (!isNaN(Number(value)) && Number(value) > 0) {
+      setValue(String(value));
       handleChange(Number(value));
     } else {
       handleChange(1);
@@ -109,7 +110,7 @@ const AddToCart = ({
           onClick={() => {
             addItem(product, 'product');
             addMessage(
-              `${product.title} x${count} lisätty ostoskoriin`,
+              `${product.title} x ${count} lisätty ostoskoriin`,
               ToastType.SUCCESS
             );
           }}
@@ -138,7 +139,7 @@ const AddToCart = ({
           onClick={() => {
             addItem(bundle, 'bundle', count);
             addMessage(
-              `${bundle.title} x${count} lisätty ostoskoriin`,
+              `${bundle.title} x ${count} lisätty ostoskoriin`,
               ToastType.SUCCESS
             );
           }}
