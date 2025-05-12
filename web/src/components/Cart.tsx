@@ -13,8 +13,9 @@ import {
   CardTitle,
 } from './ui/card';
 import { Product } from '@/interfaces/product.interface';
-import { BundleImages } from './BundleCard';
 import { Bundle } from '@/interfaces/bundle.interface';
+import CloudButton from './CloudButton';
+import { ItemCount } from './AddToCart';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, clearCart, getTotalItems } =
@@ -55,18 +56,24 @@ const Cart = () => {
                 (item.item as Product).pictures[0] && (
                   <div className="w-16 h-16 relative">
                     <Image
-                      src={(item.item as Product).pictures[0].url}
+                      src={(item.item as Product).pictures[0].src}
                       alt={(item.item as Product).pictures[0].alt}
                       fill
                       className="object-cover rounded"
                     />
                   </div>
                 )}
-              {item.type === 'bundle' && (
+              {item.type === 'bundle' && (item.item as Bundle).promoImage && (
                 <div className="w-16 h-16 relative grid grid-cols-2 gap-2">
-                  <BundleImages products={(item.item as Bundle).products} />
+                  <Image
+                    src={(item.item as Bundle).promoImage?.src as string}
+                    alt={(item.item as Bundle).promoImage?.alt as string}
+                    fill
+                    className="object-cover rounded"
+                  />
                 </div>
               )}
+
               <div className="flex-grow">
                 <h3 className="font-medium">
                   <Link
@@ -79,30 +86,13 @@ const Cart = () => {
                   {item.item.description}
                 </p>
               </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => updateQuantity(item.$id, item.quantity - 1)}
-                  disabled={item.quantity <= 1}
-                >
-                  -
-                </Button>
-                <span className="w-8 text-center">{item.quantity}</span>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => updateQuantity(item.$id, item.quantity + 1)}
-                  disabled={
-                    item.quantity >=
-                    (item.type === 'product'
-                      ? (item.item as Product).stock
-                      : 100)
-                  }
-                >
-                  +
-                </Button>
-              </div>
+              <ItemCount
+                count={item.quantity}
+                handleChange={(value: number) =>
+                  updateQuantity(item.$id, value)
+                }
+                stock={999}
+              />
               <Button
                 size="sm"
                 variant="outline"
@@ -116,12 +106,22 @@ const Cart = () => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={clearCart}>
-          Tyhjennä kori
-        </Button>
-        <Link href="/tilaus/uusi">
-          <Button>Siirry kassalle</Button>
-        </Link>
+        <CloudButton
+          small
+          button={{ onClick: clearCart }}
+          backgroundColor="var(--foreground)"
+          className="text-white"
+        >
+          TYHJENNÄ
+        </CloudButton>
+        <CloudButton
+          small
+          link={{ href: '/tilaus/uusi' }}
+          backgroundColor="var(--violetti)"
+          className="text-white"
+        >
+          TILAA
+        </CloudButton>
       </CardFooter>
     </Card>
   );

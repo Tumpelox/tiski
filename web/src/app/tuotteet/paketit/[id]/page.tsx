@@ -61,7 +61,7 @@ const BundlePage = async ({ params }: Props) => {
                         <CarouselItem key={index}>
                           <Image
                             className="rounded w-full"
-                            src={picture.url}
+                            src={picture.src}
                             alt={picture.alt}
                             height={picture.height}
                             width={picture.width}

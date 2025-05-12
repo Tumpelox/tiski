@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCartStore, useToastMessageStore, ToastType } from '@/store';
 import { newOrder } from '@/actions/order';
@@ -19,6 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import orderSchema from '@/schemas/order.schema';
+import CloudButton from '@/components/CloudButton';
 
 const Order = () => {
   const { items } = useCartStore();
@@ -109,13 +109,17 @@ const Order = () => {
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            disabled={form.formState.isSubmitting}
-            className="float-right"
+          <CloudButton
+            small
+            button={{
+              type: 'submit',
+              disabled: form.formState.isSubmitting,
+            }}
+            backgroundColor="var(--violetti)"
+            className="text-white float-right"
           >
             {form.formState.isSubmitting ? 'Lähetetään tilausta...' : 'Tilaa'}
-          </Button>
+          </CloudButton>
         </form>
       </Form>
     </div>

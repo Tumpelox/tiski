@@ -29,20 +29,19 @@ const ProductCard = ({
           <CardContent>
             <Image
               className="rounded w-full"
-              src={productPicture.url}
+              src={productPicture.src}
               alt={productPicture.alt}
               height={productPicture.height}
               width={productPicture.width}
             />
           </CardContent>
         )}
-        <CardHeader className="pt-4">
+        <CardHeader className="pt-4 w-full text-center">
           <CardTitle>
             <h2>{product.title}</h2>
           </CardTitle>
           <CardDescription>
             <p>{product.description}</p>
-            <p>Varastossa: {product.stock}</p>
           </CardDescription>
         </CardHeader>
       </Link>

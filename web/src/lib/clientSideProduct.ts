@@ -20,4 +20,5 @@ export const clientSideBundle = (bundleDocument: BundleDocument) => ({
   ),
   available: bundleDocument.available,
   hidden: bundleDocument.hidden,
+  promoImage: bundleDocument.promoImage,
 });

@@ -25,7 +25,7 @@ export const BundleImages = ({ products }: { products: Product[] | null }) => {
             <div className="w-full h-full" key={product.$id}>
               <Image
                 className="rounded h-full"
-                src={productPicture.url}
+                src={productPicture.src}
                 alt={productPicture.alt}
                 height={productPicture.height}
                 width={productPicture.width}
@@ -44,23 +44,30 @@ const BundleCard = ({
   bundle: Bundle;
   canAddToCart?: CanAddToCart;
 }) => {
-  const stock = bundle.products
-    .map((product) => product.stock)
-    .sort((a, b) => a - b)[0];
-
   return (
     <Card className="md:max-w-56">
       <Link href={`/tuotteet/paketit/${bundle.$id}`}>
-        <CardContent className="grid grid-cols-2 gap-2">
-          <BundleImages products={bundle.products} />
-        </CardContent>
-        <CardHeader className="pt-4">
+        {bundle.promoImage ? (
+          <CardContent className="">
+            <Image
+              src={bundle.promoImage.src}
+              width={bundle.promoImage.width}
+              height={bundle.promoImage.height}
+              alt={bundle.promoImage.alt}
+            />
+          </CardContent>
+        ) : (
+          <CardContent className="grid grid-cols-2 gap-2">
+            <BundleImages products={bundle.products} />
+          </CardContent>
+        )}
+
+        <CardHeader className="pt-4 w-full text-center">
           <CardTitle>
             <h2>{bundle.title}</h2>
           </CardTitle>
           <CardDescription>
             <p>{bundle.description}</p>
-            <p>Varastossa: {stock}</p>
           </CardDescription>
         </CardHeader>
       </Link>

@@ -78,7 +78,11 @@ const LoginWithEmailAndPassword = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={form.formState.isSubmitting}>
+              <Button
+                variant={'ghost'}
+                type="submit"
+                disabled={form.formState.isSubmitting}
+              >
                 {form.formState.isSubmitting ? 'Kirjaudutaan...' : 'Kirjaudu'}
               </Button>
             </form>

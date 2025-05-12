@@ -1,7 +1,6 @@
 'use client';
 
 import { handleCodeLogin } from '@/actions/auth';
-import { Button } from './ui/button';
 import { ToastType, useToastMessageStore } from '@/store';
 import { Input } from './ui/input';
 import { useForm } from 'react-hook-form';
@@ -18,6 +17,7 @@ import {
 } from './ui/form';
 import { orderCodeSchema } from '@/schemas/auth.schema';
 import { useRouter } from 'next/navigation';
+import CloudButton from './CloudButton';
 
 export const LoginWithCode = () => {
   const { addMessage } = useToastMessageStore();
@@ -43,12 +43,15 @@ export const LoginWithCode = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 items-center"
+      >
         <FormField
           control={form.control}
           name="code"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormLabel htmlFor="code">Koodi</FormLabel>
               <FormControl>
                 <Input {...field} />
@@ -58,9 +61,14 @@ export const LoginWithCode = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={form.formState.isSubmitting}>
+        <CloudButton
+          button={{ type: 'submit', disabled: form.formState.isSubmitting }}
+          backgroundColor="var(--violetti)"
+          className="text-white"
+          small
+        >
           {form.formState.isSubmitting ? 'Kirjaudutaan...' : 'Kirjaudu'}
-        </Button>
+        </CloudButton>
       </form>
     </Form>
   );

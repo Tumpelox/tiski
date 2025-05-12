@@ -48,10 +48,10 @@ const ProductPage = async ({ params }: Props) => {
                 <CarouselContent>
                   {data.pictures.map((picture) => {
                     return (
-                      <CarouselItem key={picture.url}>
+                      <CarouselItem key={picture.src}>
                         <Image
                           className="rounded w-full"
-                          src={picture.url}
+                          src={picture.src}
                           alt={picture.alt}
                           height={picture.height}
                           width={picture.width}

@@ -1,10 +1,10 @@
 'use client';
 
 import { signOut } from '@/actions/auth';
-import { Button } from '@/components/ui/button';
 import { useToastMessageStore } from '@/store';
 
 import { Models } from 'node-appwrite';
+import CloudButton from './CloudButton';
 
 type SignOutButtonProps = {
   user: Models.User<Models.Preferences> | null;
@@ -21,7 +21,11 @@ const SignOutButton = ({ user }: SignOutButtonProps) => {
     return null; // Don't render the button if the user is not logged in
   }
 
-  return <Button onClick={handleSignOut}>Kirjaudu ulos</Button>;
+  return (
+    <CloudButton backgroundColor="white" button={{ onClick: handleSignOut }}>
+      KIRJAUDU ULOS
+    </CloudButton>
+  );
 };
 
 export default SignOutButton;

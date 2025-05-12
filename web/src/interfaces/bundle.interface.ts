@@ -1,5 +1,6 @@
 import { Models } from 'node-appwrite';
 import { Product, ProductDocument } from './product.interface';
+import { Picture } from './picture.interface';
 
 export enum BundleDatabase {
   DatabaseId = 'tarratiski',
@@ -12,6 +13,7 @@ export interface Bundle {
   description: string;
   products: Product[];
   available: boolean;
+  promoImage: Picture | null;
 }
 
 export interface BundleDocument extends Models.Document, Bundle {
