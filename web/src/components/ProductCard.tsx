@@ -2,17 +2,11 @@
 
 import { Product } from '@/interfaces/product.interface';
 import Image from 'next/image';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-} from './ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import Link from 'next/link';
 import AddToCart from './AddToCart';
 import { CanAddToCart } from '@/interfaces/orderCode.interface';
-import Title from './Title';
+import { Heading, Paragraph } from './Text';
 
 const ProductCard = ({
   product,
@@ -37,10 +31,10 @@ const ProductCard = ({
           </CardContent>
         )}
         <CardHeader className="pt-4 w-full text-center">
-          <Title.h3>{product.title}</Title.h3>
-          <CardDescription>
+          <Heading.h3>{product.title}</Heading.h3>
+          <Paragraph>
             <p>{product.description}</p>
-          </CardDescription>
+          </Paragraph>
         </CardHeader>
       </Link>
       {canAddToCart !== CanAddToCart.CodeNotFound && product.available && (

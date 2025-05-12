@@ -83,7 +83,7 @@ const KooditTable = ({ orderCodes }: { orderCodes: OrderCode[] }) => {
               <TableCell>
                 <Link
                   href={`/hallinta/koodit/${orderCode.$id}`}
-                  className="text-blue-500 hover:underline"
+                  className="text-link hover:underline"
                 >
                   {orderCode.code}
                 </Link>

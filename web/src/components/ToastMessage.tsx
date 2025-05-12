@@ -8,13 +8,13 @@ import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const MessageVariants = cva(
-  'flex items-center justify-between rounded shadow py-2 px-4 rounded shadow',
+  'flex items-center justify-between gap-4 rounded shadow py-2 px-4 rounded shadow',
   {
     variants: {
       type: {
-        [ToastType.SUCCESS]: 'bg-green-100 text-green-800',
-        [ToastType.ERROR]: 'bg-red-100 text-red-800',
-        [ToastType.INFO]: 'bg-white text-current',
+        [ToastType.SUCCESS]: 'bg-background text-foreground',
+        [ToastType.ERROR]: 'bg-desctructive text-destructive-foreground',
+        [ToastType.INFO]: 'bg-accent text-accent-foreground',
       },
     },
     defaultVariants: {
@@ -47,7 +47,7 @@ const ToastMessage = () => {
         >
           <span>{message.text}</span>
           <Button
-            variant="ghost"
+            variant="default"
             className=""
             onClick={() => removeMessage(message.uuid)}
           >

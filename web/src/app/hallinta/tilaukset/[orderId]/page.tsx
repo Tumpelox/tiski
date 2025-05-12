@@ -1,12 +1,7 @@
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
 import { getDocument } from '@/services/databases';
 import { notFound } from 'next/navigation';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -18,7 +13,7 @@ import {
 import { Product } from '@/interfaces/product.interface';
 import { Badge } from '@/components/ui/badge'; // Assuming Badge component exists for status
 import { Bundle } from '@/interfaces/bundle.interface';
-import Title from '@/components/Title';
+import { Heading, Paragraph } from '@/components/Text';
 
 interface Props {
   params: Promise<{ orderId: string }>;
@@ -54,13 +49,13 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
   };
 
   return (
-    <Card className="max-w-4xl mx-auto my-4">
+    <Card className="w-full max-w-4xl mx-auto my-4">
       <CardHeader>
-        <Title.h3>Tilaus #{data.$id}</Title.h3>
-        <CardDescription>
+        <Heading.h2>Tilaus #{data.$id}</Heading.h2>
+        <Paragraph>
           Tilauskoodi: {data.orderCode?.code || 'N/A'} | Tilauspvm:{' '}
           {new Date(data.$createdAt).toLocaleDateString()}
-        </CardDescription>
+        </Paragraph>
         <Badge variant={getStatusVariant(data.shipped, data.canceled)}>
           {getStatusText(data.shipped, data.canceled)}
         </Badge>
@@ -68,19 +63,19 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
       <CardContent className="space-y-6">
         {data.contacts?.name !== undefined && (
           <section>
-            <h2 className="text-lg font-semibold mb-2">Yhteystiedot</h2>
-            <p>
+            <Heading.h3 className="mb-2">Yhteystiedot</Heading.h3>
+            <Paragraph>
               <strong>Nimi:</strong> {data.contacts.name}
-            </p>
-            <p>
+            </Paragraph>
+            <Paragraph>
               <strong>Osoite:</strong> {data.contacts.address}
-            </p>
+            </Paragraph>
           </section>
         )}
 
         {data.products && data.products.length > 0 && (
           <section>
-            <h2 className="text-lg font-semibold mb-2">Tuotteet</h2>
+            <Heading.h3>Tuotteet</Heading.h3>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -103,7 +98,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
         )}
         {data.bundles && data.bundles.length > 0 && (
           <section>
-            <h2 className="text-lg font-semibold mb-2">Tuotepaketit</h2>
+            <Heading.h3 className="mb-2">Tuotepaketit</Heading.h3>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -126,8 +121,10 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
 
         {data.notes && (
           <section>
-            <h2 className="text-lg font-semibold mb-2">Lisätiedot</h2>
-            <p className="text-sm text-muted-foreground">{data.notes}</p>
+            <Heading.h3 className="mb-2">Lisätiedot</Heading.h3>
+            <Paragraph className="text-sm text-muted-foreground">
+              {data.notes}
+            </Paragraph>
           </section>
         )}
       </CardContent>

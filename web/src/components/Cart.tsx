@@ -4,19 +4,13 @@ import { useCartStore } from '@/store';
 import { Button } from './ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-} from './ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import { Product } from '@/interfaces/product.interface';
 import { Bundle } from '@/interfaces/bundle.interface';
-import CloudButton from './CloudButton';
+import { CloudButton, CloudLink } from './CloudButton';
 import { ItemCount } from './AddToCart';
 import { X } from 'lucide-react';
-import Title from './Title';
+import { Heading, Paragraph } from './Text';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, clearCart, getTotalItems } =
@@ -26,13 +20,13 @@ const Cart = () => {
     return (
       <Card className="w-full">
         <CardHeader>
-          <Title.h2>Ostoskori</Title.h2>
-          <CardDescription>Ostoskorisi on tyhjä</CardDescription>
+          <Heading.h2>Ostoskori</Heading.h2>
+          <Paragraph>Ostoskorisi on tyhjä</Paragraph>
         </CardHeader>
         <CardFooter>
-          <Link href="/tuotteet">
-            <Button>Selaa tuotteita</Button>
-          </Link>
+          <CloudLink small href="/tuotteet" className="text-white">
+            Selaa tuotteita
+          </CloudLink>
         </CardFooter>
       </Card>
     );
@@ -41,10 +35,8 @@ const Cart = () => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <Title.h2>Ostoskori</Title.h2>
-        <CardDescription>
-          Ostoskorissasi on {getTotalItems()} tuotetta
-        </CardDescription>
+        <Heading.h2>Ostoskori</Heading.h2>
+        <Paragraph>Ostoskorissasi on {getTotalItems()} tuotetta</Paragraph>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -75,13 +67,13 @@ const Cart = () => {
                 </div>
               )}
               <div className="col-span-8 flex-grow w-full">
-                <Title.h4>
+                <Heading.h4>
                   <Link
                     href={`/tuotteet${item.type === 'bundle' ? '/paketit/' + item.$id : item.$id}`}
                   >
                     {item.item.title}
                   </Link>
-                </Title.h4>
+                </Heading.h4>
                 <p className="text-sm text-gray-500 line-clamp-1">
                   {item.item.description}
                 </p>
@@ -108,20 +100,15 @@ const Cart = () => {
       <CardFooter className="flex justify-between">
         <CloudButton
           small
-          button={{ onClick: clearCart }}
-          backgroundColor="var(--foreground)"
+          onClick={clearCart}
+          variant={'secondary'}
           className="text-white"
         >
           TYHJENNÄ
         </CloudButton>
-        <CloudButton
-          small
-          link={{ href: '/tilaus/uusi' }}
-          backgroundColor="var(--violetti)"
-          className="text-white"
-        >
+        <CloudLink small href="/tilaus/uusi" className="text-white">
           TILAA
-        </CloudButton>
+        </CloudLink>
       </CardFooter>
     </Card>
   );

@@ -34,27 +34,25 @@
   ---break---
 */
 :root {
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(209, 100%, 82%);
-  --pinkki: hsl(337, 100%, 89%);
-  --violetti: hsl(278, 35%, 78%);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --background: hsl(209, 100%, 82%);
+  --foreground: hsl(0, 0%, 100%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(209, 100%, 82%);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --primary: hsl(278, 36%, 78%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(338, 100%, 89%);
+  --secondary-foreground: hsl(0, 0%, 100%);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
+  --muted-foreground:hsl(209, 50%, 75%);
+  --accent: white;
+  --accent-foreground:hsl(278, 36%, 78%);
+  --destructive: hwb(357deg 8% 14%);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --input:hsl(209, 100%, 82%);
+  --ring: hsl(209, 100%, 82%);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -111,8 +109,6 @@
   ---break---
 */
 @theme inline {
-  --color-pinkki: var(--pinkki);
-  --color-violetti: var(--violetti);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

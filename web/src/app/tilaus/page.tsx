@@ -15,7 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Order } from '@/interfaces/order.interface'; // Import Order interface
 import LoginWithCode from '@/components/LoginWithCode';
-import Title from '@/components/Title';
+import { Heading } from '@/components/Text';
 
 const TilausPage = async () => {
   const user = await getLoggedInUser();
@@ -49,7 +49,7 @@ const TilausPage = async () => {
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <Title.h2>Tilaukset</Title.h2>
+                  <Heading.h2>Tilaukset</Heading.h2>
                 </div>
                 {orderCode && (
                   <Badge variant="outline">

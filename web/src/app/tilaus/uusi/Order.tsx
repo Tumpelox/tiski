@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import orderSchema from '@/schemas/order.schema';
-import CloudButton from '@/components/CloudButton';
+import { CloudButton } from '@/components/CloudButton';
 
 const Order = () => {
   const { items } = useCartStore();
@@ -111,11 +111,8 @@ const Order = () => {
           />
           <CloudButton
             small
-            button={{
-              type: 'submit',
-              disabled: form.formState.isSubmitting,
-            }}
-            backgroundColor="var(--violetti)"
+            type="submit"
+            disabled={form.formState.isSubmitting}
             className="text-white float-right"
           >
             {form.formState.isSubmitting ? 'Lähetetään tilausta...' : 'TILAA'}

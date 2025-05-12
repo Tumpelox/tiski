@@ -1,12 +1,7 @@
 import { OrderCode, OrderCodeDatabase } from '@/interfaces/orderCode.interface';
 import { getDocument } from '@/services/databases';
 import { notFound } from 'next/navigation';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -17,7 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import Link from 'next/link';
-import Title from '@/components/Title';
+import { Heading, Paragraph } from '@/components/Text';
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -37,10 +32,10 @@ const KooditPage = async ({ params }: Props) => {
   return (
     <Card>
       <CardHeader>
-        <Title.h1 className="text-2xl">
+        <Heading.h1 className="text-2xl">
           Tilauskoodin tiedot: {data.name}
-        </Title.h1>
-        <CardDescription>Koodi: {data.code}</CardDescription>
+        </Heading.h1>
+        <Paragraph>Koodi: {data.code}</Paragraph>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>

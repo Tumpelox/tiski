@@ -23,17 +23,13 @@ const createHeadingComponent = (
 
   const Component = ({ children, className, ...props }: TitleProps) => {
     return (
-      <Tag
-        {...props}
-        className={cn('text-foreground font-bold', defaultClassName, className)}
-      >
+      <Tag {...props} className={cn('font-bold', defaultClassName, className)}>
         {children}
       </Tag>
     );
   };
 
-  // Set a display name for better debugging in React DevTools
-  Component.displayName = `Title.h${level}`;
+  Component.displayName = `Heading.h${level}`;
   return Component;
 };
 
@@ -46,7 +42,7 @@ const H5 = createHeadingComponent(5, 'text-base');
 const H6 = createHeadingComponent(6, 'text-sm');
 
 // The Title object will be the default export
-const Title = {
+const Heading = {
   h1: H1,
   h2: H2,
   h3: H3,
@@ -55,4 +51,16 @@ const Title = {
   h6: H6,
 };
 
-export default Title;
+const Paragraph = ({
+  children,
+  className,
+  ...props
+}: React.ComponentProps<'p'>) => {
+  return (
+    <p {...props} className={cn(className)}>
+      {children}
+    </p>
+  );
+};
+
+export { Heading, Paragraph };

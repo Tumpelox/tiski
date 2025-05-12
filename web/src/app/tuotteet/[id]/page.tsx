@@ -1,5 +1,5 @@
 import AddToCart from '@/components/AddToCart';
-import { Card, CardContent, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Carousel,
   CarouselContent,
@@ -16,7 +16,7 @@ import { getDocumentWithApi } from '@/services/databases';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { canAddToCart } from '@/services/orderCode';
-import Title from '@/components/Title';
+import { Heading, Paragraph } from '@/components/Text';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -64,10 +64,10 @@ const ProductPage = async ({ params }: Props) => {
 
           <div className="col-span-2 flex flex-col gap-4 items-end">
             <div className="flex flex-col gap-4 w-full">
-              <Title.h1 className="text-2xl text-center">{data.title}</Title.h1>
-              <CardDescription className="text-center">
-                {data.description}
-              </CardDescription>
+              <Heading.h1 className="text-2xl text-center">
+                {data.title}
+              </Heading.h1>
+              <Paragraph className="text-center">{data.description}</Paragraph>
             </div>
             <AddToCart
               product={clientSideProduct(data)}

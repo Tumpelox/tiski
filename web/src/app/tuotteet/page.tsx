@@ -1,6 +1,7 @@
 import BundleCard from '@/components/BundleCard';
 import LoginWithCode from '@/components/LoginWithCode';
 import ProductCard from '@/components/ProductCard';
+import { Heading } from '@/components/Text';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Bundle,
@@ -55,7 +56,7 @@ const TuotteetPage = async () => {
   const canAdd = await canAddToCart();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 text-accent-foreground">
       {!orderCode && (
         <Card className="w-full">
           <CardContent>
@@ -63,7 +64,7 @@ const TuotteetPage = async () => {
           </CardContent>
         </Card>
       )}
-      <h1 className="text-3xl font-bold">Verkkokauppa</h1>
+      <Heading.h1 className="text-center">VERKKOKAUPPA</Heading.h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-fit">
         <Suspense fallback={<div>Ladataan tuotteita...</div>}>
           {[...products, ...bundles]

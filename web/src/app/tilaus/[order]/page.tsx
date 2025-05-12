@@ -1,12 +1,7 @@
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
 import { getDocument } from '@/services/databases';
 import { notFound } from 'next/navigation';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -16,7 +11,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import Title from '@/components/Title';
+import { Heading, Paragraph } from '@/components/Text';
 
 interface Props {
   params: Promise<{ order: string }>;
@@ -51,8 +46,8 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <Title.h1 className="text-2xl">Tilauksen tiedot</Title.h1>
-              <CardDescription>Tilausnumero: {$id}</CardDescription>
+              <Heading.h1 className="text-2xl">Tilauksen tiedot</Heading.h1>
+              <Paragraph>Tilausnumero: {$id}</Paragraph>
             </div>
             {getStatusBadge()}
           </div>

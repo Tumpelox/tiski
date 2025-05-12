@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/table';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Heading } from '@/components/Text';
 
 const SivutHallintaPage = async () => {
   // Fetch articles
@@ -24,9 +25,9 @@ const SivutHallintaPage = async () => {
   if (!data) redirect('/');
 
   return (
-    <div className="container mx-auto py-6">
+    <div className="space-y-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Sivut</h1>
+        <Heading.h1>Sivut</Heading.h1>
         <Button asChild>
           <Link href="/hallinta/sivut/uusi">Luo uusi sivu</Link>
         </Button>

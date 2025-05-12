@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import CreateNewCode from './CreateNewCode';
 import { getLoggedInUser } from '@/services/userSession';
 import isAdmin from '@/lib/isAdmin';
+import { Heading } from '@/components/Text';
 
 const KooditPage = async () => {
   const user = await getLoggedInUser();
@@ -18,8 +19,8 @@ const KooditPage = async () => {
   if (!data) redirect('/');
 
   return (
-    <div className="container mx-auto">
-      <h1>Listaus aktiivisista tilauskoodeista</h1>
+    <div className="space-y-4">
+      <Heading.h1>Listaus aktiivisista tilauskoodeista</Heading.h1>
       <KooditTable orderCodes={data} />
       {isAdmin(user) && (
         <div className="mt-4">

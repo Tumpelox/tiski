@@ -2,6 +2,7 @@ import { listDocuments } from '@/services/databases';
 import TilauksetTable from './TilauksetTable';
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
 import { redirect } from 'next/navigation';
+import { Heading } from '@/components/Text';
 
 const TilauksetPage = async () => {
   const { data } = await listDocuments<Order>(
@@ -12,8 +13,8 @@ const TilauksetPage = async () => {
   if (!data) redirect('/');
 
   return (
-    <div className="container mx-auto">
-      <h1>Listaus tilauksista</h1>
+    <div className="space-y-4">
+      <Heading.h1>Listaus tilauksista</Heading.h1>
       <TilauksetTable orders={data} />
     </div>
   );

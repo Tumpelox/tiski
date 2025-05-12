@@ -1,5 +1,5 @@
 import { MenuItem } from '@/interfaces/settings.interface';
-import CloudButton from './CloudButton';
+import { CloudLink } from './CloudButton';
 
 const NavigationMenu = ({
   items,
@@ -11,13 +11,14 @@ const NavigationMenu = ({
   return (
     <nav className="flex flex-col md:flex-row md:w-fit items-center justify-center gap-6">
       {items.map((item) => (
-        <CloudButton
+        <CloudLink
           key={item.url}
-          link={{ href: item.url }}
-          backgroundColor="white"
+          href={item.url}
+          variant={'accent'}
+          className="md:w-36"
         >
           {item.name.toUpperCase()}
-        </CloudButton>
+        </CloudLink>
       ))}
       {children}
     </nav>

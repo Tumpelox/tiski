@@ -4,7 +4,7 @@ import { signOut } from '@/actions/auth';
 import { useToastMessageStore } from '@/store';
 
 import { Models } from 'node-appwrite';
-import CloudButton from './CloudButton';
+import { CloudButton } from './CloudButton';
 import { LogOut } from 'lucide-react';
 
 type SignOutButtonProps = {
@@ -23,7 +23,7 @@ const SignOutButton = ({ user }: SignOutButtonProps) => {
   }
 
   return (
-    <CloudButton backgroundColor="white" button={{ onClick: handleSignOut }}>
+    <CloudButton variant="accent" onClick={handleSignOut} className="md:w-36">
       <LogOut className="size-6 text-destructive" />
     </CloudButton>
   );

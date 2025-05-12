@@ -17,8 +17,8 @@ import {
 } from './ui/form';
 import { Input } from './ui/input';
 import { Card, CardContent, CardHeader } from './ui/card';
-import Title from './Title';
-import CloudButton from './CloudButton';
+import { Heading } from './Text';
+import { CloudButton } from './CloudButton';
 
 const LoginWithEmailAndPassword = () => {
   const { addMessage } = useToastMessageStore();
@@ -47,7 +47,7 @@ const LoginWithEmailAndPassword = () => {
     <div className="flex items-center justify-center min-h-[90vh] px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <Title.h1 className="text-2xl">Kirjaudu</Title.h1>
+          <Heading.h1 className="text-2xl">Kirjaudu</Heading.h1>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -83,12 +83,9 @@ const LoginWithEmailAndPassword = () => {
                 )}
               />
               <CloudButton
-                button={{
-                  type: 'submit',
-                  disabled: form.formState.isSubmitting,
-                }}
-                backgroundColor="var(--violetti)"
-                className="text-white mt-2"
+                type="submit"
+                disabled={form.formState.isSubmitting}
+                className="mt-2"
                 small
               >
                 {form.formState.isSubmitting ? 'Kirjaudutaan...' : 'Kirjaudu'}
