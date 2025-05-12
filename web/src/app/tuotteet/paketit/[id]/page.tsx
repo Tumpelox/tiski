@@ -74,7 +74,7 @@ const BundlePage = async ({ params }: Props) => {
               </Carousel>
             </div>
           )}
-          <div className="col-span-2 flex flex-col gap-4 items-end md:flex-col-reverse">
+          <div className="col-span-2 flex flex-col gap-4 items-end">
             <div className="flex flex-col gap-4 w-full">
               <Title.h1 className="text-2xl text-center">{data.title}</Title.h1>
               <CardDescription className="text-center">

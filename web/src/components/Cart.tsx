@@ -51,21 +51,21 @@ const Cart = () => {
           {items.map((item) => (
             <div
               key={item.$id}
-              className="flex items-center flex-wrap gap-4 border-b pb-4"
+              className="grid items-center grid-cols-10 grid-rows-2 sm:flex gap-4 border-b pb-4"
             >
               {item.type === 'product' &&
                 (item.item as Product).pictures[0] && (
-                  <div className="w-16 h-16 relative">
+                  <div className="size-full  sm:size-24 aspect-square relative col-span-2">
                     <Image
                       src={(item.item as Product).pictures[0].src}
                       alt={(item.item as Product).pictures[0].alt}
                       fill
-                      className="object-cover rounded"
+                      className="object-cover rounded "
                     />
                   </div>
                 )}
               {item.type === 'bundle' && (item.item as Bundle).promoImage && (
-                <div className="w-16 h-16 relative grid grid-cols-2 gap-2">
+                <div className="size-full sm:size-24 aspect-square relative col-span-2">
                   <Image
                     src={(item.item as Bundle).promoImage?.src as string}
                     alt={(item.item as Bundle).promoImage?.alt as string}
@@ -74,8 +74,7 @@ const Cart = () => {
                   />
                 </div>
               )}
-
-              <div className="flex-grow">
+              <div className="col-span-8 flex-grow w-full">
                 <Title.h4>
                   <Link
                     href={`/tuotteet${item.type === 'bundle' ? '/paketit/' + item.$id : item.$id}`}
@@ -93,8 +92,13 @@ const Cart = () => {
                   updateQuantity(item.$id, value)
                 }
                 stock={999}
-              />
-              <Button variant="ghost" onClick={() => removeItem(item.$id)}>
+                className="col-span-8 w-full justify-center sm:w-fit sm:flex-col-reverse"
+              />{' '}
+              <Button
+                className="col-span-2"
+                variant="ghost"
+                onClick={() => removeItem(item.$id)}
+              >
                 <X className="size-6 text-destructive" />
               </Button>
             </div>

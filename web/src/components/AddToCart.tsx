@@ -8,15 +8,18 @@ import { CanAddToCart } from '@/interfaces/orderCode.interface';
 import { useState } from 'react';
 import { Input } from './ui/input';
 import { Minus, Plus } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export const ItemCount = ({
   count,
   stock,
   handleChange,
+  className,
 }: {
   count: number;
   stock: number;
   handleChange: (value: number) => void;
+  className?: string;
 }) => {
   const [value, setValue] = useState(String(count));
   const handleItemCountChange = (value: number | string) => {
@@ -27,7 +30,9 @@ export const ItemCount = ({
     }
   };
   return (
-    <div className="flex items-center justify-between gap-2 w-fit">
+    <div
+      className={cn(className, 'flex items-center justify-between gap-2 w-fit')}
+    >
       <Button
         disabled={stock === 0}
         variant={'ghost'}
@@ -84,7 +89,9 @@ const AddToCart = ({
     canAddToCart === CanAddToCart.AlreadyOrdedered ||
     canAddToCart === CanAddToCart.CodeNotFound
   ) {
-    return <p className="w-full">{canAddToCart}</p>;
+    return (
+      <p className="text-center text-sm text-foreground">{canAddToCart}</p>
+    );
   }
 
   if (product !== undefined) {
