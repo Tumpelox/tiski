@@ -23,7 +23,6 @@ export async function getLoggedInUser() {
     return await account.get();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    if (account) (await cookies()).delete(Keys.SessionCookie);
     return null;
   }
 }
