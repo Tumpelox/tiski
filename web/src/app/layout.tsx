@@ -17,7 +17,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: 'Tarratoimikunta',
-  description: 'Tarratoimikunnan verkkosivut tarratilauksia varten',
+  description: 'Tarratoimikunta harjoittaa pehmeää aktivismia suviseuroissa',
 };
 
 export default async function RootLayout({
@@ -35,7 +35,10 @@ export default async function RootLayout({
   const menuItems = settings.data?.[0].mainMenu.menuItems ?? [];
 
   return (
-    <html lang="en">
+    <html lang="fi">
+      <head>
+        <meta name="theme-color" content="#ffffff" />
+      </head>
       <body
         className={`${montserrat.variable} ${montserrat.variable} antialiased bg-gradient-to-b from-foreground to-background min-h-screen flex flex-col gap-4 md:gap-6`}
       >
