@@ -14,73 +14,77 @@ import { createCodeSchema } from '@/schemas/orderCode.schema';
 export const createNewOrderCode = async (
   newCodeData: z.infer<typeof createCodeSchema>
 ) => {
-  const user = await getLoggedInUser();
+  try {
+    const user = await getLoggedInUser();
 
-  if (!user || !isAdmin(user)) {
-    return {
-      message: 'Sinulla ei ole riittäviä käyttöoikeuksia',
-      type: ToastType.ERROR,
-      data: null,
-    };
-  }
+    if (!user || !isAdmin(user)) {
+      return {
+        message: 'Sinulla ei ole riittäviä käyttöoikeuksia',
+        type: ToastType.ERROR,
+        data: null,
+      };
+    }
 
-  const { success, data } = createCodeSchema.safeParse(newCodeData);
+    const { success, data } = createCodeSchema.safeParse(newCodeData);
 
-  if (success === false) {
-    return {
-      message: 'Virheellinen pyyntö',
-      type: ToastType.ERROR,
-      data: null,
-    };
-  }
-  const { name, availableOrders, code } = data;
+    if (success === false) {
+      return {
+        message: 'Virheellinen pyyntö',
+        type: ToastType.ERROR,
+        data: null,
+      };
+    }
+    const { name, availableOrders, code } = data;
 
-  const adminClient = await createAdminClient();
+    const adminClient = await createAdminClient();
 
-  const users = new Users(adminClient.account.client);
+    const users = new Users(adminClient.account.client);
 
-  const existingCode = await listDocumentsWithApi<OrderCode>(
-    OrderCodeDatabase.DatabaseId,
-    OrderCodeDatabase.CollectionId,
-    [Query.equal('code', code)]
-  );
-
-  if (existingCode.data && existingCode.data.length > 0) {
-    return {
-      message: 'Tilauskoodi on jo olemassa',
-      type: ToastType.ERROR,
-      data: null,
-    };
-  } else {
-    const newUser = await users.create(
-      code,
-      undefined,
-      undefined,
-      undefined,
-      name
-    );
-
-    const { data } = await createDocument<OrderCode>(
+    const existingCode = await listDocumentsWithApi<OrderCode>(
       OrderCodeDatabase.DatabaseId,
       OrderCodeDatabase.CollectionId,
-      ID.unique(),
-      {
-        name: name,
-        availableOrders: availableOrders,
-        creator: user.email,
-        code: code,
-        userId: newUser.$id,
-        isActive: true,
-      }
+      [Query.equal('code', code)]
     );
 
-    if (data)
+    if (existingCode.data && existingCode.data.length > 0) {
       return {
-        message: `Tilauskoodi ${code} luotu`,
-        type: ToastType.SUCCESS,
-        data: data.$id,
+        message: 'Tilauskoodi on jo olemassa',
+        type: ToastType.ERROR,
+        data: null,
       };
+    } else {
+      const newUser = await users.create(
+        code,
+        undefined,
+        undefined,
+        undefined,
+        name
+      );
 
+      const { data } = await createDocument<OrderCode>(
+        OrderCodeDatabase.DatabaseId,
+        OrderCodeDatabase.CollectionId,
+        ID.unique(),
+        {
+          name: name,
+          availableOrders: availableOrders,
+          creator: user.email,
+          code: code,
+          userId: newUser.$id,
+          isActive: true,
+        }
+      );
+
+      if (data) {
+        return {
+          message: `Tilauskoodi ${code} luotu`,
+          type: ToastType.SUCCESS,
+          data: data.$id,
+        };
+      } else throw new Error('Code creation failed');
+    }
+  } catch (error) {
+    console.error('Error creating order code:', error);
     return {
       message: 'Tilauksen koodin luonti epäonnistui',
       type: ToastType.ERROR,
