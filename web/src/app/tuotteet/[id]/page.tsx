@@ -64,7 +64,7 @@ const ProductPage = async ({ params }: Props) => {
 
           <div className="col-span-2 flex flex-col gap-4 items-end">
             <div className="flex flex-col gap-4 w-full">
-              <Heading.h1 className="text-2xl text-center">
+              <Heading.h1 className="text-2xl text-center font-normal">
                 {data.title}
               </Heading.h1>
               <Paragraph className="text-center">{data.description}</Paragraph>

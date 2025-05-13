@@ -74,7 +74,7 @@ const BundlePage = async ({ params }: Props) => {
           )}
           <div className="col-span-2 flex flex-col gap-4 items-end">
             <div className="flex flex-col gap-4 w-full">
-              <Heading.h1 className="text-2xl text-center">
+              <Heading.h1 className="text-2xl text-center font-normal">
                 {data.title}
               </Heading.h1>
               <Paragraph className="text-center">{data.description}</Paragraph>
@@ -83,8 +83,8 @@ const BundlePage = async ({ params }: Props) => {
           </div>
         </CardContent>
         <CardContent>
-          <p>Tuotenumero: {id}</p>
-          <p>Varastossa: {stock}</p>
+          <Paragraph>Tuotenumero: {id}</Paragraph>
+          <Paragraph>Varastossa: {stock}</Paragraph>
           <div>
             <p>Paketin tuotteet:</p>
             {data.products.map((product) => (

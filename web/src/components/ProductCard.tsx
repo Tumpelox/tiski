@@ -31,10 +31,8 @@ const ProductCard = ({
           </CardContent>
         )}
         <CardHeader className="pt-4 w-full text-center">
-          <Heading.h3>{product.title}</Heading.h3>
-          <Paragraph>
-            <p>{product.description}</p>
-          </Paragraph>
+          <Heading.h3 className="font-normal">{product.title}</Heading.h3>
+          <Paragraph>{product.description}</Paragraph>
         </CardHeader>
       </Link>
       {canAddToCart !== CanAddToCart.CodeNotFound && product.available && (

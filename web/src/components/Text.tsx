@@ -34,12 +34,12 @@ const createHeadingComponent = (
 };
 
 // Define the specific heading components with their default styles
-const H1 = createHeadingComponent(1, 'text-3xl'); // Original size
-const H2 = createHeadingComponent(2, 'text-2xl');
-const H3 = createHeadingComponent(3, 'text-xl');
-const H4 = createHeadingComponent(4, 'text-lg');
-const H5 = createHeadingComponent(5, 'text-base');
-const H6 = createHeadingComponent(6, 'text-sm');
+const H1 = createHeadingComponent(1, 'text-3xl mt-2'); // Original size
+const H2 = createHeadingComponent(2, 'text-2xl mt-2');
+const H3 = createHeadingComponent(3, 'text-xl  mt-1');
+const H4 = createHeadingComponent(4, 'text-lg  mt-1');
+const H5 = createHeadingComponent(5, 'text-base mt-0.5');
+const H6 = createHeadingComponent(6, 'text-sm mt-0.5');
 
 // The Title object will be the default export
 const Heading = {

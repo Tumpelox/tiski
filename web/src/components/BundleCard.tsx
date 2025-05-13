@@ -56,11 +56,9 @@ const BundleCard = ({
           </CardContent>
         )}
 
-        <CardHeader className="pt-4 w-full text-center">
-          <Heading.h3>{bundle.title}</Heading.h3>
-          <Paragraph>
-            <p>{bundle.description}</p>
-          </Paragraph>
+        <CardHeader className="pt-4 w-full text-center text-">
+          <Heading.h3 className="font-normal">{bundle.title}</Heading.h3>
+          <Paragraph>{bundle.description}</Paragraph>
         </CardHeader>
       </Link>
       {canAddToCart !== CanAddToCart.CodeNotFound && bundle.available && (

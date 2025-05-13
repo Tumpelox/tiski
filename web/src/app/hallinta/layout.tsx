@@ -3,7 +3,7 @@ import HallintaNavigation from './HallintaNavigation';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="space-y-4 text-accent-foreground">
+    <div className="space-y-4 text-accent-foreground ">
       <HallintaNavigation />
       {children}
     </div>

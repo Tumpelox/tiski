@@ -3,6 +3,7 @@ import TilauksetTable from './TilauksetTable';
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
 import { redirect } from 'next/navigation';
 import { Heading } from '@/components/Text';
+import { Card, CardContent } from '@/components/ui/card';
 
 const TilauksetPage = async () => {
   const { data } = await listDocuments<Order>(
@@ -15,7 +16,11 @@ const TilauksetPage = async () => {
   return (
     <div className="space-y-4">
       <Heading.h1>Listaus tilauksista</Heading.h1>
-      <TilauksetTable orders={data} />
+      <Card>
+        <CardContent>
+          <TilauksetTable orders={data} />
+        </CardContent>
+      </Card>
     </div>
   );
   // return (
