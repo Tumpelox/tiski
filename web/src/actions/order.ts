@@ -2,6 +2,7 @@
 
 import { BundleDatabase } from '@/interfaces/bundle.interface';
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
+import { OrderCodeDatabase } from '@/interfaces/orderCode.interface';
 import {
   ProductDatabase,
   ProductDocument,
@@ -98,7 +99,25 @@ export const newOrder = async (
       };
     }
 
-    if (productsList.length + bundlesList.length > orderCode.availableOrders) {
+    const validProducts = [
+      ...productsList.map((item) => item.$id),
+      ...bundlesList.map((item) => item.$id),
+    ];
+
+    const orderItems = products
+      .filter((item) => validProducts.includes(item.$id))
+      .map((item) => {
+        if (item.type === 'product')
+          return { product: item.$id, quantity: item.quantity };
+        if (item.type === 'bundle')
+          return { bundle: item.$id, quantity: item.quantity };
+      })
+      .filter((item) => item !== undefined);
+
+    if (
+      orderCode.availableOrders <
+      orderItems.reduce((acc, item) => acc + item.quantity, 0)
+    ) {
       return {
         message: 'Tilauksessa on liikaa tuotteita',
         type: ToastType.ERROR,
@@ -106,35 +125,13 @@ export const newOrder = async (
       };
     }
 
-    const validProducts = [
-      ...productsList.map((item) => item.$id),
-      ...bundlesList.map((item) => item.$id),
-    ];
-    console.log(
-      products
-        .filter((item) => validProducts.includes(item.$id))
-        .map((item) => {
-          if (item.type === 'product')
-            return { product: item.$id, quantity: item.quantity };
-          if (item.type === 'bundle')
-            return { bundle: item.$id, quantity: item.quantity };
-        })
-    );
-
     const newOrder = await databases.createDocument<Order>(
       OrderDatabase.DatabaseId,
       OrderDatabase.CollectionId,
       ID.custom(orderCode.code),
       {
         orderCode: orderCode.$id,
-        orderItems: products
-          .filter((item) => validProducts.includes(item.$id))
-          .map((item) => {
-            if (item.type === 'product')
-              return { product: item.$id, quantity: item.quantity };
-            if (item.type === 'bundle')
-              return { bundle: item.$id, quantity: item.quantity };
-          }),
+        orderItems,
         orderContacts: {
           address: shippingAddress,
           name: shippingName,
@@ -144,6 +141,17 @@ export const newOrder = async (
         orderCanceled: null,
       },
       [Permission.read(Role.user(user.$id))]
+    );
+
+    await databases.updateDocument(
+      OrderCodeDatabase.DatabaseId,
+      OrderCodeDatabase.CollectionId,
+      orderCode.$id,
+      {
+        availableOrders:
+          orderCode.availableOrders -
+          orderItems.reduce((acc, item) => acc + item.quantity, 0),
+      }
     );
 
     return {
