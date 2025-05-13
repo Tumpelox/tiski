@@ -45,7 +45,7 @@ interface CloudButtonButton
 }
 
 const backgroundVariants = cva(
-  'relative block text-center transition-transform hover:opacity-70 hover:-translate-y-1 hover:saturate-150 focus:outline-none focus:opacity-80',
+  'relative block text-center transition-transform hover:opacity-70 hover:-translate-y-1 hover:saturate-150 focus:outline-none focus:opacity-80 mt-2',
   {
     variants: {
       size: {
