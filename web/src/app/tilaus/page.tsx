@@ -22,11 +22,13 @@ const TilausPage = async () => {
   const orderCode = await getOrderCode(user);
 
   // Explicitly type the order parameter
-  const getStatusBadge = (order: Pick<Order, 'shipped' | 'canceled'>) => {
-    if (order.canceled) {
+  const getStatusBadge = (
+    order: Pick<Order, 'orderCanceled' | 'orderShipped'>
+  ) => {
+    if (order.orderCanceled) {
       return <Badge variant="destructive">Peruttu</Badge>;
     }
-    if (order.shipped) {
+    if (order.orderShipped) {
       return <Badge variant="secondary">Toimitettu</Badge>;
     }
     return <Badge>Käsittelyssä</Badge>;
@@ -77,13 +79,7 @@ const TilausPage = async () => {
                         </TableCell>
                         <TableCell>{getStatusBadge(order)}</TableCell>
                         <TableCell>
-                          {/* Ensure products exist before mapping */}
-                          {order.products?.map((p) => p.title).join(', ')}
-                          {/* Ensure bundles exist and add separator conditionally */}
-                          {order.products?.length > 0 &&
-                            order.bundles?.length > 0 &&
-                            ', '}
-                          {order.bundles?.map((b) => b.title).join(', ')}
+                          {order.orderItems?.map((p) => p.title).join(', ')}
                         </TableCell>
                         <TableCell className="text-right">
                           <Button asChild variant="outline" size="sm">

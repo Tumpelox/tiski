@@ -8,7 +8,7 @@ import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const MessageVariants = cva(
-  'flex items-center justify-between gap-4 rounded shadow py-2 px-4 rounded shadow w-fit',
+  'relative z-50 flex items-center justify-between gap-4 rounded shadow py-2 px-4 rounded shadow w-fit max-w-full text-wrap',
   {
     variants: {
       type: {
@@ -39,7 +39,7 @@ const ToastMessage = () => {
   }, [messages, removeMessage]);
 
   return (
-    <div className="fixed flex flex-col gap-4 items-end px-4 sm:px-8 left-0 top-10 z-50 w-full">
+    <div className="fixed flex flex-col gap-4 items-end px-4 sm:px-8 right-0 top-10 z-50 w-fit max-w-full">
       {[...messages].reverse().map((message) => (
         <div
           key={message.uuid}

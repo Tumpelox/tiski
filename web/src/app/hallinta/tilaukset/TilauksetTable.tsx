@@ -73,13 +73,17 @@ const TilauksetTable = ({ orders }: { orders: Order[] }) => {
               ) {
                 return false;
               }
-              if (filters.shipped && !order.shipped) {
+              if (filters.shipped && !order.orderShipped) {
                 return false;
               }
-              if (filters.canceled && !order.canceled) {
+              if (filters.canceled && !order.orderCanceled) {
                 return false;
               }
-              if (filters.waiting && order.shipped && order.canceled) {
+              if (
+                filters.waiting &&
+                order.orderShipped &&
+                order.orderCanceled
+              ) {
                 return false;
               }
               return true;
@@ -96,9 +100,9 @@ const TilauksetTable = ({ orders }: { orders: Order[] }) => {
                 </TableCell>
                 <TableCell>{order.orderCode.code}</TableCell>
                 <TableCell>
-                  {order.shipped
+                  {order.orderShipped
                     ? 'Lähetetty'
-                    : order.canceled
+                    : order.orderCanceled
                       ? 'Peruutettu'
                       : 'Odottamassa'}
                 </TableCell>

@@ -28,13 +28,13 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
 
   if (error || !data) notFound();
 
-  const { products, bundles, notes, shipped, canceled, $id } = data;
+  const { orderItems, orderNotes, orderShipped, orderCanceled, $id } = data;
 
   const getStatusBadge = () => {
-    if (canceled) {
+    if (orderCanceled) {
       return <Badge variant="destructive">Peruttu</Badge>;
     }
-    if (shipped) {
+    if (orderShipped) {
       return <Badge variant="secondary">Toimitettu</Badge>;
     }
     return <Badge>Käsittelyssä</Badge>;
@@ -53,7 +53,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          {products && products.length > 0 && (
+          {orderItems && orderItems.length > 0 && (
             <section>
               <h2 className="text-lg font-semibold mb-2">Tuotteet</h2>
               <Table>
@@ -64,57 +64,39 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {products.map((product) => (
-                    <TableRow key={product.$id}>
-                      <TableCell>{product.title}</TableCell>
-                      <TableCell>{product.description}</TableCell>
-                    </TableRow>
-                  ))}
+                  {orderItems.map((orderItem) => {
+                    const product = orderItem.product ?? orderItem.bundle;
+                    if (!product) return null;
+                    return (
+                      <TableRow key={orderItem.$id}>
+                        <TableCell>{product.title}</TableCell>
+                        <TableCell>{product.description}</TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </section>
           )}
 
-          {bundles && bundles.length > 0 && (
-            <section>
-              <h2 className="text-lg font-semibold mb-2">Tuotepaketit</h2>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Paketti</TableHead>
-                    <TableHead>Kuvaus</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {bundles.map((bundle) => (
-                    <TableRow key={bundle.title}>
-                      <TableCell>{bundle.title}</TableCell>
-                      <TableCell>{bundle.description}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </section>
-          )}
-
-          {notes && (
+          {orderNotes && (
             <section>
               <h2 className="text-lg font-semibold mb-2">Lisätiedot</h2>
-              <p>{notes}</p>
+              <p>{orderNotes}</p>
             </section>
           )}
 
           <section className="space-y-1">
-            {shipped && (
+            {orderShipped && (
               <p>
                 <strong>Toimitettu:</strong>{' '}
-                {new Date(shipped).toLocaleDateString()}
+                {new Date(orderShipped).toLocaleDateString()}
               </p>
             )}
-            {canceled && (
+            {orderCanceled && (
               <p>
                 <strong>Peruttu:</strong>{' '}
-                {new Date(canceled).toLocaleDateString()}
+                {new Date(orderCanceled).toLocaleDateString()}
               </p>
             )}
           </section>

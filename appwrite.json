@@ -1,6 +1,6 @@
 {
-    "projectId": "tarratoimikunta-prod",
-    "projectName": "Tarratoimikunta",
+    "projectId": "tarratoimikunta",
+    "projectName": "Tarratoimikunta testi",
     "settings": {
         "services": {
             "account": true,
@@ -166,6 +166,18 @@
                     "required": true,
                     "array": false,
                     "default": null
+                },
+                {
+                    "key": "promoImage",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "pictures",
+                    "relationType": "oneToOne",
+                    "twoWay": false,
+                    "twoWayKey": "6821e3cd0008bc81e3cd",
+                    "onDelete": "setNull",
+                    "side": "parent"
                 }
             ],
             "indexes": []
@@ -177,9 +189,9 @@
                 "read(\"label:admin\")",
                 "update(\"label:admin\")",
                 "delete(\"label:admin\")",
+                "read(\"users\")",
                 "read(\"label:postittaja\")",
-                "update(\"label:postittaja\")",
-                "read(\"users\")"
+                "update(\"label:postittaja\")"
             ],
             "databaseId": "tarratiski",
             "name": "Tilaukset",
@@ -458,7 +470,7 @@
             "documentSecurity": false,
             "attributes": [
                 {
-                    "key": "url",
+                    "key": "src",
                     "type": "string",
                     "required": true,
                     "array": false,

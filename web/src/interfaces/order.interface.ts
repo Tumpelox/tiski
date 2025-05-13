@@ -10,16 +10,21 @@ export enum OrderDatabase {
 
 export interface Order extends Models.Document {
   orderCode: OrderCode;
-  products: Product[];
-  bundles: Bundle[];
-  contacts: Contacts;
-  notes: string | null;
-  shipped: Date | null;
-  canceled: Date | null;
+  orderContacts: Contacts;
+  orderItems: OrderItem[];
+  orderNotes: string | null;
+  orderShipped: Date | null;
+  orderCanceled: Date | null;
 }
 
 export interface Contacts extends Models.Document {
   address: string;
   name: string;
   orders: Order;
+}
+
+export interface OrderItem extends Models.Document {
+  product?: Product;
+  bundle?: Bundle;
+  quantity: number;
 }

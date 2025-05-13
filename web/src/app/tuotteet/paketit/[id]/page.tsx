@@ -36,6 +36,19 @@ const BundlePage = async ({ params }: Props) => {
 
   const canAdd = await canAddToCart();
 
+  const promoImage = data.promoImage
+    ? { picture: data.promoImage, title: data.title }
+    : null;
+
+  const images = data.products
+    .map((product) =>
+      product.pictures.map((picture) => ({
+        picture,
+        title: product.title,
+      }))
+    )
+    .flat();
+
   return (
     <div className="px-4 md:px-8 ">
       <Card className="max-w-5xl mx-auto">
@@ -44,14 +57,8 @@ const BundlePage = async ({ params }: Props) => {
             <div className="col-span-3 px-10">
               <Carousel className="w-full">
                 <CarouselContent>
-                  {data.products
-                    .map((product) =>
-                      product.pictures.map((picture) => ({
-                        picture,
-                        title: product.title,
-                      }))
-                    )
-                    .flat()
+                  {[promoImage, ...images]
+                    .filter((image) => image !== null)
                     .map(({ picture, title }, index) => {
                       return (
                         <CarouselItem key={index}>

@@ -27,15 +27,10 @@ const Order = () => {
   const form = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
-      products: items
-        .filter((item) => item.type === 'product')
-        .map((item) => item.$id),
-      bundles: items
-        .filter((item) => item.type === 'bundle')
-        .map((item) => item.$id),
+      products: items,
       shippingName: '',
       shippingAddress: '',
-      notes: '',
+      orderNotes: '',
     },
   });
 
@@ -43,12 +38,7 @@ const Order = () => {
   const onSubmit = async (values: z.infer<typeof orderSchema>) => {
     const order = await newOrder({
       ...values,
-      products: items
-        .filter((item) => item.type === 'product')
-        .map((item) => item.$id),
-      bundles: items
-        .filter((item) => item.type === 'bundle')
-        .map((item) => item.$id),
+      products: items,
     });
 
     if (order) {
@@ -95,7 +85,7 @@ const Order = () => {
           />
           <FormField
             control={form.control}
-            name="notes"
+            name="orderNotes"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Lisätiedot</FormLabel>

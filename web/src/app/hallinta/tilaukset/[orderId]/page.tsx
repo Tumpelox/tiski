@@ -10,9 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Product } from '@/interfaces/product.interface';
+
 import { Badge } from '@/components/ui/badge'; // Assuming Badge component exists for status
-import { Bundle } from '@/interfaces/bundle.interface';
+
 import { Heading, Paragraph } from '@/components/Text';
 
 interface Props {
@@ -61,19 +61,19 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
         </Badge>
       </CardHeader>
       <CardContent className="space-y-6">
-        {data.contacts?.name !== undefined && (
+        {data.orderContacts?.name !== undefined && (
           <section>
             <Heading.h3 className="mb-2">Yhteystiedot</Heading.h3>
             <Paragraph>
-              <strong>Nimi:</strong> {data.contacts.name}
+              <strong>Nimi:</strong> {data.orderContacts.name}
             </Paragraph>
             <Paragraph>
-              <strong>Osoite:</strong> {data.contacts.address}
+              <strong>Osoite:</strong> {data.orderContacts.address}
             </Paragraph>
           </section>
         )}
 
-        {data.products && data.products.length > 0 && (
+        {data.orderItems && data.orderItems.length > 0 && (
           <section>
             <Heading.h3>Tuotteet</Heading.h3>
             <Table>
@@ -85,10 +85,14 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.products.map((product: Product) => (
-                  <TableRow key={product.$id}>
-                    <TableCell>{product.title}</TableCell>
-                    <TableCell>{product.$id}</TableCell>
+                {data.orderItems.map((item) => (
+                  <TableRow key={item.$id}>
+                    <TableCell>
+                      {item.product?.title ?? item.bundle?.title ?? null}
+                    </TableCell>
+                    <TableCell>
+                      {item.product?.$id ?? item.bundle?.$id ?? null}
+                    </TableCell>
                     {/* Add more cells */}
                   </TableRow>
                 ))}
@@ -96,30 +100,8 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
             </Table>
           </section>
         )}
-        {data.bundles && data.bundles.length > 0 && (
-          <section>
-            <Heading.h3 className="mb-2">Tuotepaketit</Heading.h3>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Tuote</TableHead>
-                  <TableHead>ID</TableHead>
-                  {/* Add more relevant product columns if needed */}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.bundles.map((bundle: Bundle) => (
-                  <TableRow key={bundle.$id}>
-                    <TableCell>{bundle.title}</TableCell>
-                    <TableCell>{bundle.$id}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </section>
-        )}
 
-        {data.notes && (
+        {data.orderNotes && (
           <section>
             <Heading.h3 className="mb-2">Lisätiedot</Heading.h3>
             <Paragraph className="text-sm text-muted-foreground">

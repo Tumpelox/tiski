@@ -40,9 +40,10 @@ export const newOrder = async (
     };
   }
 
-  const { products, bundles, shippingAddress, shippingName } = parsedOrder.data;
+  const { products, shippingAddress, shippingName, orderNotes } =
+    parsedOrder.data;
 
-  if (products.length === 0 && bundles.length === 0) {
+  if (products.length === 0) {
     return {
       message: 'Tilauksessa ei ole tuotteita',
       type: ToastType.ERROR,
@@ -54,23 +55,37 @@ export const newOrder = async (
     const databases = await getAdminDatabases();
 
     const productsList =
-      products.length > 0
+      products.filter((item) => item.type === 'product').length > 0
         ? ((
             await listDocumentsWithApi<ProductDocument>(
               ProductDatabase.DatabaseId,
               ProductDatabase.CollectionId,
-              [Query.equal('$id', products)]
+              [
+                Query.equal(
+                  '$id',
+                  products
+                    .filter((item) => item.type === 'product')
+                    .map((item) => item.$id)
+                ),
+              ]
             )
           ).data ?? [])
         : [];
 
     const bundlesList =
-      bundles.length > 0
+      products.filter((item) => item.type === 'bundle').length > 0
         ? ((
             await listDocumentsWithApi<ProductDocument>(
               BundleDatabase.DatabaseId,
               BundleDatabase.CollectionId,
-              [Query.equal('$id', bundles)]
+              [
+                Query.equal(
+                  '$id',
+                  products
+                    .filter((item) => item.type === 'bundle')
+                    .map((item) => item.$id)
+                ),
+              ]
             )
           ).data ?? [])
         : [];
@@ -91,21 +106,42 @@ export const newOrder = async (
       };
     }
 
+    const validProducts = [
+      ...productsList.map((item) => item.$id),
+      ...bundlesList.map((item) => item.$id),
+    ];
+    console.log(
+      products
+        .filter((item) => validProducts.includes(item.$id))
+        .map((item) => {
+          if (item.type === 'product')
+            return { product: item.$id, quantity: item.quantity };
+          if (item.type === 'bundle')
+            return { bundle: item.$id, quantity: item.quantity };
+        })
+    );
+
     const newOrder = await databases.createDocument<Order>(
       OrderDatabase.DatabaseId,
       OrderDatabase.CollectionId,
       ID.custom(orderCode.code),
       {
         orderCode: orderCode.$id,
-        products: productsList.map((product) => product.$id),
-        bundles: bundlesList.map((bundle) => bundle.$id),
-        contacts: {
+        orderItems: products
+          .filter((item) => validProducts.includes(item.$id))
+          .map((item) => {
+            if (item.type === 'product')
+              return { product: item.$id, quantity: item.quantity };
+            if (item.type === 'bundle')
+              return { bundle: item.$id, quantity: item.quantity };
+          }),
+        orderContacts: {
           address: shippingAddress,
           name: shippingName,
         },
-        notes: null,
-        shipped: null,
-        canceled: null,
+        orderNotes,
+        orderShipped: null,
+        orderCanceled: null,
       },
       [Permission.read(Role.user(user.$id))]
     );

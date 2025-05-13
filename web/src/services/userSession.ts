@@ -16,17 +16,38 @@ const client = new Client()
   .setProject(process.env.APPWRITE_PROJECT as string);
 
 export async function getLoggedInUser() {
-  const sessionClient = await createSessionClient();
+  const { account } = await createSessionClient();
+  try {
+    if (!account) return null;
 
-  if (!sessionClient.account) return null;
-
-  return await sessionClient.account.get();
+    return await account.get();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    if (account) (await cookies()).delete(Keys.SessionCookie);
+    return null;
+  }
 }
 
 export async function createSessionClient() {
-  const session = (await cookies()).get(Keys.SessionCookie);
+  try {
+    const session = (await cookies()).get(Keys.SessionCookie);
 
-  if (!session || !session.value) {
+    if (!session || !session.value) {
+      throw new Error(AuthenicationErrors.SessionNotFound);
+    }
+
+    client.setSession(session.value);
+
+    return {
+      get account() {
+        return new Account(client);
+      },
+      get databases() {
+        return new Databases(client);
+      },
+    };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
     return {
       get account() {
         return null;
@@ -36,17 +57,6 @@ export async function createSessionClient() {
       },
     };
   }
-
-  client.setSession(session.value);
-
-  return {
-    get account() {
-      return new Account(client);
-    },
-    get databases() {
-      return new Databases(client);
-    },
-  };
 }
 
 export async function createTokenSession(userId: string, secret: string) {
