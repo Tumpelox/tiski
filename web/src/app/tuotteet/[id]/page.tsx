@@ -37,7 +37,7 @@ const ProductPage = async ({ params }: Props) => {
   return (
     <div className="px-4 md:px-8 ">
       <Card className="max-w-5xl mx-auto">
-        <CardContent className="flex flex-col md:grid md:grid-cols-5 gap-16">
+        <CardContent className="flex flex-col md:grid md:grid-cols-5 gap-6 md:gap-8">
           {data.pictures && (
             <div className="col-span-3">
               <Carousel className="w-full">
@@ -63,12 +63,15 @@ const ProductPage = async ({ params }: Props) => {
           )}
 
           <div className="col-span-2 flex flex-col gap-4 items-end justify-between">
-            <div className="flex flex-col gap-4 w-full">
-              <Heading.h1 className="text-2xl text-center font-normal">
+            <div className="flex flex-col gap-4 md:gap-8 w-full">
+              <Heading.h1 className="text-2xl md:text-3xl text-center font-light">
                 {data.title}
               </Heading.h1>
-              <Paragraph className="text-center">{data.description}</Paragraph>
+              <Paragraph className="text-center font-light">
+                {data.description}
+              </Paragraph>
             </div>
+
             <AddToCart
               product={clientSideProduct(data)}
               canAddToCart={canAdd}
