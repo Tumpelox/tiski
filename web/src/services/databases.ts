@@ -1,6 +1,7 @@
 import { Databases, Models } from 'node-appwrite';
 import { createAdminClient } from './createAdminClient';
 import { createSessionClient } from './userSession';
+import { ErrorResponse, handleAppwriteError } from './appwrite';
 
 export async function getAdminDatabases() {
   const client = await createAdminClient();
@@ -154,5 +155,23 @@ export const createDocument = async <Type>(
   } catch (error) {
     console.error('Error updating document:', error);
     return { data: null, error: DatabaseErrors.NotFound };
+  }
+};
+
+export const removeDocument = async (
+  databaseId: string,
+  collectionId: string,
+  documentId: string
+) => {
+  try {
+    const { databases } = await createSessionClient();
+
+    if (!databases) return { data: null, error: ErrorResponse.Unauthorized };
+
+    await databases.deleteDocument(databaseId, collectionId, documentId);
+
+    return { data: 'success', error: null };
+  } catch (error) {
+    return handleAppwriteError(error);
   }
 };
