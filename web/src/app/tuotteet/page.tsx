@@ -14,6 +14,7 @@ import {
   ProductDocument,
 } from '@/interfaces/product.interface';
 import { clientSideBundle, clientSideProduct } from '@/lib/clientSideProduct';
+import { cn } from '@/lib/utils';
 import { listDocumentsWithApi } from '@/services/databases';
 import { canAddToCart, getOrderCode } from '@/services/orderCode';
 import { getLoggedInUser } from '@/services/userSession';
@@ -55,8 +56,15 @@ const TuotteetPage = async () => {
 
   const canAdd = await canAddToCart();
 
+  const items = [...products, ...bundles].sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
+
   return (
-    <div className="flex flex-col gap-4 text-accent-foreground">
+    <div className="flex flex-col gap-10 text-accent-foreground">
+      <Heading.h1 className="text-center text-4xl md:text-5xl mt-4">
+        TARRAT
+      </Heading.h1>
       {!orderCode && (
         <Card className="w-full">
           <CardContent>
@@ -64,31 +72,36 @@ const TuotteetPage = async () => {
           </CardContent>
         </Card>
       )}
-      <Heading.h1 className="text-center">VERKKOKAUPPA</Heading.h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-fit">
+      <div
+        className={cn('grid grid-cols-1 gap-4 w-full', {
+          'sm:grid-cols-1': items.length === 1,
+          'sm:grid-cols-2': items.length === 2,
+          'sm:grid-cols-2 md:grid-cols-3': items.length >= 3,
+        })}
+      >
         <Suspense fallback={<div>Ladataan tuotteita...</div>}>
-          {[...products, ...bundles]
-            .sort((a, b) => a.title.localeCompare(b.title))
-            .map((item: Product | Bundle, index) => {
-              if (Object.hasOwn(item, 'products')) {
-                return (
-                  <BundleCard
-                    key={index}
-                    bundle={item as Bundle}
-                    canAddToCart={canAdd}
-                  />
-                );
-              }
-              if (Object.hasOwn(item, 'pictures')) {
-                return (
-                  <ProductCard
-                    key={index}
-                    product={item as Product}
-                    canAddToCart={canAdd}
-                  />
-                );
-              }
-            })}
+          {items.map((item: Product | Bundle, index) => {
+            if (Object.hasOwn(item, 'products')) {
+              return (
+                <BundleCard
+                  key={index}
+                  bundle={item as Bundle}
+                  canAddToCart={canAdd}
+                  className={cn({ 'w-full': items.length === 1 })}
+                />
+              );
+            }
+            if (Object.hasOwn(item, 'pictures')) {
+              return (
+                <ProductCard
+                  key={index}
+                  product={item as Product}
+                  canAddToCart={canAdd}
+                  className={cn({ 'w-full': items.length === 1 })}
+                />
+              );
+            }
+          })}
         </Suspense>
       </div>
     </div>
