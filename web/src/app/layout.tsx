@@ -50,7 +50,7 @@ export default async function RootLayout({
             </NavigationMenu>
           </NavigationMenuButton>
         </header>
-        <main className="container max-w-3xl mx-auto px-4 sm:px-8 md:px-0 grow flex flex-col">
+        <main className="container max-w-3xl mx-auto px-4 sm:px-8 md:px-0 grow flex flex-col pb-8">
           {children}
         </main>
       </body>
