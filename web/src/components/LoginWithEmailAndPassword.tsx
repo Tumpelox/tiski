@@ -47,7 +47,7 @@ const LoginWithEmailAndPassword = () => {
     <div className="flex items-center justify-center min-h-[90vh] px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <Heading.h1 className="text-2xl">Kirjaudu</Heading.h1>
+          <Heading.h1 className="text-2xl text-center">Kirjaudu</Heading.h1>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -85,7 +85,6 @@ const LoginWithEmailAndPassword = () => {
               <CloudButton
                 type="submit"
                 disabled={form.formState.isSubmitting}
-                className="mt-2"
                 small
               >
                 {form.formState.isSubmitting ? 'Kirjaudutaan...' : 'Kirjaudu'}
