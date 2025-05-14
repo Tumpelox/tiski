@@ -8,6 +8,7 @@ import AddToCart from './AddToCart';
 import { Bundle } from '@/interfaces/bundle.interface';
 import { CanAddToCart } from '@/interfaces/orderCode.interface';
 import { Heading, Paragraph } from './Text';
+import { cn } from '@/lib/utils';
 
 export const BundleImages = ({ products }: { products: Product[] | null }) => {
   return (
@@ -31,15 +32,19 @@ export const BundleImages = ({ products }: { products: Product[] | null }) => {
   );
 };
 
+interface BundleCardProps extends React.ComponentProps<'div'> {
+  bundle: Bundle;
+  canAddToCart?: CanAddToCart;
+}
+
 const BundleCard = ({
   bundle,
   canAddToCart = CanAddToCart.CodeNotFound,
-}: {
-  bundle: Bundle;
-  canAddToCart?: CanAddToCart;
-}) => {
+  className,
+  ...props
+}: BundleCardProps) => {
   return (
-    <Card className="md:max-w-56">
+    <Card className={cn(className)} {...props}>
       <Link href={`/tuotteet/paketit/${bundle.$id}`}>
         {bundle.promoImage ? (
           <CardContent className="">
@@ -56,9 +61,11 @@ const BundleCard = ({
           </CardContent>
         )}
 
-        <CardHeader className="pt-4 w-full text-center text-">
-          <Heading.h3 className="font-normal">{bundle.title}</Heading.h3>
-          <Paragraph>{bundle.description}</Paragraph>
+        <CardHeader className="pt-4 w-full text-center space-y-2">
+          <Heading.h3 className="font-light text-2xl">
+            {bundle.title}
+          </Heading.h3>
+          <Paragraph className="font-light">{bundle.description}</Paragraph>
         </CardHeader>
       </Link>
       {canAddToCart !== CanAddToCart.CodeNotFound && bundle.available && (

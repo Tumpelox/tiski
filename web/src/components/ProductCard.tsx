@@ -7,17 +7,22 @@ import Link from 'next/link';
 import AddToCart from './AddToCart';
 import { CanAddToCart } from '@/interfaces/orderCode.interface';
 import { Heading, Paragraph } from './Text';
+import { cn } from '@/lib/utils';
+
+interface ProductProps extends React.ComponentProps<'div'> {
+  product: Product;
+  canAddToCart?: CanAddToCart;
+}
 
 const ProductCard = ({
   product,
   canAddToCart = CanAddToCart.CodeNotFound,
-}: {
-  product: Product;
-  canAddToCart?: CanAddToCart;
-}) => {
+  className,
+  ...props
+}: ProductProps) => {
   const productPicture = product.pictures[0] ?? null;
   return (
-    <Card className="md:max-w-56">
+    <Card className={cn(className)} {...props}>
       <Link href={`/tuotteet/${product.$id}`}>
         {productPicture && (
           <CardContent>
@@ -30,9 +35,11 @@ const ProductCard = ({
             />
           </CardContent>
         )}
-        <CardHeader className="pt-4 w-full text-center">
-          <Heading.h3 className="font-normal">{product.title}</Heading.h3>
-          <Paragraph>{product.description}</Paragraph>
+        <CardHeader className="pt-4 w-full text-center space-y-2">
+          <Heading.h3 className="font-light text-2xl">
+            {product.title}
+          </Heading.h3>
+          <Paragraph className="font-light">{product.description}</Paragraph>
         </CardHeader>
       </Link>
       {canAddToCart !== CanAddToCart.CodeNotFound && product.available && (
