@@ -85,11 +85,12 @@ const Cart = () => {
                 }
                 stock={999}
                 className="col-span-8 w-full justify-center sm:w-fit sm:flex-col-reverse"
-              />{' '}
+              />
               <Button
                 className="col-span-2"
                 variant="ghost"
                 onClick={() => removeItem(item.$id)}
+                title="Poista tuote ostoskorista"
               >
                 <X className="size-6 text-destructive" />
               </Button>

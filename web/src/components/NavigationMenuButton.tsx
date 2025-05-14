@@ -21,7 +21,8 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
   return (
     <div className="relative">
       <button
-        name={'Päävalikko'}
+        name="Päävalikko"
+        title="Päävalikko"
         className={cn(
           {
             'absolute text-secondary-foreground': visible,

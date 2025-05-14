@@ -38,12 +38,14 @@ export const ItemCount = ({
         disabled={stock === 0}
         variant={'ghost'}
         onClick={() => handleItemCountChange(count - 1 > 0 ? count - 1 : 1)}
+        title="Vähennä tuotteen määrää"
       >
         <Minus className="size-4" />
       </Button>
 
       <Input
         name="item-count"
+        title="Tuotteen määrä"
         pattern="[0-9]]{2}"
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -57,6 +59,7 @@ export const ItemCount = ({
         onClick={() =>
           handleItemCountChange(count + 1 > stock ? count : count + 1)
         }
+        title="Lisää tuotteen määrää"
       >
         <Plus className="size-4" />
       </Button>
@@ -106,6 +109,7 @@ const AddToCart = ({
         />
         <Button
           variant={'ghost'}
+          title="Lisää ostoskoriin"
           disabled={product.stock === 0}
           onClick={() => {
             addItem(product, 'product');
