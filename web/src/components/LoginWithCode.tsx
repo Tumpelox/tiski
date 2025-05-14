@@ -12,7 +12,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from './ui/form';
 import { orderCodeSchema } from '@/schemas/auth.schema';
@@ -51,12 +50,15 @@ export const LoginWithCode = () => {
           control={form.control}
           name="code"
           render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel htmlFor="code">Koodi</FormLabel>
+            <FormItem className="w-full text-center py-4">
+              <FormDescription className="py-2">
+                Syötä saamasi tilauskoodi
+              </FormDescription>
+              {/* <FormLabel htmlFor="code">Koodi</FormLabel> */}
               <FormControl>
                 <Input {...field} />
               </FormControl>
-              <FormDescription>Syötä saamasi tilauskoodi</FormDescription>
+
               <FormMessage />
             </FormItem>
           )}

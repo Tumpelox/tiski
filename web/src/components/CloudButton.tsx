@@ -45,7 +45,7 @@ interface CloudButtonButton
 }
 
 const backgroundVariants = cva(
-  'relative block text-center transition-transform hover:opacity-70 hover:-translate-y-1 hover:saturate-150 focus:outline-none focus:opacity-80 mt-2',
+  'relative block text-center transition-transform hover:-translate-y-1 hover:saturate-150 mt-4',
   {
     variants: {
       size: {
@@ -53,10 +53,10 @@ const backgroundVariants = cva(
         small: 'w-28',
       },
       variant: {
-        primary: 'text-primary',
-        secondary: 'text-secondary',
-        destructive: 'text-destructive',
-        accent: 'text-accent',
+        primary: 'text-primary hover:text-primary/80',
+        secondary: 'text-secondary hover:text-secondary/80',
+        destructive: 'text-destructive hover:text-destructive/80',
+        accent: 'text-accent hover:text-accent/80',
       },
     },
     defaultVariants: { size: 'default', variant: 'primary' },

@@ -21,7 +21,8 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
   return (
     <div className="relative">
       <button
-        name={'Päävalikko'}
+        name="Päävalikko"
+        title="Päävalikko"
         className={cn(
           {
             'absolute text-secondary-foreground': visible,
@@ -43,9 +44,11 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
       </button>
 
       <div
-        className={`${!visible && 'hidden md:flex'} fixed md:relative z-40 top-0 right-0 h-screen md:h-fit w-full flex flex-col md:flex-row gap-5 items-center justify-center bg-gradient-to-b md:bg-none from-secondary to-primary md:py-2`}
+        className={`${!visible && 'hidden md:flex'} fixed md:relative z-40 top-0 right-0 h-screen md:h-fit w-full bg-gradient-to-b md:bg-none from-secondary to-primary`}
       >
-        {props.children}
+        <div className="h-dvh md:h-fit w-full flex flex-col md:flex-row gap-5 items-center justify-center md:py-2">
+          {props.children}
+        </div>
       </div>
     </div>
   );

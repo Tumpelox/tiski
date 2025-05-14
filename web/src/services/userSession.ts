@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { Account, Client, Databases } from 'node-appwrite';
+import { Account, Client, Databases, Storage } from 'node-appwrite';
 import { createAdminClient } from './createAdminClient';
 
 enum Keys {
@@ -44,6 +44,9 @@ export async function createSessionClient() {
       get databases() {
         return new Databases(client);
       },
+      get storage() {
+        return new Storage(client);
+      },
     };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
@@ -52,6 +55,9 @@ export async function createSessionClient() {
         return null;
       },
       get databases() {
+        return null;
+      },
+      get storage() {
         return null;
       },
     };
