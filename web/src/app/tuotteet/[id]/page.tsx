@@ -39,7 +39,7 @@ const ProductPage = async ({ params }: Props) => {
       <Card className="max-w-5xl mx-auto">
         <CardContent className="flex flex-col md:grid md:grid-cols-5 gap-16">
           {data.pictures && (
-            <div className="col-span-3 px-10">
+            <div className="col-span-3">
               <Carousel className="w-full">
                 <CarouselContent>
                   {data.pictures.map((picture) => {
@@ -62,7 +62,7 @@ const ProductPage = async ({ params }: Props) => {
             </div>
           )}
 
-          <div className="col-span-2 flex flex-col gap-4 items-end">
+          <div className="col-span-2 flex flex-col gap-4 items-end justify-between">
             <div className="flex flex-col gap-4 w-full">
               <Heading.h1 className="text-2xl text-center font-normal">
                 {data.title}
@@ -75,10 +75,10 @@ const ProductPage = async ({ params }: Props) => {
             />
           </div>
         </CardContent>
-        <CardContent>
+        {/* <CardContent>
           <p>Tuotenumero: {id}</p>
           <p>Varastossa: {data.stock}</p>
-        </CardContent>
+        </CardContent> */}
       </Card>
     </div>
   );

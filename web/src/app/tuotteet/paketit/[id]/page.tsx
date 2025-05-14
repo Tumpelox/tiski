@@ -30,9 +30,9 @@ const BundlePage = async ({ params }: Props) => {
 
   if (!data || data.hidden) notFound();
 
-  const stock = data.products
-    .map((product) => product.stock)
-    .sort((a, b) => a - b)[0];
+  // const stock = data.products
+  //   .map((product) => product.stock)
+  //   .sort((a, b) => a - b)[0];
 
   const canAdd = await canAddToCart();
 
@@ -54,7 +54,7 @@ const BundlePage = async ({ params }: Props) => {
       <Card className="max-w-5xl mx-auto">
         <CardContent className="flex flex-col md:grid md:grid-cols-5 gap-16">
           {data.products && (
-            <div className="col-span-3 px-10">
+            <div className="col-span-3">
               <Carousel className="w-full">
                 <CarouselContent>
                   {[promoImage, ...images]
@@ -79,7 +79,7 @@ const BundlePage = async ({ params }: Props) => {
               </Carousel>
             </div>
           )}
-          <div className="col-span-2 flex flex-col gap-4 items-end">
+          <div className="col-span-2 flex flex-col gap-4 items-end justify-between">
             <div className="flex flex-col gap-4 w-full">
               <Heading.h1 className="text-2xl text-center font-normal">
                 {data.title}
@@ -89,7 +89,7 @@ const BundlePage = async ({ params }: Props) => {
             <AddToCart bundle={clientSideBundle(data)} canAddToCart={canAdd} />
           </div>
         </CardContent>
-        <CardContent>
+        {/* <CardContent>
           <Paragraph>Tuotenumero: {id}</Paragraph>
           <Paragraph>Varastossa: {stock}</Paragraph>
           <div>
@@ -98,7 +98,7 @@ const BundlePage = async ({ params }: Props) => {
               <p key={product.$id}>{product.title}</p>
             ))}
           </div>
-        </CardContent>
+        </CardContent> */}
       </Card>
     </div>
   );
