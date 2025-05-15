@@ -8,13 +8,15 @@ import { getLoggedInUser } from '@/services/userSession';
 import isAdmin from '@/lib/isAdmin';
 import { Heading } from '@/components/Text';
 import { Card, CardContent } from '@/components/ui/card';
+import { Query } from 'node-appwrite';
 
 const KooditPage = async () => {
   const { user } = await getLoggedInUser();
 
   const { data } = await listDocuments<OrderCode>(
     OrderCodeDatabase.DatabaseId,
-    OrderCodeDatabase.CollectionId
+    OrderCodeDatabase.CollectionId,
+    [Query.limit(200)]
   );
 
   if (!data) redirect('/');
@@ -24,12 +26,12 @@ const KooditPage = async () => {
       <Heading.h1>Listaus aktiivisista tilauskoodeista</Heading.h1>
       <Card>
         <CardContent>
-          <KooditTable orderCodes={data} />
           {isAdmin(user) && (
-            <div className="mt-4">
+            <div className="mb-4">
               <CreateNewCode />
             </div>
           )}
+          <KooditTable orderCodes={data} />
           <p>
             Esimerkki: <Link href={`/hallinta/koodit/1234`}>1234</Link>
           </p>
