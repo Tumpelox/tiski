@@ -26,7 +26,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
     order
   );
 
-  if (error || !data) redirect('/tilaukset');
+  if (error || !data) redirect('/tilaus');
 
   const { orderItems, orderNotes, orderShipped, orderCanceled, $id } = data;
 
