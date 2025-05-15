@@ -37,6 +37,14 @@ export const newOrder = async (
       type: ToastType.ERROR,
       data: null,
     };
+
+  if (orderCode.isActive === false)
+    return {
+      message: 'Koodi ei ole aktiivinen',
+      type: ToastType.ERROR,
+      data: null,
+    };
+
   const parsedOrder = orderSchema.safeParse(data);
 
   if (parsedOrder.success === false) {
