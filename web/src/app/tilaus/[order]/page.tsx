@@ -1,6 +1,6 @@
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
 import { getDocument } from '@/services/databases';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
   Table,
@@ -26,7 +26,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
     order
   );
 
-  if (error || !data) notFound();
+  if (error || !data) redirect('/tilaukset');
 
   const { orderItems, orderNotes, orderShipped, orderCanceled, $id } = data;
 
