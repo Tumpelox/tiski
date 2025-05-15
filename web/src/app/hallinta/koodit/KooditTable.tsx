@@ -203,8 +203,10 @@ const KooditTable = ({ orderCodes }: { orderCodes: OrderCode[] }) => {
   const [filters, setFilters] = useState({
     orderCode: '',
     creator: '',
+    ordered: false,
+    notOrdered: false,
     active: false,
-    noActive: false,
+    notActive: false,
     sortBy: 'orderCode',
     sortDirection: 'asc',
   });
@@ -213,7 +215,7 @@ const KooditTable = ({ orderCodes }: { orderCodes: OrderCode[] }) => {
     <Table className="w-full px-4 py-2 rounded shadow bg-white">
       <TableHeader>
         <TableRow>
-          <TableHead>
+          <TableHead className="space-x-2">
             Koodi
             <input
               type="text"
@@ -231,16 +233,15 @@ const KooditTable = ({ orderCodes }: { orderCodes: OrderCode[] }) => {
               }
             />
           </TableHead>
-          <TableHead>Tilannut</TableHead>
           <TableHead>
-            Aktiivinen{' '}
+            Tilannut{' '}
             <select
               onChange={(e) => {
                 const value = e.target.value;
                 setFilters({
                   ...filters,
-                  active: value === 'yes',
-                  noActive: value === 'no',
+                  ordered: value === 'yes',
+                  notOrdered: value === 'no',
                 });
               }}
             >
@@ -249,6 +250,24 @@ const KooditTable = ({ orderCodes }: { orderCodes: OrderCode[] }) => {
               <option value="no">Ei</option>
             </select>
           </TableHead>
+          <TableHead>
+            Aktiivinen{' '}
+            <select
+              onChange={(e) => {
+                const value = e.target.value;
+                setFilters({
+                  ...filters,
+                  active: value === 'yes',
+                  notActive: value === 'no',
+                });
+              }}
+            >
+              <option value="all">Kaikki</option>
+              <option value="yes">Kyllä</option>
+              <option value="no">Ei</option>
+            </select>
+          </TableHead>
+          <TableHead>Poista</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -256,11 +275,26 @@ const KooditTable = ({ orderCodes }: { orderCodes: OrderCode[] }) => {
           .filter((orderCode) => {
             if (
               filters.orderCode.length > 0 &&
-              !orderCode.orderCode.includes(filters.orderCode)
+              !orderCode.code.includes(filters.orderCode)
+            ) {
+              return false;
+            }
+            if (
+              filters.creator.length > 0 &&
+              !orderCode.creator.includes(filters.creator)
             ) {
               return false;
             }
             if (filters.active && !orderCode.isActive) {
+              return false;
+            }
+            if (filters.notActive && orderCode.isActive) {
+              return false;
+            }
+            if (filters.ordered && !orderCode.orders) {
+              return false;
+            }
+            if (filters.notOrdered && orderCode.orders) {
               return false;
             }
             return true;

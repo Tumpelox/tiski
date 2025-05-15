@@ -4,6 +4,7 @@ import { OrderCode, OrderCodeDatabase } from '@/interfaces/orderCode.interface';
 import { createAdminClient } from '@/services/createAdminClient';
 import {
   createDocument,
+  getDocument,
   listDocumentsWithApi,
   removeDocument,
   updateDocument,
@@ -179,6 +180,20 @@ export const deleteOrderCode = async ($id: string) => {
         data: null,
       };
     }
+
+    const currentOrderCode = await getDocument(
+      OrderCodeDatabase.DatabaseId,
+      OrderCodeDatabase.CollectionId,
+      data
+    );
+
+    if (!currentOrderCode.data) throw new Error('Code not found');
+
+    const adminClient = await createAdminClient();
+
+    const users = new Users(adminClient.account.client);
+
+    await users.delete(currentOrderCode.data.userId);
 
     const result = await removeDocument(
       OrderCodeDatabase.DatabaseId,
