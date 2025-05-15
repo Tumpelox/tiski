@@ -76,7 +76,7 @@ const TilausPage = async () => {
                       <TableCell className="font-medium">
                         {orderCode.orders.$id}
                       </TableCell>
-                      <TableCell>{getStatusBadge(orderCode.order)}</TableCell>
+                      <TableCell>{getStatusBadge(orderCode.orders)}</TableCell>
                       <TableCell>
                         {orderCode.orders.orderItems
                           ?.map((p) => p.title)
