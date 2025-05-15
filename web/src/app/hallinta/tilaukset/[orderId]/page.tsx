@@ -14,6 +14,7 @@ import {
 import { Badge } from '@/components/ui/badge'; // Assuming Badge component exists for status
 
 import { Heading, Paragraph } from '@/components/Text';
+import Link from 'next/link';
 
 interface Props {
   params: Promise<{ orderId: string }>;
@@ -48,12 +49,14 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
     return 'Odottaa käsittelyä';
   };
 
+  console.log(data);
+
   return (
     <Card className="w-full max-w-4xl mx-auto my-4">
       <CardHeader>
-        <Heading.h2>Tilaus #{data.$id}</Heading.h2>
+        <Heading.h2>Tilaus {data.$id}</Heading.h2>
         <Paragraph>
-          Tilauskoodi: {data.orderCode?.code || 'N/A'} | Tilauspvm:{' '}
+          Tilauskoodi: {data.orderCode.code} | Tilauspvm:{' '}
           {new Date(data.$createdAt).toLocaleDateString()}
         </Paragraph>
         <Badge variant={getStatusVariant(data.shipped, data.canceled)}>
@@ -81,19 +84,28 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
                 <TableRow>
                   <TableHead>Tuote</TableHead>
                   <TableHead>ID</TableHead>
-                  {/* Add more relevant product columns if needed */}
+                  <TableHead>Määrä</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {data.orderItems.map((item) => (
                   <TableRow key={item.$id}>
                     <TableCell>
-                      {item.product?.title ?? item.bundle?.title ?? null}
+                      <Link
+                        href={
+                          '/tuotteet/' +
+                          (item.product
+                            ? item.product?.$id
+                            : 'paketit/' + item.bundle?.$id)
+                        }
+                      >
+                        {item.product?.title ?? item.bundle?.title ?? null}
+                      </Link>
                     </TableCell>
                     <TableCell>
-                      {item.product?.$id ?? item.bundle?.$id ?? null}
+                      {item.product ? item.product?.$id : item.bundle?.$id}
                     </TableCell>
-                    {/* Add more cells */}
+                    <TableCell>{item.quantity}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -104,13 +116,10 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
         {data.orderNotes && (
           <section>
             <Heading.h3 className="mb-2">Lisätiedot</Heading.h3>
-            <Paragraph className="text-sm text-muted-foreground">
-              {data.notes}
-            </Paragraph>
+            <Paragraph>{data.orderNotes}</Paragraph>
           </section>
         )}
       </CardContent>
-      {/* Potentially add CardFooter for actions like Mark as Shipped, Cancel, etc. */}
     </Card>
   );
 };
