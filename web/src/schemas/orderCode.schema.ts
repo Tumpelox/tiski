@@ -4,7 +4,7 @@ export const codeSchema = z
   .string()
   .min(3, { message: 'Koodi on vähintään 3 merkkiä' })
   .max(36, { message: 'Koodi on enintään 36 merkkiä' })
-  .regex(/^[a-zA-Z0-9]+$/, {
+  .regex(/^[a-zA-Z0-9_.-]*$/, {
     message: 'Koodissa saa olla vain aakkosia ja numeroita',
   });
 
