@@ -31,6 +31,12 @@ export const newOrder = async (
     return { message: 'Syötä koodi', type: ToastType.ERROR, data: null };
   }
 
+  if (orderCode.orders)
+    return {
+      message: 'Koodilla on tehty jo tilaus',
+      type: ToastType.ERROR,
+      data: null,
+    };
   const parsedOrder = orderSchema.safeParse(data);
 
   if (parsedOrder.success === false) {
@@ -125,7 +131,7 @@ export const newOrder = async (
       };
     }
 
-    const newOrder = await databases.createDocument<Order>(
+    const order = await databases.createDocument<Order>(
       OrderDatabase.DatabaseId,
       OrderDatabase.CollectionId,
       ID.custom(orderCode.code),
@@ -157,7 +163,7 @@ export const newOrder = async (
     return {
       message: 'Tilauksen luonti onnistui',
       type: ToastType.SUCCESS,
-      data: newOrder.$id,
+      data: order.$id,
     };
   } catch (error) {
     console.error('Error creating order:', error);

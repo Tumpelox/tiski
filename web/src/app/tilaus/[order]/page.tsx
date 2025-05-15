@@ -60,6 +60,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Tuote</TableHead>
+                    <TableHead>Tuotteen kuvaus</TableHead>
                     <TableHead>Määrä</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -71,6 +72,7 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
                       <TableRow key={orderItem.$id}>
                         <TableCell>{product.title}</TableCell>
                         <TableCell>{product.description}</TableCell>
+                        <TableCell>{orderItem.quantity}</TableCell>
                       </TableRow>
                     );
                   })}

@@ -9,7 +9,7 @@ export enum OrderCodeDatabase {
 export interface OrderCode extends Models.Document {
   name: string;
   availableOrders: number;
-  orders: Order[];
+  orders: Order | null;
   creator: string;
   code: string;
   userId: string;

@@ -44,7 +44,7 @@ const KooditTable = ({ orderCodes }: { orderCodes: OrderCode[] }) => {
               }
             />
           </TableHead>
-          <TableHead>Tilaukset</TableHead>
+          <TableHead>Tilannut</TableHead>
           <TableHead>
             Aktiivinen{' '}
             <select
@@ -89,7 +89,7 @@ const KooditTable = ({ orderCodes }: { orderCodes: OrderCode[] }) => {
                 </Link>
               </TableCell>
               <TableCell>{orderCode.creator}</TableCell>
-              <TableCell>{orderCode.orders.length}</TableCell>
+              <TableCell>{orderCode.orders ? 'Kyllä' : 'Ei'}</TableCell>
               <TableCell>{orderCode.isActive ? 'Kyllä' : 'Ei'}</TableCell>
             </TableRow>
           ))}

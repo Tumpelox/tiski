@@ -17,6 +17,7 @@ const KooditPage = async () => {
     OrderCodeDatabase.CollectionId
   );
 
+  console.log(data);
   if (!data) redirect('/');
 
   return (

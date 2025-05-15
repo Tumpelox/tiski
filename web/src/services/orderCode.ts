@@ -68,6 +68,6 @@ export const canAddToCart = async () => {
 
   if (!orderCode) return CanAddToCart.CodeNotFound;
 
-  if (orderCode.orders.length >= 1) return CanAddToCart.AlreadyOrdedered;
+  if (orderCode.orders) return CanAddToCart.AlreadyOrdedered;
   return CanAddToCart.Ok;
 };

@@ -60,7 +60,7 @@ const KooditPage = async ({ params }: Props) => {
 
         <div>
           <h3 className="font-semibold mt-4">Koodilla tehdyt tilaukset</h3>
-          {data.orders && data.orders.length > 0 ? (
+          {data.orders ? (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -71,22 +71,20 @@ const KooditPage = async ({ params }: Props) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.orders.map((order) => (
-                  <TableRow key={order.$id}>
-                    <TableCell>
-                      <Link href={`/hallinta/tilaukset/${order.$id}`}>
-                        {order.$id}
-                      </Link>
-                    </TableCell>
-                    <TableCell>{order.orderContacts?.name}</TableCell>
-                    <TableCell>
-                      {order.orderShipped ? 'Lähetetty' : 'Odottaa'}
-                    </TableCell>
-                    <TableCell>
-                      {new Date(order.$createdAt).toLocaleDateString()}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                <TableRow key={data.orders.$id}>
+                  <TableCell>
+                    <Link href={`/hallinta/tilaukset/${data.orders.$id}`}>
+                      {data.orders.$id}
+                    </Link>
+                  </TableCell>
+                  <TableCell>{data.orders.orderContacts?.name}</TableCell>
+                  <TableCell>
+                    {data.orders.orderShipped ? 'Lähetetty' : 'Odottaa'}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(data.orders.$createdAt).toLocaleDateString()}
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           ) : (

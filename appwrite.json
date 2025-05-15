@@ -1,6 +1,6 @@
 {
     "projectId": "tarratoimikunta",
-    "projectName": "Tarratoimikunta testi",
+    "projectName": "Tarratoimikunta",
     "settings": {
         "services": {
             "account": true,
@@ -199,19 +199,7 @@
             "documentSecurity": true,
             "attributes": [
                 {
-                    "key": "products",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedCollection": "tuotteet",
-                    "relationType": "oneToMany",
-                    "twoWay": false,
-                    "twoWayKey": "67d1aaa90025ea511786",
-                    "onDelete": "setNull",
-                    "side": "parent"
-                },
-                {
-                    "key": "notes",
+                    "key": "orderNotes",
                     "type": "string",
                     "required": false,
                     "array": false,
@@ -219,7 +207,7 @@
                     "default": null
                 },
                 {
-                    "key": "shipped",
+                    "key": "orderShipped",
                     "type": "datetime",
                     "required": false,
                     "array": false,
@@ -227,11 +215,31 @@
                     "default": null
                 },
                 {
-                    "key": "canceled",
+                    "key": "orderCanceled",
                     "type": "datetime",
                     "required": false,
                     "array": false,
                     "format": "",
+                    "default": null
+                },
+                {
+                    "key": "orderContacts",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "yhteystiedot",
+                    "relationType": "oneToOne",
+                    "twoWay": true,
+                    "twoWayKey": "order",
+                    "onDelete": "cascade",
+                    "side": "parent"
+                },
+                {
+                    "key": "orderHandler",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 128,
                     "default": null
                 },
                 {
@@ -240,34 +248,22 @@
                     "required": false,
                     "array": false,
                     "relatedCollection": "tilauskoodit",
-                    "relationType": "oneToMany",
+                    "relationType": "oneToOne",
                     "twoWay": true,
                     "twoWayKey": "orders",
                     "onDelete": "cascade",
                     "side": "child"
                 },
                 {
-                    "key": "contacts",
+                    "key": "orderItems",
                     "type": "relationship",
                     "required": false,
                     "array": false,
-                    "relatedCollection": "yhteystiedot",
-                    "relationType": "oneToOne",
-                    "twoWay": false,
-                    "twoWayKey": "68177e670032a1396ea8",
-                    "onDelete": "cascade",
-                    "side": "parent"
-                },
-                {
-                    "key": "bundles",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedCollection": "tuotepaketit",
+                    "relatedCollection": "orderItems",
                     "relationType": "oneToMany",
-                    "twoWay": false,
-                    "twoWayKey": "681d1d87000ecf9f85be",
-                    "onDelete": "setNull",
+                    "twoWay": true,
+                    "twoWayKey": "order",
+                    "onDelete": "cascade",
                     "side": "parent"
                 }
             ],
@@ -398,18 +394,6 @@
                     "default": null
                 },
                 {
-                    "key": "orders",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedCollection": "tilaukset",
-                    "relationType": "oneToMany",
-                    "twoWay": true,
-                    "twoWayKey": "orderCode",
-                    "onDelete": "cascade",
-                    "side": "parent"
-                },
-                {
                     "key": "creator",
                     "type": "string",
                     "required": true,
@@ -439,21 +423,21 @@
                     "required": true,
                     "array": false,
                     "default": null
+                },
+                {
+                    "key": "orders",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tilaukset",
+                    "relationType": "oneToOne",
+                    "twoWay": true,
+                    "twoWayKey": "orderCode",
+                    "onDelete": "cascade",
+                    "side": "parent"
                 }
             ],
-            "indexes": [
-                {
-                    "key": "codes",
-                    "type": "unique",
-                    "status": "available",
-                    "attributes": [
-                        "code"
-                    ],
-                    "orders": [
-                        "ASC"
-                    ]
-                }
-            ]
+            "indexes": []
         },
         {
             "$id": "pictures",
@@ -578,6 +562,18 @@
                     "array": false,
                     "size": 248,
                     "default": null
+                },
+                {
+                    "key": "order",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tilaukset",
+                    "relationType": "oneToOne",
+                    "twoWay": true,
+                    "twoWayKey": "orderContacts",
+                    "onDelete": "cascade",
+                    "side": "child"
                 }
             ],
             "indexes": []
@@ -636,6 +632,71 @@
                     "array": false,
                     "size": 248,
                     "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "orderItems",
+            "$permissions": [
+                "create(\"label:admin\")",
+                "read(\"label:admin\")",
+                "update(\"label:admin\")",
+                "delete(\"label:admin\")",
+                "create(\"label:postittaja\")",
+                "read(\"label:postittaja\")",
+                "update(\"label:postittaja\")",
+                "delete(\"label:postittaja\")"
+            ],
+            "databaseId": "tarratiski",
+            "name": "Tilaustuotteet",
+            "enabled": true,
+            "documentSecurity": true,
+            "attributes": [
+                {
+                    "key": "quantity",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 1,
+                    "max": 999,
+                    "default": null
+                },
+                {
+                    "key": "bundle",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tuotepaketit",
+                    "relationType": "oneToOne",
+                    "twoWay": false,
+                    "twoWayKey": "6823288d00198b934fec",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                },
+                {
+                    "key": "product",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tuotteet",
+                    "relationType": "oneToOne",
+                    "twoWay": false,
+                    "twoWayKey": "682328a400028be4c201",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                },
+                {
+                    "key": "order",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "tilaukset",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "orderItems",
+                    "onDelete": "cascade",
+                    "side": "child"
                 }
             ],
             "indexes": []

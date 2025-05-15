@@ -46,7 +46,7 @@ const TilausPage = async () => {
       {orderCode && (
         <>
           {/* Only render the cart if no orders have been placed */}
-          {orderCode.orders.length === 0 && <Cart />}
+          {!orderCode.orders && <Cart />}
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">
@@ -61,7 +61,7 @@ const TilausPage = async () => {
               </div>
             </CardHeader>
             <CardContent>
-              {orderCode && orderCode.orders.length > 0 ? (
+              {orderCode && orderCode.orders ? (
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -72,31 +72,31 @@ const TilausPage = async () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {orderCode.orders.map((order) => (
-                      <TableRow key={order.$id}>
-                        <TableCell className="font-medium">
-                          {order.$id}
-                        </TableCell>
-                        <TableCell>{getStatusBadge(order)}</TableCell>
-                        <TableCell>
-                          {order.orderItems?.map((p) => p.title).join(', ')}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <Button asChild variant="outline" size="sm">
-                            <Link href={`/tilaus/${order.$id}`}>
-                              Tarkastele
-                            </Link>
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    <TableRow key={orderCode.orders.$id}>
+                      <TableCell className="font-medium">
+                        {orderCode.orders.$id}
+                      </TableCell>
+                      <TableCell>{getStatusBadge(orderCode.order)}</TableCell>
+                      <TableCell>
+                        {orderCode.orders.orderItems
+                          ?.map((p) => p.title)
+                          .join(', ')}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button asChild variant="outline" size="sm">
+                          <Link href={`/tilaus/${orderCode.orders.$id}`}>
+                            Tarkastele
+                          </Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
                   </TableBody>
                 </Table>
               ) : (
                 <p className="text-muted-foreground">
                   {orderCode
-                    ? 'Tällä tilauskoodilla ei ole vielä tehty tilauksia.'
-                    : 'Kirjaudu sisään tai syötä tilauskoodi nähdäksesi tilaukset.'}
+                    ? 'Tällä tilauskoodilla ei ole vielä tehty tilausta.'
+                    : 'Kirjaudu sisään tai syötä tilauskoodi nähdäksesi tilauksen.'}
                 </p>
               )}
             </CardContent>
