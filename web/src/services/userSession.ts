@@ -102,10 +102,14 @@ export async function deleteSession() {
   const { account } = await createSessionClient();
 
   if (account) {
-    const session = await account.getSession('current');
+    try {
+      const session = await account.getSession('current');
 
-    await account.deleteSession(session.$id);
-
-    (await cookies()).delete(Keys.SessionCookie);
+      await account.deleteSession(session.$id);
+    } catch (error) {
+      handleAppwriteError(error);
+    }
   }
+
+  (await cookies()).delete(Keys.SessionCookie);
 }
