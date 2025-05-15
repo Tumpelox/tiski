@@ -35,7 +35,7 @@ const ProductPage = async ({ params }: Props) => {
 
   const canAdd = await canAddToCart();
   return (
-    <Card className="max-w-5xl mx-auto">
+    <Card className="max-w-5xl mx-auto w-full">
       <CardContent className="flex flex-col md:grid md:grid-cols-5 gap-6 md:gap-8">
         {data.pictures && (
           <div className="col-span-3">
