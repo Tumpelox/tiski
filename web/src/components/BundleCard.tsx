@@ -47,12 +47,13 @@ const BundleCard = ({
     <Card className={cn(className)} {...props}>
       <Link href={`/tuotteet/paketit/${bundle.$id}`}>
         {bundle.promoImage ? (
-          <CardContent className="">
+          <CardContent className="flex justify-center">
             <Image
               src={bundle.promoImage.src}
               width={bundle.promoImage.width}
               height={bundle.promoImage.height}
               alt={bundle.promoImage.alt}
+              className="max-w-2xl"
             />
           </CardContent>
         ) : (

@@ -25,13 +25,13 @@ const ProductCard = ({
     <Card className={cn(className)} {...props}>
       <Link href={`/tuotteet/${product.$id}`}>
         {productPicture && (
-          <CardContent>
+          <CardContent className="flex justify-center">
             <Image
-              className="rounded w-full"
               src={productPicture.src}
               alt={productPicture.alt}
               height={productPicture.height}
               width={productPicture.width}
+              className="max-w-2xl"
             />
           </CardContent>
         )}
