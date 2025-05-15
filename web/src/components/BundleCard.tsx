@@ -53,7 +53,7 @@ const BundleCard = ({
               width={bundle.promoImage.width}
               height={bundle.promoImage.height}
               alt={bundle.promoImage.alt}
-              className="max-w-2xl"
+              className="max-w-2xl w-full"
             />
           </CardContent>
         ) : (

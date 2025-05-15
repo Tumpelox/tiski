@@ -31,7 +31,7 @@ const ProductCard = ({
               alt={productPicture.alt}
               height={productPicture.height}
               width={productPicture.width}
-              className="max-w-2xl"
+              className="max-w-2xl w-full"
             />
           </CardContent>
         )}
