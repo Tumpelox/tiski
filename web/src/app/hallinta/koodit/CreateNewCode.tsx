@@ -105,7 +105,7 @@ const CreateNewCode = () => {
               name="availableOrders"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Käytettävissä olevat tilaukset</FormLabel>
+                  <FormLabel>Montako pakettia tilattavissa</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
