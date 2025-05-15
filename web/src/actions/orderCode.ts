@@ -15,7 +15,7 @@ export const createNewOrderCode = async (
   newCodeData: z.infer<typeof createCodeSchema>
 ) => {
   try {
-    const user = await getLoggedInUser();
+    const { user } = await getLoggedInUser();
 
     if (!user || !isAdmin(user)) {
       return {

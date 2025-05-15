@@ -6,7 +6,7 @@ import { getLoggedInUser } from '@/services/userSession';
 import { redirect } from 'next/navigation';
 
 const UusiTilausPage = async () => {
-  const user = await getLoggedInUser();
+  const { user } = await getLoggedInUser();
   const orderCode = await getOrderCode(user);
 
   if (!orderCode) redirect('/tilaus');

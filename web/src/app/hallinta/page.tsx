@@ -1,7 +1,7 @@
 import { getLoggedInUser } from '@/services/userSession';
 
 const HallintaPage = async () => {
-  const user = await getLoggedInUser();
+  const { user } = await getLoggedInUser();
 
   if (!user) {
     return (

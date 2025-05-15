@@ -61,7 +61,7 @@ export const getOrderCode = async (
 };
 
 export const canAddToCart = async () => {
-  const user = await getLoggedInUser();
+  const { user } = await getLoggedInUser();
   if (!user) return CanAddToCart.CodeNotFound;
 
   const orderCode = await getOrderCode(user);

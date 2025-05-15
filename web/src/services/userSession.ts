@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { Account, Client, Databases, Storage } from 'node-appwrite';
 import { createAdminClient } from './createAdminClient';
+import { handleAppwriteError } from './appwrite';
 
 enum Keys {
   SessionCookie = 'Tiski_Session_Cookie',
@@ -16,14 +17,18 @@ const client = new Client()
   .setProject(process.env.APPWRITE_PROJECT as string);
 
 export async function getLoggedInUser() {
-  const { account } = await createSessionClient();
   try {
-    if (!account) return null;
+    const { account } = await createSessionClient();
+    if (!account)
+      return { user: null, error: AuthenicationErrors.SessionFailed };
 
-    return await account.get();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return { user: await account.get(), error: null };
   } catch (error) {
-    return null;
+    const info = handleAppwriteError(error);
+    return {
+      user: null,
+      error: info.error,
+    };
   }
 }
 
@@ -65,42 +70,32 @@ export async function createSessionClient() {
 }
 
 export async function createTokenSession(userId: string, secret: string) {
-  try {
-    const { account } = await createAdminClient();
-    const session = await account.createSession(userId, secret);
+  const { account } = await createAdminClient();
+  const session = await account.createSession(userId, secret);
 
-    (await cookies()).set(Keys.SessionCookie, session.secret, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      expires: new Date(session.expire),
-      path: '/',
-    });
-  } catch (error) {
-    console.error('Error creating session:', error);
-    throw new Error(AuthenicationErrors.SessionFailed);
-  }
+  (await cookies()).set(Keys.SessionCookie, session.secret, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    expires: new Date(session.expire),
+    path: '/',
+  });
 }
 
 export async function createEmailAndPasswordSession(
   email: string,
   password: string
 ) {
-  try {
-    const { account } = await createAdminClient();
-    const session = await account.createEmailPasswordSession(email, password);
+  const { account } = await createAdminClient();
+  const session = await account.createEmailPasswordSession(email, password);
 
-    (await cookies()).set(Keys.SessionCookie, session.secret, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      expires: new Date(session.expire),
-      path: '/',
-    });
-  } catch (error) {
-    console.error('Error creating session:', error);
-    throw new Error(AuthenicationErrors.SessionFailed);
-  }
+  (await cookies()).set(Keys.SessionCookie, session.secret, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    expires: new Date(session.expire),
+    path: '/',
+  });
 }
 
 export async function deleteSession() {

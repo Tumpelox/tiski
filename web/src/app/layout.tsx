@@ -30,7 +30,7 @@ export default async function RootLayout({
     SettingsDatabase.CollectionId
   );
 
-  const user = await getLoggedInUser();
+  const { user } = await getLoggedInUser();
 
   const menuItems = settings.data?.[0].mainMenu.menuItems ?? [];
 

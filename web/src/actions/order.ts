@@ -19,7 +19,7 @@ import { z } from 'zod';
 export const newOrder = async (
   data: z.infer<typeof orderSchema>
 ): Promise<{ message: string; type: ToastType; data: string | null }> => {
-  const user = await getLoggedInUser();
+  const { user } = await getLoggedInUser();
 
   if (!user) {
     return { message: 'Syötä koodi', type: ToastType.ERROR, data: null };

@@ -18,7 +18,7 @@ import LoginWithCode from '@/components/LoginWithCode';
 import { Heading } from '@/components/Text';
 
 const TilausPage = async () => {
-  const user = await getLoggedInUser();
+  const { user } = await getLoggedInUser();
   const orderCode = await getOrderCode(user);
 
   // Explicitly type the order parameter

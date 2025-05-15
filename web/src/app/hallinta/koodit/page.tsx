@@ -10,7 +10,7 @@ import { Heading } from '@/components/Text';
 import { Card, CardContent } from '@/components/ui/card';
 
 const KooditPage = async () => {
-  const user = await getLoggedInUser();
+  const { user } = await getLoggedInUser();
 
   const { data } = await listDocuments<OrderCode>(
     OrderCodeDatabase.DatabaseId,

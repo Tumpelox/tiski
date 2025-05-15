@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
     const loginUrl = new URL('/kirjaudu', request.url);
 
     try {
-      const user = await getLoggedInUser();
+      const { user } = await getLoggedInUser();
 
       if (!isAdmin(user) && !isPostittaja(user)) {
         return NextResponse.redirect(loginUrl);
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (request.nextUrl.pathname === '/kirjaudu') {
-    const user = await getLoggedInUser();
+    const { user } = await getLoggedInUser();
 
     if (user && !isAdmin(user) && !isPostittaja(user)) {
       return NextResponse.redirect(new URL('/', request.url));
