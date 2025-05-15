@@ -1,6 +1,6 @@
 'use server';
 
-import { BundleDatabase } from '@/interfaces/bundle.interface';
+import { BundleDatabase, BundleDocument } from '@/interfaces/bundle.interface';
 import { Order, OrderDatabase } from '@/interfaces/order.interface';
 import { OrderCodeDatabase } from '@/interfaces/orderCode.interface';
 import {
@@ -8,13 +8,66 @@ import {
   ProductDocument,
 } from '@/interfaces/product.interface';
 import orderSchema from '@/schemas/order.schema';
-import { getAdminDatabases, listDocumentsWithApi } from '@/services/databases';
+import {
+  getAdminDatabases,
+  getDocumentWithApi,
+  listDocumentsWithApi,
+  updateDocumentWithApi,
+} from '@/services/databases';
 import { getOrderCode } from '@/services/orderCode';
 import { getLoggedInUser } from '@/services/userSession';
 import { ToastType } from '@/store';
 
 import { ID, Permission, Query, Role } from 'node-appwrite';
 import { z } from 'zod';
+
+interface OrderItem {
+  product?: string;
+  bundle?: string;
+  quantity: number;
+}
+
+const updateProductStock = async (item: OrderItem) => {
+  if (item.product !== undefined) {
+    const { data } = await getDocumentWithApi<ProductDocument>(
+      ProductDatabase.DatabaseId,
+      ProductDatabase.DatabaseId,
+      item.product
+    );
+
+    if (data) {
+      await updateDocumentWithApi<ProductDocument>(
+        ProductDatabase.DatabaseId,
+        ProductDatabase.CollectionId,
+        data.$id,
+        {
+          stock: data.stock - item.quantity,
+        }
+      );
+    }
+  }
+
+  if (item.bundle !== undefined) {
+    const { data } = await getDocumentWithApi<BundleDocument>(
+      BundleDatabase.DatabaseId,
+      BundleDatabase.CollectionId,
+      item.bundle
+    );
+
+    if (data) {
+      for (const product of data.products) {
+        await updateDocumentWithApi<ProductDocument>(
+          ProductDatabase.DatabaseId,
+          ProductDatabase.CollectionId,
+          product.$id,
+          {
+            stock: product.stock - item.quantity,
+          }
+        );
+      }
+    }
+  }
+};
 
 export const newOrder = async (
   data: z.infer<typeof orderSchema>
@@ -167,6 +220,10 @@ export const newOrder = async (
           orderItems.reduce((acc, item) => acc + item.quantity, 0),
       }
     );
+
+    for (const item of orderItems) {
+      await updateProductStock(item);
+    }
 
     return {
       message: 'Tilauksen luonti onnistui',

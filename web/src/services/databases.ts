@@ -51,6 +51,74 @@ export const listDocumentsWithApi = async <Type extends Models.Document>(
   }
 };
 
+export const updateDocumentWithApi = async <Type extends Models.Document>(
+  databaseId: string,
+  collectionId: string,
+  documentId: string,
+  data: Partial<Omit<Type, keyof Models.Document>>
+): Promise<{
+  data: Type | null;
+  error: DatabaseErrors | null;
+}> => {
+  try {
+    const databases = await getAdminDatabases();
+
+    const updatedDocument = await databases.updateDocument<Type>(
+      databaseId,
+      collectionId,
+      documentId,
+      data
+    );
+
+    return { data: updatedDocument, error: null };
+  } catch (error) {
+    console.error('Error updating document:', error);
+    return { data: null, error: DatabaseErrors.NotFound };
+  }
+};
+
+export const createDocumentWithApi = async <Type>(
+  databaseId: string,
+  collectionId: string,
+  documentId: string,
+  data: Omit<Partial<Type>, keyof Models.Document>
+): Promise<{
+  data: Type | null;
+  error: DatabaseErrors | null;
+}> => {
+  try {
+    const databases = await getAdminDatabases();
+
+    const createdDocument = await databases.createDocument(
+      databaseId,
+      collectionId,
+      documentId,
+      data
+    );
+
+    return { data: createdDocument as Type, error: null };
+  } catch (error) {
+    console.error('Error updating document:', error);
+    return { data: null, error: DatabaseErrors.NotFound };
+  }
+};
+
+export const removeDocumentWithApi = async (
+  databaseId: string,
+  collectionId: string,
+  documentId: string
+) => {
+  try {
+    const databases = await getAdminDatabases();
+
+    await databases.deleteDocument(databaseId, collectionId, documentId);
+
+    return { data: 'success', error: null };
+  } catch (error) {
+    return handleAppwriteError(error);
+  }
+};
+
 export enum DatabaseErrors {
   NotFound = 'not_found',
   PermissionDenied = 'permission_denied',
