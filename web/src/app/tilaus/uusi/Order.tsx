@@ -21,8 +21,8 @@ import orderSchema from '@/schemas/order.schema';
 import { CloudButton } from '@/components/CloudButton';
 
 const Order = () => {
-  const { items } = useCartStore();
-  const addMessage = useToastMessageStore((state) => state.addMessage);
+  const { items, clearCart } = useCartStore();
+  const { addMessage } = useToastMessageStore();
 
   const form = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
@@ -44,6 +44,7 @@ const Order = () => {
     if (order) {
       addMessage(order.message, order.type);
       if (order.type === ToastType.SUCCESS) {
+        clearCart();
         redirect(`/tilaus/${order.data}`);
       }
     }
