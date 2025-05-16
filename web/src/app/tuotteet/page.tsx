@@ -1,7 +1,7 @@
 import BundleCard from '@/components/BundleCard';
 import LoginWithCode from '@/components/LoginWithCode';
 import ProductCard from '@/components/ProductCard';
-import { Heading } from '@/components/Text';
+import { Heading, Paragraph } from '@/components/Text';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Bundle,
@@ -65,6 +65,12 @@ const TuotteetPage = async () => {
       <Heading.h1 className="text-center text-4xl md:text-5xl mt-4">
         TARRAT
       </Heading.h1>
+      {orderCode && (
+        <Paragraph className="text-center text-lg md:text-xl italic">
+          <span className="not-italic">ℹ️</span> Tarrat lähetetään
+          hienotunteisesti paketissa, jonka sisältöä ei voi arvata ulkoapäin.
+        </Paragraph>
+      )}
       {!orderCode && (
         <Card className="w-full">
           <CardContent>
