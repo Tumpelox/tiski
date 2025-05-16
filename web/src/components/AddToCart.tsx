@@ -127,9 +127,9 @@ const AddToCart = ({
   }
   if (bundle !== undefined) {
     if (bundle.available === false) return null;
-    const stock = bundle.products
-      .map((product) => product.stock)
-      .sort((a, b) => a - b)[0];
+    const stock =
+      bundle.products.map((product) => product.stock).sort((a, b) => a - b)[0] +
+      999;
     return (
       <div className="flex flex-col gap-4 w-full items-center">
         <ItemCount
