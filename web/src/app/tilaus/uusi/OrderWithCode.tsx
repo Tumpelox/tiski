@@ -45,7 +45,7 @@ const Order = () => {
       addMessage(order.message, order.type);
       if (order.type === ToastType.SUCCESS) {
         clearCart();
-        redirect(`/sivut/hakemus-lahetetty`);
+        redirect(`/tilaus/${order.data}`);
       }
     }
   };
