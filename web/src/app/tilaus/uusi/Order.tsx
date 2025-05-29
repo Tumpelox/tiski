@@ -20,6 +20,7 @@ import { redirect } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { z } from 'zod';
+import { Paragraph } from '@/components/Text';
 
 const Order = () => {
   const { items, clearCart } = useCartStore();
@@ -158,14 +159,20 @@ const Order = () => {
               </FormItem>
             )}
           />
-          <CloudButton
-            small
-            type="submit"
-            disabled={form.formState.isSubmitting}
-            className="float-right"
-          >
-            {form.formState.isSubmitting ? 'Lähetetään tilausta...' : 'TILAA'}
-          </CloudButton>
+          <div className="md:flex justify-between items-center">
+            <Paragraph>
+              Sitoudun että tilaus tehdään suviseuroissa tapahtuvaa
+              tarravaikuttamista varten!
+            </Paragraph>
+            <CloudButton
+              small
+              type="submit"
+              disabled={form.formState.isSubmitting}
+              className="float-right"
+            >
+              {form.formState.isSubmitting ? 'Lähetetään tilausta...' : 'TILAA'}
+            </CloudButton>
+          </div>
         </form>
       </Form>
     </div>
