@@ -14,4 +14,5 @@ export interface InternationalText extends Models.Document {
 export interface Article extends Models.Document {
   internationalText: InternationalText[];
   text: string;
+  title: string;
 }

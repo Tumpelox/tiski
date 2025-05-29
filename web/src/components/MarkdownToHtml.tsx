@@ -1,6 +1,9 @@
 'use server';
 
 import Markdown from 'markdown-to-jsx';
+import Image from 'next/image';
+import { Heading, Paragraph } from './Text';
+import Link from 'next/link';
 
 const MarkdownToHtml = ({ markdown }: { markdown: string }) => {
   return (
@@ -8,22 +11,25 @@ const MarkdownToHtml = ({ markdown }: { markdown: string }) => {
       options={{
         overrides: {
           h1: {
-            component: 'h1',
-            props: {
-              className: 'text-2xl font-semibold my-4', // Example Tailwind classes for h1
-            },
+            component: Heading.h1,
           },
           h2: {
-            component: 'h2',
-            props: {
-              className: 'text-xl font-semibold my-3', // Example Tailwind classes for h2
-            },
+            component: Heading.h2,
+          },
+          h3: {
+            component: Heading.h3,
+          },
+          h4: {
+            component: Heading.h4,
+          },
+          h5: {
+            component: Heading.h5,
+          },
+          h6: {
+            component: Heading.h6,
           },
           p: {
-            component: 'p',
-            props: {
-              className: 'mb-4 leading-relaxed', // Example Tailwind classes for p
-            },
+            component: Paragraph,
           },
           ul: {
             component: 'ul',
@@ -38,12 +44,14 @@ const MarkdownToHtml = ({ markdown }: { markdown: string }) => {
             },
           },
           a: {
-            component: 'a',
+            component: Link,
+          },
+          img: {
+            component: Image,
             props: {
-              className: 'text-blue-600 hover:underline', // Example Tailwind classes for a
+              className: 'max-w-full h-auto', // Example Tailwind classes for img
             },
           },
-          // Add more overrides for other elements like blockquote, code, etc. as needed
         },
       }}
     >
