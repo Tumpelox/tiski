@@ -2,9 +2,11 @@
 
 import {
   NavigationMenu,
+  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import Link from 'next/link';
@@ -39,16 +41,26 @@ const HallintaNavigation = () => {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link
-              href="/hallinta/tilaukset"
-              className="flex items-center space-x-2"
-              legacyBehavior
-              passHref
-            >
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <NavigationMenuTrigger>
+              <Link
+                href="/hallinta/tilaukset"
+                className="flex items-center space-x-2"
+                legacyBehavior
+                passHref
+              >
                 Tilaukset
-              </NavigationMenuLink>
-            </Link>
+              </Link>
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <Link
+                href="/hallinta/tilaukset/tuote"
+                className="flex items-center space-x-2"
+                legacyBehavior
+                passHref
+              >
+                <NavigationMenuLink>Tuotteittain</NavigationMenuLink>
+              </Link>
+            </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link
