@@ -62,7 +62,7 @@ const LoginWithEmailAndPassword = () => {
                   <FormItem className="w-full">
                     <FormLabel>Sähköposti</FormLabel>
                     <FormControl>
-                      <Input {...field} type="email" />
+                      <Input {...field} type="email" autoComplete="email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -75,7 +75,11 @@ const LoginWithEmailAndPassword = () => {
                   <FormItem className="w-full">
                     <FormLabel>Salasana</FormLabel>
                     <FormControl>
-                      <Input {...field} type="password" />
+                      <Input
+                        {...field}
+                        type="password"
+                        autoComplete="current-password"
+                      />
                     </FormControl>
 
                     <FormMessage />
