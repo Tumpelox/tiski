@@ -49,19 +49,20 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
     return 'Odottaa käsittelyä';
   };
 
-  console.log(data);
-
   return (
     <Card className="w-full max-w-4xl mx-auto my-4">
       <CardHeader>
         <Heading.h2>Tilaus {data.$id}</Heading.h2>
-        <Paragraph>
-          Tilauskoodi: {data.orderCode.code} | Tilauspvm:{' '}
-          {new Date(data.$createdAt).toLocaleDateString()}
-        </Paragraph>
+        <Paragraph>Tilauskoodi: {data?.orderCode?.code ?? 'Ei'}</Paragraph>
         <Badge variant={getStatusVariant(data.shipped, data.canceled)}>
           {getStatusText(data.shipped, data.canceled)}
         </Badge>
+        {(data.orderContacts?.reCaptchaScore ?? null) && (
+          <Paragraph>
+            Ihminen todennäköisyydellä:{' '}
+            {data.orderContacts.reCaptchaScore * 100}%
+          </Paragraph>
+        )}
       </CardHeader>
       <CardContent className="space-y-6">
         {data.orderContacts?.name !== undefined && (
@@ -72,6 +73,9 @@ const TilausYhteenvetoPage = async ({ params }: Props) => {
             </Paragraph>
             <Paragraph>
               <strong>Osoite:</strong> {data.orderContacts.address}
+            </Paragraph>
+            <Paragraph>
+              <strong>Puhelin:</strong> {data.orderContacts.phone}
             </Paragraph>
           </section>
         )}

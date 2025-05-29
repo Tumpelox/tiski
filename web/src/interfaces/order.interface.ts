@@ -20,6 +20,8 @@ export interface Order extends Models.Document {
 export interface Contacts extends Models.Document {
   address: string;
   name: string;
+  phone: string;
+  reCaptchaScore: number;
   orders: Order;
 }
 

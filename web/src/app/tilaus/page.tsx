@@ -14,7 +14,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Order } from '@/interfaces/order.interface'; // Import Order interface
-import LoginWithCode from '@/components/LoginWithCode';
+// import LoginWithCode from '@/components/LoginWithCode';
 import { Heading } from '@/components/Text';
 
 const TilausPage = async () => {
@@ -36,13 +36,14 @@ const TilausPage = async () => {
 
   return (
     <div className="container mx-auto py-8 space-y-8">
-      {!orderCode && (
+      {/* {!orderCode && (
         <Card>
           <CardContent>
             <LoginWithCode />
           </CardContent>
         </Card>
-      )}
+      )} */}
+      {(!orderCode || !orderCode?.orders) && <Cart />}
       {orderCode && (
         <>
           {/* Only render the cart if no orders have been placed */}

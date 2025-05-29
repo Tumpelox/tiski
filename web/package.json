@@ -26,6 +26,7 @@
     "lucide-react": "^0.479.0",
     "markdown-to-jsx": "^7.7.4",
     "next": "15.1.6",
+    "next-recaptcha-v3": "^1.5.2",
     "node-appwrite": "^16.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

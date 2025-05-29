@@ -98,7 +98,7 @@ const TilauksetTable = ({ orders }: { orders: Order[] }) => {
                     {order.$id}
                   </Link>
                 </TableCell>
-                <TableCell>{order.orderCode.code}</TableCell>
+                <TableCell>{order?.orderCode?.code ?? 'Ei'}</TableCell>
                 <TableCell>
                   {order.orderShipped
                     ? 'Lähetetty'

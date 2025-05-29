@@ -1,13 +1,7 @@
 'use client';
 
-import { Input } from '@/components/ui/input';
-import { useCartStore, useToastMessageStore, ToastType } from '@/store';
-import { newOrder } from '@/actions/order';
-import { redirect } from 'next/navigation'; // Import useRouter
-import { z } from 'zod';
-import { Textarea } from '../../../components/ui/textarea';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { newOrderWithOutCode } from '@/actions/order';
+import { CloudButton } from '@/components/CloudButton';
 import {
   Form,
   FormControl,
@@ -17,28 +11,50 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import orderSchema from '@/schemas/order.schema';
-import { CloudButton } from '@/components/CloudButton';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { orderWithMotivationSchema } from '@/schemas/order.schema';
+import { ToastType, useCartStore, useToastMessageStore } from '@/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { redirect } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { useReCaptcha } from 'next-recaptcha-v3';
+import { z } from 'zod';
 
 const Order = () => {
   const { items, clearCart } = useCartStore();
   const { addMessage } = useToastMessageStore();
+  const { executeRecaptcha } = useReCaptcha();
 
-  const form = useForm<z.infer<typeof orderSchema>>({
-    resolver: zodResolver(orderSchema),
+  const form = useForm<z.infer<typeof orderWithMotivationSchema>>({
+    resolver: zodResolver(orderWithMotivationSchema),
     defaultValues: {
       products: items,
       shippingName: '',
       shippingAddress: '',
+      shippingPostalCode: '',
+      shippingCity: '',
+      shippingPhoneNumber: '',
       orderNotes: '',
+      recaptchaToken: '123',
     },
   });
 
   // 2. Define a submit handler.
-  const onSubmit = async (values: z.infer<typeof orderSchema>) => {
-    const order = await newOrder({
+  const onSubmit = async (
+    values: z.infer<typeof orderWithMotivationSchema>
+  ) => {
+    const recaptchaToken = await executeRecaptcha('submit_order');
+
+    if (!recaptchaToken) {
+      addMessage('Tilaus epäonnistui', ToastType.ERROR);
+      return;
+    }
+
+    const order = await newOrderWithOutCode({
       ...values,
       products: items,
+      recaptchaToken,
     });
 
     if (order) {
@@ -63,23 +79,64 @@ const Order = () => {
               <FormItem>
                 <FormLabel>Tilaajan nimi</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} autoComplete="name" />
                 </FormControl>
                 <FormDescription>Tilauksessa käytettävä nimi</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+          <div className="grid grid-cols-1 sm:grid-cols-6 sm:grid-rows-2 gap-4">
+            <FormField
+              control={form.control}
+              name="shippingAddress"
+              render={({ field }) => (
+                <FormItem className="sm:col-span-6">
+                  <FormLabel>Katuosoite</FormLabel>
+                  <FormControl>
+                    <Input {...field} autoComplete="street-address" />
+                  </FormControl>
+                  <FormDescription>Tilauksen toimitusosoite</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="shippingPostalCode"
+              render={({ field }) => (
+                <FormItem className="sm:col-span-2">
+                  <FormLabel>Postikoodi</FormLabel>
+                  <FormControl>
+                    <Input {...field} autoComplete="postal-code" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="shippingCity"
+              render={({ field }) => (
+                <FormItem className="sm:col-span-4">
+                  <FormLabel>Kunta</FormLabel>
+                  <FormControl>
+                    <Input {...field} autoComplete="address-level2" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
-            name="shippingAddress"
+            name="shippingPhoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Osoite</FormLabel>
+                <FormLabel>Puhelinnumero</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} autoComplete="mobile tel" />
                 </FormControl>
-                <FormDescription>Tilauksen toimitusosoite</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -89,12 +146,13 @@ const Order = () => {
             name="orderNotes"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Lisätiedot</FormLabel>
+                <FormLabel>Mikä motivoi sinua tilaamaan tarroja?</FormLabel>
                 <FormControl>
                   <Textarea {...field} />
                 </FormControl>
                 <FormDescription>
-                  Tilauksen mahdolliset lisätiedot
+                  Miksi juuri sinä haluat osallistua tarravaikuttamiseen
+                  suviseuroissa?
                 </FormDescription>
                 <FormMessage />
               </FormItem>

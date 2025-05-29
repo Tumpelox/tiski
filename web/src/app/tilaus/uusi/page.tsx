@@ -1,25 +1,27 @@
-import Order from '@/app/tilaus/uusi/Order';
+import OrderWithCode from '@/app/tilaus/uusi/OrderWithCode';
 import { Heading } from '@/components/Text';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { getOrderCode } from '@/services/orderCode';
 import { getLoggedInUser } from '@/services/userSession';
-import { redirect } from 'next/navigation';
+import Order from './Order';
+import { ReCaptchaProvider } from 'next-recaptcha-v3';
 
 const UusiTilausPage = async () => {
   const { user } = await getLoggedInUser();
   const orderCode = await getOrderCode(user);
 
-  if (!orderCode) redirect('/tilaus');
-
   return (
-    <Card>
-      <CardHeader>
-        <Heading.h1 className="text-2xl">Uusi tilaus</Heading.h1>
-      </CardHeader>
-      <CardContent>
-        <Order />
-      </CardContent>
-    </Card>
+    <ReCaptchaProvider>
+      <Card>
+        <CardHeader>
+          <Heading.h1 className="text-2xl">Uusi tilaus</Heading.h1>
+        </CardHeader>
+        <CardContent>
+          {orderCode && !orderCode.orders && <OrderWithCode />}
+          {!orderCode && <Order />}
+        </CardContent>
+      </Card>
+    </ReCaptchaProvider>
   );
 };
 

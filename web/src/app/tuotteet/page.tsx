@@ -1,13 +1,14 @@
 import BundleCard from '@/components/BundleCard';
-import LoginWithCode from '@/components/LoginWithCode';
+
 import ProductCard from '@/components/ProductCard';
 import { Heading, Paragraph } from '@/components/Text';
-import { Card, CardContent } from '@/components/ui/card';
+
 import {
   Bundle,
   BundleDatabase,
   BundleDocument,
 } from '@/interfaces/bundle.interface';
+import { CanAddToCart } from '@/interfaces/orderCode.interface';
 import {
   Product,
   ProductDatabase,
@@ -16,8 +17,8 @@ import {
 import { clientSideBundle, clientSideProduct } from '@/lib/clientSideProduct';
 import { cn } from '@/lib/utils';
 import { listDocumentsWithApi } from '@/services/databases';
-import { canAddToCart, getOrderCode } from '@/services/orderCode';
-import { getLoggedInUser } from '@/services/userSession';
+// import { getOrderCode } from '@/services/orderCode';
+// import { getLoggedInUser } from '@/services/userSession';
 import { Suspense } from 'react';
 
 const getBundles = async () => {
@@ -49,12 +50,12 @@ const getProducts = async () => {
 };
 
 const TuotteetPage = async () => {
-  const { user } = await getLoggedInUser();
-  const orderCode = await getOrderCode(user);
+  // const { user } = await getLoggedInUser();
+  // const orderCode = await getOrderCode(user);
   const products = await getProducts();
   const bundles = await getBundles();
 
-  const canAdd = await canAddToCart();
+  const canAdd = CanAddToCart.Ok;
 
   const items = [...products, ...bundles].sort((a, b) =>
     a.title.localeCompare(b.title)
@@ -65,19 +66,19 @@ const TuotteetPage = async () => {
       <Heading.h1 className="text-center text-4xl md:text-5xl mt-4">
         TARRAT
       </Heading.h1>
-      {orderCode && (
-        <Paragraph className="text-center text-lg md:text-xl italic">
-          <span className="not-italic">ℹ️</span> Tarrat lähetetään
-          hienotunteisesti paketissa, jonka sisältöä ei voi arvata ulkoapäin.
-        </Paragraph>
-      )}
+      {/* {orderCode && ( */}
+      <Paragraph className="text-center text-lg md:text-xl italic">
+        <span className="not-italic">ℹ️</span> Tarrat lähetetään
+        hienotunteisesti paketissa, jonka sisältöä ei voi arvata ulkoapäin.
+      </Paragraph>
+      {/* )}
       {!orderCode && (
         <Card className="w-full">
           <CardContent>
             <LoginWithCode />
           </CardContent>
         </Card>
-      )}
+      )} */}
       <div
         className={cn('grid grid-cols-1 gap-4 w-full', {
           'sm:grid-cols-1': items.length === 1,

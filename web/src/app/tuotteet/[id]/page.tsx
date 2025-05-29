@@ -15,8 +15,9 @@ import { clientSideProduct } from '@/lib/clientSideProduct';
 import { getDocumentWithApi } from '@/services/databases';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { canAddToCart } from '@/services/orderCode';
+
 import { Heading, Paragraph } from '@/components/Text';
+import { CanAddToCart } from '@/interfaces/orderCode.interface';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -33,7 +34,7 @@ const ProductPage = async ({ params }: Props) => {
 
   if (!data || data.hidden) notFound();
 
-  const canAdd = await canAddToCart();
+  const canAdd = CanAddToCart.Ok;
   return (
     <Card className="max-w-5xl mx-auto w-full">
       <CardContent className="flex flex-col md:grid md:grid-cols-5 gap-6 md:gap-8">

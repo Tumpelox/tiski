@@ -7,7 +7,7 @@ import {
   ProductDatabase,
   ProductDocument,
 } from '@/interfaces/product.interface';
-import orderSchema from '@/schemas/order.schema';
+import orderSchema, { orderWithMotivationSchema } from '@/schemas/order.schema';
 import {
   getAdminDatabases,
   getDocumentWithApi,
@@ -218,6 +218,174 @@ export const newOrder = async (
         availableOrders:
           orderCode.availableOrders -
           orderItems.reduce((acc, item) => acc + item.quantity, 0),
+      }
+    );
+
+    for (const item of orderItems) {
+      await updateProductStock(item);
+    }
+
+    return {
+      message: 'Tilauksen luonti onnistui',
+      type: ToastType.SUCCESS,
+      data: order.$id,
+    };
+  } catch (error) {
+    console.error('Error creating order:', error);
+    return {
+      message: 'Tilauksen luonti epäonnistui',
+      type: ToastType.ERROR,
+      data: null,
+    };
+  }
+};
+
+export const newOrderWithOutCode = async (
+  data: z.infer<typeof orderWithMotivationSchema>
+): Promise<{ message: string; type: ToastType; data: string | null }> => {
+  const parsedOrder = orderWithMotivationSchema.safeParse(data);
+
+  if (parsedOrder.success === false) {
+    return {
+      message: 'Virheellinen pyyntö',
+      type: ToastType.ERROR,
+      data: null,
+    };
+  }
+
+  const {
+    products,
+    shippingAddress,
+    shippingPostalCode,
+    shippingCity,
+    shippingPhoneNumber,
+    shippingName,
+    orderNotes,
+    recaptchaToken,
+  } = parsedOrder.data;
+
+  const reCaptcha = await fetch(
+    `https://recaptchaenterprise.googleapis.com/v1/projects/${process.env.RECAPTCHA_PROJECT_ID}/assessments?key=${process.env.RECAPTCHA_API_KEY}`,
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        event: {
+          token: recaptchaToken,
+          expectedAction: 'submit_order',
+          siteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+        },
+      }),
+    }
+  );
+
+  const reCaptchaResponse = await reCaptcha.json();
+
+  if (reCaptchaResponse.riskAnalysis.score < 0.5) {
+    return {
+      message: 'Tilauksen luonti epäonnistui',
+      type: ToastType.ERROR,
+      data: null,
+    };
+  }
+
+  if (products.length === 0) {
+    return {
+      message: 'Tilauksessa ei ole tuotteita',
+      type: ToastType.ERROR,
+      data: null,
+    };
+  }
+
+  try {
+    const databases = await getAdminDatabases();
+
+    const productsList =
+      products.filter((item) => item.type === 'product').length > 0
+        ? ((
+            await listDocumentsWithApi<ProductDocument>(
+              ProductDatabase.DatabaseId,
+              ProductDatabase.CollectionId,
+              [
+                Query.equal(
+                  '$id',
+                  products
+                    .filter((item) => item.type === 'product')
+                    .map((item) => item.$id)
+                ),
+              ]
+            )
+          ).data ?? [])
+        : [];
+
+    const bundlesList =
+      products.filter((item) => item.type === 'bundle').length > 0
+        ? ((
+            await listDocumentsWithApi<ProductDocument>(
+              BundleDatabase.DatabaseId,
+              BundleDatabase.CollectionId,
+              [
+                Query.equal(
+                  '$id',
+                  products
+                    .filter((item) => item.type === 'bundle')
+                    .map((item) => item.$id)
+                ),
+              ]
+            )
+          ).data ?? [])
+        : [];
+
+    if (productsList.length === 0 && bundlesList.length === 0) {
+      return {
+        message: 'Tuotteita ei löytynyt',
+        type: ToastType.ERROR,
+        data: null,
+      };
+    }
+
+    const validProducts = [
+      ...productsList.map((item) => item.$id),
+      ...bundlesList.map((item) => item.$id),
+    ];
+
+    const orderItems = products
+      .filter((item) => validProducts.includes(item.$id))
+      .map((item) => {
+        if (item.type === 'product')
+          return { product: item.$id, quantity: item.quantity };
+        if (item.type === 'bundle')
+          return { bundle: item.$id, quantity: item.quantity };
+      })
+      .filter((item) => item !== undefined);
+
+    if (1 < orderItems.reduce((acc, item) => acc + item.quantity, 0)) {
+      return {
+        message: 'Tilauksessa on liikaa tuotteita',
+        type: ToastType.ERROR,
+        data: null,
+      };
+    }
+
+    const currentDate = new Date();
+
+    const order = await databases.createDocument<Order>(
+      OrderDatabase.DatabaseId,
+      OrderDatabase.CollectionId,
+      ID.custom(
+        `tilaus-${currentDate.getDate()}-${currentDate.getHours()}-${currentDate.getMinutes()}-${currentDate.getSeconds()}-${currentDate.getMilliseconds()}`
+      ),
+      {
+        orderCode: null,
+        orderItems,
+        orderContacts: {
+          address: shippingAddress + `, ${shippingPostalCode} ${shippingCity}`,
+          name: shippingName,
+          phone: shippingPhoneNumber,
+          reCaptchaScore: reCaptchaResponse.riskAnalysis.score,
+        },
+        orderNotes,
+        orderShipped: null,
+        orderCanceled: null,
       }
     );
 

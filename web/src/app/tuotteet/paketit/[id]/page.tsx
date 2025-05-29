@@ -9,9 +9,10 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { BundleDatabase, BundleDocument } from '@/interfaces/bundle.interface';
+import { CanAddToCart } from '@/interfaces/orderCode.interface';
 import { clientSideBundle } from '@/lib/clientSideProduct';
 import { getDocumentWithApi } from '@/services/databases';
-import { canAddToCart } from '@/services/orderCode';
+
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
@@ -34,7 +35,7 @@ const BundlePage = async ({ params }: Props) => {
   //   .map((product) => product.stock)
   //   .sort((a, b) => a - b)[0];
 
-  const canAdd = await canAddToCart();
+  const canAdd = CanAddToCart.Ok;
 
   const promoImage = data.promoImage
     ? { picture: data.promoImage, title: data.title }

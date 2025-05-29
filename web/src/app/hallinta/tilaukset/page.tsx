@@ -4,11 +4,13 @@ import { Order, OrderDatabase } from '@/interfaces/order.interface';
 import { redirect } from 'next/navigation';
 import { Heading } from '@/components/Text';
 import { Card, CardContent } from '@/components/ui/card';
+import { Query } from 'node-appwrite';
 
 const TilauksetPage = async () => {
   const { data } = await listDocuments<Order>(
     OrderDatabase.DatabaseId,
-    OrderDatabase.CollectionId
+    OrderDatabase.CollectionId,
+    [Query.limit(200)]
   );
 
   if (!data) redirect('/');
