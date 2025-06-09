@@ -5,11 +5,16 @@ import { getOrderCode } from '@/services/orderCode';
 import { getLoggedInUser } from '@/services/userSession';
 import Order from './Order';
 import { ReCaptchaProvider } from 'next-recaptcha-v3';
+import { redirect } from 'next/navigation';
 
 const UusiTilausPage = async () => {
   const { user } = await getLoggedInUser();
   const orderCode = await getOrderCode(user);
 
+  const date = new Date(new Date().toUTCString());
+  const closeDate = new Date('Mon, 09 Jun 2025 21:00:00 GMT');
+
+  if (date >= closeDate) redirect('/tilaus');
   return (
     <ReCaptchaProvider>
       <Card>

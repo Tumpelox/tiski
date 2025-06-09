@@ -15,7 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Order } from '@/interfaces/order.interface'; // Import Order interface
 // import LoginWithCode from '@/components/LoginWithCode';
-import { Heading } from '@/components/Text';
+import { Heading, Paragraph } from '@/components/Text';
 
 const TilausPage = async () => {
   const { user } = await getLoggedInUser();
@@ -34,6 +34,9 @@ const TilausPage = async () => {
     return <Badge>Käsittelyssä</Badge>;
   };
 
+  const date = new Date(new Date().toUTCString());
+  const closeDate = new Date('Mon, 09 Jun 2025 21:00:00 GMT');
+
   return (
     <div className="container mx-auto py-8 space-y-8">
       {/* {!orderCode && (
@@ -43,8 +46,19 @@ const TilausPage = async () => {
           </CardContent>
         </Card>
       )} */}
-      {(!orderCode || !orderCode?.orders) && <Cart />}
-      {orderCode && (
+      {date >= closeDate && (
+        <Card>
+          <CardContent>
+            <Heading.h3>Tilauslomake suljettu</Heading.h3>
+            <Paragraph>
+              Tilausten viimeinen ajankohta on nyt ohi ja uusia tilauksia ei
+              enää oteta vastaa
+            </Paragraph>
+          </CardContent>
+        </Card>
+      )}
+      {(!orderCode || !orderCode?.orders) && date < closeDate && <Cart />}
+      {date >= closeDate && orderCode && date < closeDate && (
         <>
           {/* Only render the cart if no orders have been placed */}
           {!orderCode.orders && <Cart />}
