@@ -18,7 +18,7 @@ const searchParamsSchema = z.object({
 });
 
 interface Params {
-  searchParams: z.infer<typeof searchParamsSchema>;
+  searchParams: Promise<z.infer<typeof searchParamsSchema>>;
 }
 
 const getDocumentsByPage = async (
