@@ -51,8 +51,8 @@ const TilausPage = async () => {
           <CardContent>
             <Heading.h3>Tilauslomake suljettu</Heading.h3>
             <Paragraph>
-              Tilausten viimeinen ajankohta on nyt ohi ja uusia tilauksia ei
-              enää oteta vastaa
+              Tilauksen tekemisen viimeinen ajankohta on nyt ohi ja uusia
+              tilauksia ei oteta enää vastaan.
             </Paragraph>
           </CardContent>
         </Card>
