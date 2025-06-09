@@ -181,7 +181,7 @@ const TilauksetTable = ({
           </Suspense>
         </TableBody>
       </Table>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-col md:flex-row gap-4 mt-4">
         <Select
           defaultValue={size.toString()}
           onValueChange={(value) => {
