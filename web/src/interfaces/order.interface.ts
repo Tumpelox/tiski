@@ -15,6 +15,7 @@ export interface Order extends Models.Document {
   orderNotes: string | null;
   orderShipped: Date | null;
   orderCanceled: Date | null;
+  orderHandler: string | null;
 }
 
 export interface Contacts extends Models.Document {

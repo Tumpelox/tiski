@@ -34,20 +34,24 @@ export const listDocumentsWithApi = async <Type extends Models.Document>(
   databaseId: string,
   collectionId: string,
   queries: string[] = []
-): Promise<{ data: Type[] | null; error: DatabaseErrors | null }> => {
+): Promise<{
+  data: Type[] | null;
+  error: DatabaseErrors | null;
+  total: number;
+}> => {
   try {
     const databases = await getAdminDatabases();
 
-    const { documents } = await databases.listDocuments<Type>(
+    const { documents, total } = await databases.listDocuments<Type>(
       databaseId,
       collectionId,
       queries
     );
 
-    return { data: documents, error: null };
+    return { data: documents, error: null, total };
   } catch (error) {
     console.error('Error fetching document:', error);
-    return { data: null, error: DatabaseErrors.NotFound };
+    return { data: null, error: DatabaseErrors.NotFound, total: 0 };
   }
 };
 
@@ -119,6 +123,23 @@ export const removeDocumentWithApi = async (
   }
 };
 
+export const getIndexWithApi = async (
+  databaseId: string,
+  collectionId: string,
+  indexId: string
+): Promise<{ data: Models.Index | null; error: DatabaseErrors | null }> => {
+  try {
+    const databases = await getAdminDatabases();
+
+    const data = await databases.getIndex(databaseId, collectionId, indexId);
+
+    return { data, error: null };
+  } catch (error) {
+    console.error('Error fetching document:', error);
+    return { data: null, error: DatabaseErrors.NotFound };
+  }
+};
+
 export enum DatabaseErrors {
   NotFound = 'not_found',
   PermissionDenied = 'permission_denied',
@@ -151,19 +172,43 @@ export const listDocuments = async <Type extends Models.Document>(
   databaseId: string,
   collectionId: string,
   queries: string[] = []
-): Promise<{ data: Type[] | null; error: DatabaseErrors | null }> => {
+): Promise<{
+  data: Type[] | null;
+  error: DatabaseErrors | null;
+  total: number;
+}> => {
   try {
     const { account } = await createSessionClient();
-    if (!account) return { data: null, error: DatabaseErrors.PermissionDenied };
+    if (!account)
+      return { data: null, error: DatabaseErrors.PermissionDenied, total: 0 };
     const databases = new Databases(account.client);
 
-    const { documents } = await databases.listDocuments<Type>(
+    const { documents, total } = await databases.listDocuments<Type>(
       databaseId,
       collectionId,
       queries
     );
 
-    return { data: documents, error: null };
+    return { data: documents, error: null, total };
+  } catch (error) {
+    console.error('Error fetching document:', error);
+    return { data: null, error: DatabaseErrors.NotFound, total: 0 };
+  }
+};
+
+export const getIndex = async (
+  databaseId: string,
+  collectionId: string,
+  indexId: string
+): Promise<{ data: Models.Index | null; error: DatabaseErrors | null }> => {
+  try {
+    const { account } = await createSessionClient();
+    if (!account) return { data: null, error: DatabaseErrors.PermissionDenied };
+    const databases = new Databases(account.client);
+
+    const data = await databases.getIndex(databaseId, collectionId, indexId);
+
+    return { data, error: null };
   } catch (error) {
     console.error('Error fetching document:', error);
     return { data: null, error: DatabaseErrors.NotFound };
