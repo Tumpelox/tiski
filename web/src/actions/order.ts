@@ -7,11 +7,17 @@ import {
   ProductDatabase,
   ProductDocument,
 } from '@/interfaces/product.interface';
-import orderSchema, { orderWithMotivationSchema } from '@/schemas/order.schema';
+import isAdmin from '@/lib/isAdmin';
+import orderSchema, {
+  orderWithMotivationSchema,
+  updateOrderSchema,
+} from '@/schemas/order.schema';
 import {
   getAdminDatabases,
   getDocumentWithApi,
+  listDocuments,
   listDocumentsWithApi,
+  updateDocument,
   updateDocumentWithApi,
 } from '@/services/databases';
 import { getOrderCode } from '@/services/orderCode';
@@ -406,4 +412,86 @@ export const newOrderWithOutCode = async (
       data: null,
     };
   }
+};
+
+export const updateOrder = async (
+  updateData: z.infer<typeof updateOrderSchema>
+) => {
+  try {
+    const { user } = await getLoggedInUser();
+
+    if (!user || !isAdmin(user)) {
+      return {
+        message: 'Sinulla ei ole riittäviä käyttöoikeuksia',
+        type: ToastType.ERROR,
+        data: null,
+      };
+    }
+
+    const { success, data } = updateOrderSchema.safeParse(updateData);
+
+    if (success === false) {
+      return {
+        message: 'Virheellinen pyyntö',
+        type: ToastType.ERROR,
+        data: null,
+      };
+    }
+    const { $id, orderShipped, orderCanceled } = data;
+
+    console.log('Updating order:', $id, {
+      orderCanceled,
+      orderShipped,
+    });
+
+    const result = await updateDocument<Order>(
+      OrderDatabase.DatabaseId,
+      OrderDatabase.CollectionId,
+      $id,
+      {
+        orderCanceled,
+        orderShipped,
+      }
+    );
+
+    if (result.data) {
+      return {
+        message: `Tilaus ${result.data.$id} päivitetty`,
+        type: ToastType.SUCCESS,
+        data: result.data,
+      };
+    } else throw new Error('Code creation failed');
+  } catch (error) {
+    console.error('Tilauksen päivitys epäonnistui', error);
+    return {
+      message: 'Tilauksen päivitys epäonnistui',
+      type: ToastType.ERROR,
+      data: null,
+    };
+  }
+};
+
+export const downloadOrders = async () => {
+  const { user } = await getLoggedInUser();
+  if (!user) return null;
+  if (!isAdmin(user)) return null;
+
+  const orders = await listDocuments<Order>(
+    OrderDatabase.DatabaseId,
+    OrderDatabase.CollectionId,
+    [Query.limit(10000)]
+  );
+
+  if (!orders.data) return null;
+
+  return orders.data.map((order) => {
+    return {
+      numero: order.$id,
+      nimi: order.orderContacts.name,
+      osoite: order.orderContacts.address,
+      puhelin: order.orderContacts.phone ?? 'Ei',
+      paketteja: order.orderItems.reduce((acc, item) => acc + item.quantity, 0),
+      lisätiedot: order.orderNotes ?? 'Ei',
+    };
+  });
 };

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { codeSchema } from './orderCode.schema';
 
 const orderSchema = z.object({
   products: z
@@ -36,6 +37,12 @@ export const orderWithMotivationSchema = z.object({
     .string()
     .min(10, { message: 'Pakollinen kenttä' })
     .max(1024, { message: 'Liian pitkä' }),
+});
+
+export const updateOrderSchema = z.object({
+  $id: codeSchema,
+  orderShipped: z.date().nullable().optional(),
+  orderCanceled: z.date().nullable().optional(),
 });
 
 export default orderSchema;

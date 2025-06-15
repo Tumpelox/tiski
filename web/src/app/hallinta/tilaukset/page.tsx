@@ -6,6 +6,7 @@ import { Heading } from '@/components/Text';
 import { Card, CardContent } from '@/components/ui/card';
 import { Query } from 'node-appwrite';
 import { z } from 'zod';
+import DownloadAll from './DownloadAll';
 
 const searchParamsSchema = z.object({
   size: z.string().regex(/^\d+$/).optional(),
@@ -84,6 +85,7 @@ const TilauksetPage = async (params: Params) => {
           <TilauksetTable orders={data} total={total} />
         </CardContent>
       </Card>
+      <DownloadAll />
     </div>
   );
   // return (

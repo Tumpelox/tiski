@@ -1,5 +1,6 @@
 'use client';
 
+import { updateOrder } from '@/actions/order';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -27,9 +28,145 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Order } from '@/interfaces/order.interface';
+import { updateOrderSchema } from '@/schemas/order.schema';
+import { useToastMessageStore } from '@/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { produce } from 'immer';
 import Link from 'next/link';
 import { redirect, useSearchParams } from 'next/navigation';
 import { Suspense, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { create } from 'zustand';
+
+interface OrderStore {
+  orderStore: Order[];
+  initStore: (orders: Order[]) => void;
+  updateStore: (order: Order) => void;
+  removeFromStore: ($id: string) => void;
+}
+
+export const useStore = create<OrderStore>((set) => ({
+  orderStore: [],
+  initStore: (orderCodes) =>
+    set(
+      produce((state: OrderStore) => {
+        state.orderStore = orderCodes;
+      })
+    ),
+  updateStore: (orderCode) =>
+    set(
+      produce((state: OrderStore) => {
+        const index = state.orderStore.findIndex(
+          (code) => code.$id === orderCode.$id
+        );
+        if (index !== -1) {
+          state.orderStore[index] = orderCode;
+        }
+      })
+    ),
+  removeFromStore: ($id) =>
+    set(
+      produce((state: OrderStore) => {
+        state.orderStore = state.orderStore.filter((code) => code.$id !== $id);
+      })
+    ),
+}));
+
+const TilausRow = ({ order }: { order: Order }) => {
+  const convertOrderToStatus = () => {
+    return order.orderShipped
+      ? 'shipped'
+      : order.orderCanceled
+        ? 'canceled'
+        : 'waiting';
+  };
+
+  const [statusState, setStatusState] = useState(convertOrderToStatus);
+  const { addMessage } = useToastMessageStore();
+  const { updateStore } = useStore();
+
+  const convertStatusToCorrectFormat = (status: string) => {
+    switch (status) {
+      case 'waiting':
+        return { orderShipped: null, orderCanceled: null };
+      case 'shipped':
+        return { orderShipped: new Date(), orderCanceled: null };
+      case 'canceled':
+        return { orderShipped: null, orderCanceled: new Date() };
+      default:
+        return { orderShipped: null, orderCanceled: null };
+    }
+  };
+
+  const form = useForm<z.infer<typeof updateOrderSchema>>({
+    resolver: zodResolver(updateOrderSchema),
+    defaultValues: {
+      $id: order.$id,
+      orderShipped: order.orderShipped,
+      orderCanceled: order.orderCanceled,
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof updateOrderSchema>) => {
+    const result = await updateOrder({
+      ...values,
+      $id: order.$id,
+    });
+
+    if (result) {
+      addMessage(result.message, result.type);
+      if (result.data) {
+        updateStore(result.data);
+      }
+    }
+  };
+
+  return (
+    <TableRow key={order.$id}>
+      <TableCell>
+        <Link
+          href={`/hallinta/tilaukset/${order.$id}`}
+          className="text-blue-500 hover:underline"
+        >
+          {order.$id}
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Select
+          value={statusState}
+          onValueChange={(value: string) => {
+            const newStatus = convertStatusToCorrectFormat(value);
+            form.setValue('orderShipped', newStatus.orderShipped);
+            form.setValue('orderCanceled', newStatus.orderCanceled);
+            setStatusState(value);
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Valitse tilauksen tila" />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value="waiting">Odottamassa</SelectItem>
+            <SelectItem value="shipped">Lähetetty</SelectItem>
+            <SelectItem value="canceled">Peruutettu</SelectItem>
+          </SelectContent>
+        </Select>
+        {statusState !== convertOrderToStatus() && (
+          <Button
+            variant="secondary"
+            size={'sm'}
+            className="ml-2"
+            disabled={form.formState.isSubmitting}
+            onClick={form.handleSubmit(onSubmit)}
+          >
+            {form.formState.isSubmitting ? 'Odota...' : 'Tallenna'}
+          </Button>
+        )}
+      </TableCell>
+    </TableRow>
+  );
+};
 
 const TilauksetTable = ({
   orders,
@@ -160,23 +297,7 @@ const TilauksetTable = ({
                 return true;
               })
               .map((order) => (
-                <TableRow key={order.$id}>
-                  <TableCell>
-                    <Link
-                      href={`/hallinta/tilaukset/${order.$id}`}
-                      className="text-blue-500 hover:underline"
-                    >
-                      {order.$id}
-                    </Link>
-                  </TableCell>
-                  <TableCell>
-                    {order.orderShipped
-                      ? 'Lähetetty'
-                      : order.orderCanceled
-                        ? 'Peruutettu'
-                        : 'Odottamassa'}
-                  </TableCell>
-                </TableRow>
+                <TilausRow key={order.$id} order={order} />
               ))}
           </Suspense>
         </TableBody>
