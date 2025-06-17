@@ -49,7 +49,7 @@ const MarkdownToHtml = ({ markdown }: { markdown: string }) => {
           img: {
             component: Image,
             props: {
-              className: 'max-w-full h-auto', // Example Tailwind classes for img
+              className: '',
             },
           },
         },
