@@ -36,7 +36,7 @@ const ProductCard = ({
           </CardContent>
         )}
         <CardHeader className="pt-4 w-full text-center space-y-2">
-          <Heading.h3 className="font-light text-2xl">
+          <Heading.h3 className="font-light text-base">
             {product.title}
           </Heading.h3>
           <Paragraph className="font-light">{product.description}</Paragraph>

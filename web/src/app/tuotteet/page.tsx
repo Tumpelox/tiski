@@ -31,7 +31,9 @@ const getBundles = async () => {
     return [];
   }
 
-  return data.map((bundle) => clientSideBundle(bundle));
+  return data
+    .filter((bundle) => bundle.hidden === false)
+    .map((bundle) => clientSideBundle(bundle));
 };
 
 const getProducts = async () => {

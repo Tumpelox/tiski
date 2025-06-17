@@ -13,6 +13,7 @@ export interface Bundle {
   description: string;
   products: Product[];
   available: boolean;
+  hidden: boolean;
   promoImage: Picture | null;
 }
 
