@@ -42,7 +42,7 @@ export default async function RootLayout({
           <meta name="theme-color" content="#ffffff" />
         </head>
         <body
-          className={`${montserrat.variable} ${montserrat.variable} antialiased bg-gradient-to-b from-foreground to-background bg-fixed min-h-dvh flex flex-col gap-4 md:gap-6`}
+          className={`${montserrat.variable} ${montserrat.variable} antialiased bg-gradient-to-b from-foreground to-background bg-fixed min-h-dvh flex flex-col md:gap-6`}
         >
           <header className="w-full min-h-16 md:h-fit px-4 sm:px-8 md:px-0 md:container md:mx-auto md:max-w-3xl">
             <ToastMessage />
@@ -52,7 +52,7 @@ export default async function RootLayout({
               </NavigationMenu>
             </NavigationMenuButton>
           </header>
-          <main className="container max-w-4xl mx-auto px-4 sm:px-8 md:px-0 grow flex flex-col pb-8">
+          <main className="container max-w-4xl mx-auto px-4 sm:px-8 md:px-0 grow flex flex-col pb-8 pt-4">
             {children}
           </main>
         </body>
