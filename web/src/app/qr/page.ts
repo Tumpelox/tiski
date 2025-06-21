@@ -21,10 +21,14 @@ const QRCodePage = async ({ searchParams }: PageProps) => {
   );
 
   if (data) {
-    return redirect(data.destination);
+    const searchParams = new URLSearchParams();
+    if (data.destination.startsWith('/')) {
+      searchParams.set('qr', to as string);
+    }
+    return redirect(data.destination + '?' + searchParams.toString());
   }
 
-  redirect('/');
+  return redirect('/');
 };
 
 export default QRCodePage;

@@ -36,7 +36,7 @@ export default async function RootLayout({
   const menuItems = settings.data?.[0].mainMenu.menuItems ?? [];
 
   return (
-    <PlausibleProvider domain="tarratoimikunta.fi" enabled={true}>
+    <PlausibleProvider domain="tarratoimikunta.fi">
       <html lang="fi">
         <head>
           <meta name="theme-color" content="#ffffff" />
