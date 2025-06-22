@@ -6,7 +6,6 @@ export default async function Home() {
 
   return (
     <>
-      <div className="grid grid-rows-2 grow min-h-[calc(100dvh-var(--spacing)*20)]">
       <div className="grid grid-rows-2 grow min-h-[calc(100dvh-var(--spacing)*28)]">
         <div></div>
         <div className="flex flex-col items-center w-full text-white text-center row-span-1 py-8">
