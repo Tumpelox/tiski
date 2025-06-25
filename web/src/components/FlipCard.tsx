@@ -26,7 +26,7 @@ const TarraCard = ({ front, back }: { front: ReactNode; back: ReactNode }) => {
         <div
           className={cn(
             cardClass,
-            'rotate-y-180 p-4 select-none bg-card/70 text-card-foreground'
+            'rotate-y-180 p-4 select-none bg-card text-card-foreground'
           )}
         >
           {back}
