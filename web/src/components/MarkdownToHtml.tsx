@@ -4,11 +4,13 @@ import Markdown from 'markdown-to-jsx';
 import Image from 'next/image';
 import { Heading, Paragraph } from './Text';
 import Link from 'next/link';
+import React from 'react';
 
 const MarkdownToHtml = ({ markdown }: { markdown: string }) => {
   return (
     <Markdown
       options={{
+        wrapper: React.Fragment,
         overrides: {
           h1: {
             component: Heading.h1,

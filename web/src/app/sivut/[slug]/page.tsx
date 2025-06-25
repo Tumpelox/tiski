@@ -1,6 +1,5 @@
 import MarkdownToHtml from '@/components/MarkdownToHtml';
 import { Heading } from '@/components/Text';
-import { Card, CardContent } from '@/components/ui/card';
 import { Article, ArticleDatabase } from '@/interfaces/article.interface';
 import { getDocumentWithApi } from '@/services/databases';
 import { notFound } from 'next/navigation';
@@ -21,15 +20,13 @@ const Page = async ({ params }: Props) => {
   if (!data) notFound();
 
   return (
-    <div>
-      <Heading.h1 className="text-accent-foreground mt-6 mb-4 text-4xl text-wrap">
-        {data.title}
+    <div className="flex flex-col gap-6 text-card-foreground">
+      <Heading.h1 className="mt-6 mb-4 text-4xl text-wrap">
+        {data.title.toUpperCase()}
       </Heading.h1>
-      <Card>
-        <CardContent>
-          <MarkdownToHtml markdown={data.text} />
-        </CardContent>
-      </Card>
+      <div className="flex flex-col gap-4">
+        <MarkdownToHtml markdown={data.text} />
+      </div>
     </div>
   );
 };

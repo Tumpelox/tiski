@@ -32,6 +32,7 @@ interface CloudButtonLink
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   small?: boolean;
   variant?: VariantProps<typeof backgroundVariants>['variant'];
+  size?: VariantProps<typeof backgroundVariants>['size'];
   children: React.ReactNode;
   className?: string;
 }
@@ -40,6 +41,7 @@ interface CloudButtonButton
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   small?: boolean;
   variant?: VariantProps<typeof backgroundVariants>['variant'];
+  size?: VariantProps<typeof backgroundVariants>['size'];
   children: React.ReactNode;
   className?: string;
 }
@@ -51,12 +53,14 @@ const backgroundVariants = cva(
       size: {
         default: 'w-40 tracking-widest',
         small: 'w-28',
+        large: 'w-52 tracking-widest',
       },
       variant: {
         primary: 'text-primary hover:text-primary/80',
         secondary: 'text-secondary hover:text-secondary/80',
         destructive: 'text-destructive hover:text-destructive/80',
         accent: 'text-accent hover:text-accent/80',
+        card: 'text-card hover:text-card/80',
       },
     },
     defaultVariants: { size: 'default', variant: 'primary' },
@@ -70,12 +74,14 @@ const textVariants = cva(
       size: {
         default: 'text-base',
         small: 'text-sm font-semibold',
+        large: 'text-lg font-semibold',
       },
       variant: {
         primary: 'text-primary-foreground',
         secondary: 'text-secondary-foreground',
         destructive: 'text-destructive-foreground',
         accent: 'text-accent-foreground',
+        card: 'text-card-foreground',
       },
     },
     defaultVariants: { size: 'default', variant: 'primary' },
@@ -87,6 +93,7 @@ const CloudLink = ({
   children,
   className = '',
   variant = 'primary',
+  size = 'default',
   ...linkProps
 }: CloudButtonLink) => {
   return (
@@ -94,15 +101,13 @@ const CloudLink = ({
       href={linkProps.href as string}
       {...linkProps}
       className={cn(
-        backgroundVariants({ size: small ? 'small' : 'default', variant }),
+        backgroundVariants({ size: small ? 'small' : size, variant }),
         className
       )}
     >
       <CloudGraphic className="object-contain" />
       <span
-        className={cn(
-          textVariants({ size: small ? 'small' : 'default', variant })
-        )}
+        className={cn(textVariants({ size: small ? 'small' : size, variant }))}
       >
         {children}
       </span>
@@ -114,6 +119,7 @@ const CloudButton = ({
   small = false,
   children,
   variant = 'primary',
+  size = 'default',
   className = '',
   ...buttonProps
 }: CloudButtonButton) => {
@@ -121,15 +127,13 @@ const CloudButton = ({
     <button
       {...buttonProps}
       className={cn(
-        backgroundVariants({ size: small ? 'small' : 'default', variant }),
+        backgroundVariants({ size: small ? 'small' : size, variant }),
         className
       )}
     >
       <CloudGraphic className="object-contain" />
       <span
-        className={cn(
-          textVariants({ size: small ? 'small' : 'default', variant })
-        )}
+        className={cn(textVariants({ size: small ? 'small' : size, variant }))}
       >
         {children}
       </span>
