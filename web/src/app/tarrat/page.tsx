@@ -90,7 +90,7 @@ const TarratPage = async () => {
                   }
                   back={
                     <div className="flex flex-col justify-center h-full">
-                      <Paragraph className="text-lg sm:text-base md:text-sm text-left">
+                      <Paragraph className="md:text-sm text-left">
                         {item.description}
                       </Paragraph>
                     </div>
