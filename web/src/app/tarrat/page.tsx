@@ -188,7 +188,7 @@ const TarratPage = async () => {
               <CloudLink
                 variant={'card'}
                 size={'large'}
-                href="https://www.mielenterveystalo.fi/fi/omahoito/uskonnollisesta-yhteisosta-irtautumisen-omahoito-ohjelma/mita-hengellinen-vakivalta"
+                href="https://instagram.com/tarratoimikunta"
                 className="text-base flex items-center"
               >
                 @tarratoimikunta
