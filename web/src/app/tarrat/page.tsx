@@ -115,7 +115,7 @@ const TarratPage = async () => {
               <Link
                 target="_blank"
                 href="https://www.worldsexualhealth.net/_files/ugd/793f03_8f71ab092a2e43939aa88f72690d87d0.pdf"
-                className="text-2xl sm:text-xl md:text-lg"
+                className="text-2xl sm:text-xl md:text-lg  hover:-translate-y-1.5 transition-transform"
               >
                 Avaa PDF
                 <LinkIcon className="ml-2 inline" />
@@ -162,7 +162,7 @@ const TarratPage = async () => {
               <Link
                 target="_blank"
                 href="https://www.mielenterveystalo.fi/fi/omahoito/uskonnollisesta-yhteisosta-irtautumisen-omahoito-ohjelma/mita-hengellinen-vakivalta"
-                className="text-2xl sm:text-xl md:text-lg"
+                className="text-2xl sm:text-xl md:text-lg  hover:-translate-y-1.5 transition-transform"
               >
                 Lue lisää
                 <LinkIcon className="ml-2 inline" />
@@ -186,7 +186,7 @@ const TarratPage = async () => {
               <Link
                 target="_blank"
                 href="https://instagram.com/tarratoimikunta"
-                className="text-2xl sm:text-xl md:text-lg"
+                className="text-2xl sm:text-xl md:text-lg hover:-translate-y-1.5 transition-transform"
               >
                 @tarratoimikunta
                 <LinkIcon className="ml-2 inline" />
