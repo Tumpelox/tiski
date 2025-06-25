@@ -15,7 +15,7 @@ import TarraCard from '../../components/FlipCard';
 import Image from 'next/image';
 import { UnifrakturCook } from 'next/font/google';
 import { CloudLink } from '@/components/CloudButton';
-import { Link } from 'lucide-react';
+import { Instagram, Link } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -167,6 +167,31 @@ const TarratPage = async () => {
                 className="text-2xl sm:text-xl md:text-lg"
               >
                 Lue lisää
+                <Link className="ml-2" />
+              </CloudLink>
+            </div>
+          }
+        />
+        <TarraCard
+          front={
+            <div
+              className={`${unifrakturCook.className} h-full flex flex-col justify-center items-center bg-white text-black`}
+            >
+              <Paragraph className="text-center text-[2.7rem] sm:text-3xl flex items-center">
+                Instagram
+                <Instagram className="ml-2 inline" />
+              </Paragraph>
+            </div>
+          }
+          back={
+            <div className="h-full flex flex-col items-center justify-center">
+              <CloudLink
+                variant={'card'}
+                size={'large'}
+                href="https://www.mielenterveystalo.fi/fi/omahoito/uskonnollisesta-yhteisosta-irtautumisen-omahoito-ohjelma/mita-hengellinen-vakivalta"
+                className="text-base flex items-center"
+              >
+                @tarratoimikunta
                 <Link className="ml-2" />
               </CloudLink>
             </div>
