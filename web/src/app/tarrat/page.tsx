@@ -1,4 +1,3 @@
-import { Heading } from '@/components/Text';
 import { Heading, Paragraph } from '@/components/Text';
 
 import { Bundle } from '@/interfaces/bundle.interface';
@@ -14,6 +13,19 @@ import { listDocumentsWithApi } from '@/services/databases';
 import { Suspense } from 'react';
 import TarraCard from '../../components/FlipCard';
 import Image from 'next/image';
+import { UnifrakturCook } from 'next/font/google';
+import { CloudLink } from '@/components/CloudButton';
+import { Link } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
+
+const unifrakturCook = UnifrakturCook({
+  weight: '700',
+  subsets: ['latin'],
+});
 
 const getProducts = async () => {
   const { data } = await listDocumentsWithApi<ProductDocument>(
@@ -42,6 +54,10 @@ const TarratPage = async () => {
       <Heading.h1 className="text-center text-4xl md:text-5xl mt-4">
         TARRAT
       </Heading.h1>
+      <Paragraph className="text-center text-lg md:text-xl italic">
+        <span className="not-italic">ℹ️</span> Tarrojen kääntöpuolelta löydät
+        ajatuksia tarrojen taustoista
+      </Paragraph>
       <div
         className={cn('grid grid-cols-1 gap-4 w-full', {
           'sm:grid-cols-1': items.length === 1,
@@ -79,9 +95,83 @@ const TarratPage = async () => {
                       </Paragraph>
                     </div>
                   }
+                />
+              );
             }
           })}
         </Suspense>
+        <TarraCard
+          front={
+            <div
+              className={`${unifrakturCook.className} h-full flex flex-col justify-center items-center bg-white text-black`}
+            >
+              <Paragraph className="text-center text-5xl sm:text-3xl">
+                Seksuaalioikeuksien julistus
+              </Paragraph>
+            </div>
+          }
+          back={
+            <div className="h-full flex flex-col items-center justify-center">
+              <CloudLink
+                variant={'card'}
+                size={'large'}
+                href="https://www.worldsexualhealth.net/_files/ugd/793f03_8f71ab092a2e43939aa88f72690d87d0.pdf"
+                className="text-2xl sm:text-xl md:text-lg"
+              >
+                Avaa PDF
+                <Link className="ml-2" />
+              </CloudLink>
+            </div>
+          }
+        />
+        {/* <TarraCard
+          front={
+            <div
+              className={`${unifrakturCook.className} h-full flex flex-col justify-center items-center bg-white text-black`}
+            >
+              <Paragraph className="text-center text-5xl sm:text-3xl">
+                Lasten oikeuksien julistus
+              </Paragraph>
+            </div>
+          }
+          back={
+            <div className="h-full flex flex-col items-center justify-center">
+              <CloudLink
+                variant={'card'}
+                size={'large'}
+                href="https://www.unicef.fi/tyomme/lapsen-oikeudet/lapsen-oikeuksien-sopimus/lapsen-oikeuksien-sopimus-tiivistettyna/"
+                className="text-2xl sm:text-xl md:text-lg"
+              >
+                Avaa sivu
+                <Link className="ml-2" />
+              </CloudLink>
+            </div>
+          }
+        /> */}
+        <TarraCard
+          front={
+            <div
+              className={`${unifrakturCook.className} h-full flex flex-col justify-center items-center bg-white text-black`}
+            >
+              <Paragraph className="text-center text-5xl sm:text-3xl">
+                Tietoa hengellisestä väkivallasta
+              </Paragraph>
+            </div>
+          }
+          back={
+            <div className="h-full flex flex-col items-center justify-center">
+              <CloudLink
+                variant={'card'}
+                size={'large'}
+                href="https://www.mielenterveystalo.fi/fi/omahoito/uskonnollisesta-yhteisosta-irtautumisen-omahoito-ohjelma/mita-hengellinen-vakivalta"
+                className="text-2xl sm:text-xl md:text-lg"
+              >
+                Lue lisää
+                <Link className="ml-2" />
+              </CloudLink>
+            </div>
+          }
+        />
       </div>
     </div>
   );
