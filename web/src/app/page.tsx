@@ -14,7 +14,7 @@ export default async function Home() {
               SUVISEUROISSA 2025
             </p>
           </div>
-          <Paragraph className="text-center text-shadow-[0_0_20px_#ffffff] text-2xl font-light">
+          <Paragraph className="text-center text-shadow-[0_0_20px_#ffffff] text-xl font-light">
             Tervetuloa turvasatamaan. Me olemme Tarratoimikunta. Seisomme
             ihmisoikeuksien ja heikompien puolella Jeesuksen tavoin.{' '}
           </Paragraph>
