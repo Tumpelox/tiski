@@ -1,14 +1,7 @@
-// import MarkdownToHtml from '@/components/MarkdownToHtml';
-// import getSettings from '@/lib/settings';
-
-import { CloudButton, CloudLink } from '@/components/CloudButton';
-import FeedbackForm from '@/components/FeedbackForm';
-import ReCaptchaContext from '@/components/ReCaptchaContext';
+import { CloudLink } from '@/components/CloudButton';
 import { Paragraph } from '@/components/Text';
 
 export default async function Home() {
-  // const settings = await getSettings();
-
   return (
     <>
       <div className="flex flex-col justify-center grow min-h-[calc(100dvh-var(--spacing)*28)] md:min-h-[calc(100dvh-var(--spacing)*40)]">
