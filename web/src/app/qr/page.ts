@@ -23,7 +23,8 @@ const QRCodePage = async ({ searchParams }: PageProps) => {
   if (data) {
     const searchParams = new URLSearchParams();
     if (data.destination.startsWith('/')) {
-      searchParams.set('qr', to as string);
+      searchParams.set('utm_content', 'qr');
+      searchParams.set('utm_id', to as string);
     }
     return redirect(data.destination + '?' + searchParams.toString());
   }
