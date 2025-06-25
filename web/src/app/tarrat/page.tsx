@@ -105,7 +105,7 @@ const TarratPage = async () => {
             <div
               className={`${unifrakturCook.className} h-full flex flex-col justify-center items-center bg-white text-black`}
             >
-              <Paragraph className="text-center text-5xl sm:text-3xl">
+              <Paragraph className="text-center text-[2.7rem] sm:text-3xl">
                 Seksuaalioikeuksien julistus
               </Paragraph>
             </div>
@@ -153,7 +153,7 @@ const TarratPage = async () => {
             <div
               className={`${unifrakturCook.className} h-full flex flex-col justify-center items-center bg-white text-black`}
             >
-              <Paragraph className="text-center text-5xl sm:text-3xl">
+              <Paragraph className="text-center text-[2.7rem] sm:text-3xl">
                 Tietoa hengellisestä väkivallasta
               </Paragraph>
             </div>
