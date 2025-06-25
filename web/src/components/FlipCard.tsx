@@ -1,19 +1,16 @@
 'use client';
 
-import { Product } from '@/interfaces/product.interface';
 import { cn } from '@/lib/utils';
 
-import Image from 'next/image';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
-const TarraCard = ({ item }: { item: Product }) => {
+const TarraCard = ({ front, back }: { front: ReactNode; back: ReactNode }) => {
   const [toggle, setToggle] = useState(false);
-  const picture = (item as Product).pictures[0];
+
   const cardClass =
-    'absolute w-full h-full backface-hidden shadow text-secondary-foreground';
+    'absolute w-full h-full backface-hidden shadow text-secondary-foreground rounded';
   return (
     <div
-      key={item.$id}
       className="perspective-distant bg-transparent aspect-square relative bg-transparent"
       onClick={() => setToggle(!toggle)}
     >
@@ -25,23 +22,14 @@ const TarraCard = ({ item }: { item: Product }) => {
           }
         )}
       >
-        <div className={cn(cardClass, 'overflow-hidden')}>
-          <Image
-            src={picture.src}
-            width={picture.width}
-            height={picture.height}
-            alt={picture.alt}
-            className="size-full"
-          />
-        </div>
+        <div className={cn(cardClass, 'overflow-hidden')}>{front}</div>
         <div
           className={cn(
             cardClass,
-            'rotate-y-180 flex flex-col items-center p-4 select-none bg-gradient-to-b from-secondary to-primary'
+            'rotate-y-180 p-4 select-none bg-card/70 text-card-foreground'
           )}
         >
-          <h3 className="text-xl md:text-lg text-center my-2">{item.title}</h3>
-          <p className="text-sm text-center">{item.description}</p>
+          {back}
         </div>
       </div>
       {/* <Button

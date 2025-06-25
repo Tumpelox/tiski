@@ -1,4 +1,5 @@
 import { Heading } from '@/components/Text';
+import { Heading, Paragraph } from '@/components/Text';
 
 import { Bundle } from '@/interfaces/bundle.interface';
 
@@ -11,7 +12,8 @@ import { clientSideProduct } from '@/lib/clientSideProduct';
 import { cn } from '@/lib/utils';
 import { listDocumentsWithApi } from '@/services/databases';
 import { Suspense } from 'react';
-import TarraCard from './TarraCard';
+import TarraCard from '../../components/FlipCard';
+import Image from 'next/image';
 
 const getProducts = async () => {
   const { data } = await listDocumentsWithApi<ProductDocument>(
@@ -50,7 +52,33 @@ const TarratPage = async () => {
         <Suspense fallback={<div>Ladataan tarroja...</div>}>
           {items.map((item: Product | Bundle) => {
             if (Object.hasOwn(item, 'pictures')) {
-              return <TarraCard key={item.$id} item={item as Product} />;
+              return (
+                <TarraCard
+                  key={item.$id}
+                  front={
+                    <Carousel>
+                      <CarouselContent>
+                        {(item as Product).pictures.map((picture, index) => (
+                          <CarouselItem key={picture.src + index}>
+                            <Image
+                              src={picture.src}
+                              width={picture.width}
+                              height={picture.height}
+                              alt={picture.alt}
+                              className="size-full"
+                            />
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                    </Carousel>
+                  }
+                  back={
+                    <div className="flex flex-col justify-center h-full">
+                      <Paragraph className="text-lg sm:text-base md:text-sm text-left">
+                        {item.description}
+                      </Paragraph>
+                    </div>
+                  }
             }
           })}
         </Suspense>
