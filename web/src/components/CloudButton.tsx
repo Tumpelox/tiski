@@ -73,8 +73,8 @@ const textVariants = cva(
     variants: {
       size: {
         default: 'text-base',
-        small: 'text-sm font-semibold',
-        large: 'text-lg font-semibold',
+        small: 'text-sm',
+        large: 'text-lg',
       },
       variant: {
         primary: 'text-primary-foreground',
