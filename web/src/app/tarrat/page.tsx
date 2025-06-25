@@ -14,13 +14,13 @@ import { Suspense } from 'react';
 import TarraCard from '../../components/FlipCard';
 import Image from 'next/image';
 import { UnifrakturCook } from 'next/font/google';
-import { CloudLink } from '@/components/CloudButton';
-import { Instagram, Link } from 'lucide-react';
+import { Instagram, Link as LinkIcon } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+import Link from 'next/link';
 
 const unifrakturCook = UnifrakturCook({
   weight: '700',
@@ -112,15 +112,14 @@ const TarratPage = async () => {
           }
           back={
             <div className="h-full flex flex-col items-center justify-center">
-              <CloudLink
-                variant={'card'}
-                size={'large'}
+              <Link
+                target="_blank"
                 href="https://www.worldsexualhealth.net/_files/ugd/793f03_8f71ab092a2e43939aa88f72690d87d0.pdf"
                 className="text-2xl sm:text-xl md:text-lg"
               >
                 Avaa PDF
-                <Link className="ml-2" />
-              </CloudLink>
+                <LinkIcon className="ml-2 inline" />
+              </Link>
             </div>
           }
         />
@@ -160,15 +159,14 @@ const TarratPage = async () => {
           }
           back={
             <div className="h-full flex flex-col items-center justify-center">
-              <CloudLink
-                variant={'card'}
-                size={'large'}
+              <Link
+                target="_blank"
                 href="https://www.mielenterveystalo.fi/fi/omahoito/uskonnollisesta-yhteisosta-irtautumisen-omahoito-ohjelma/mita-hengellinen-vakivalta"
                 className="text-2xl sm:text-xl md:text-lg"
               >
                 Lue lisää
-                <Link className="ml-2" />
-              </CloudLink>
+                <LinkIcon className="ml-2 inline" />
+              </Link>
             </div>
           }
         />
@@ -185,15 +183,14 @@ const TarratPage = async () => {
           }
           back={
             <div className="h-full flex flex-col items-center justify-center">
-              <CloudLink
-                variant={'card'}
-                size={'large'}
+              <Link
+                target="_blank"
                 href="https://instagram.com/tarratoimikunta"
-                className="text-base flex items-center"
+                className="text-2xl sm:text-xl md:text-lg"
               >
                 @tarratoimikunta
-                <Link className="ml-2" />
-              </CloudLink>
+                <LinkIcon className="ml-2 inline" />
+              </Link>
             </div>
           }
         />
