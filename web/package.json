@@ -25,7 +25,7 @@
     "immer": "^10.1.1",
     "lucide-react": "^0.479.0",
     "markdown-to-jsx": "^7.7.4",
-    "next": "15.1.6",
+    "next": "15.1.9",
     "next-plausible": "^3.12.4",
     "next-recaptcha-v3": "^1.5.2",
     "node-appwrite": "^16.0.0",
