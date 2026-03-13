@@ -1,0 +1,1 @@
+- [] Teksti jossa kehotetaan palauttamaan tai antamaan muille tarrat jos ei pysty levittämään kaikkia
