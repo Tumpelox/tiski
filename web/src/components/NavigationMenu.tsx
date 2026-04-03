@@ -14,7 +14,7 @@ const NavigationMenu = ({
         <CloudLink
           key={item.url}
           href={item.url}
-          variant={'accent'}
+          variant={'card'}
           className="md:w-32 mt-2 md:mt-0"
         >
           {item.name.toUpperCase()}

@@ -26,7 +26,7 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
         className={cn(
           {
             'absolute text-secondary-foreground': visible,
-            'drop-shadow-md absolute text-background': !visible,
+            'drop-shadow-md absolute text-white': !visible,
           },
           'md:hidden size-10 z-50 top-1 right-0 m-2'
         )}
