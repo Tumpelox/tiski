@@ -5,7 +5,7 @@ export default async function Home() {
   return (
     <>
       <div className="flex flex-col justify-center grow min-h-[calc(100dvh-var(--spacing)*28)] md:min-h-[calc(100dvh-var(--spacing)*46)]">
-        <div className="flex flex-col items-center w-full text-white text-center row-span-1 py-8 gap-6 translate-y-1/4">
+        <div className="flex flex-col items-center w-full text-background text-center row-span-1 py-8 gap-6 translate-y-1/4">
           <div className="flex flex-col">
             <h1 className="font-bold text-shadow-[0_0_20px_#ffffff] text-4xl md:text-5xl">
               TARRATOIMIKUNTA
