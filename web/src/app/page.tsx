@@ -11,7 +11,7 @@ export default async function Home() {
               TARRATOIMIKUNTA
             </h1>
             <p className="text-3xl md:text-4xl font-light text-shadow-[0_0_20px_#ffffff]">
-              SUVISEUROISSA 2025
+              SUVISEUROISSA 2026
             </p>
           </div>
           <Paragraph className="text-center text-shadow-[0_0_20px_#ffffff] text-xl font-light">
