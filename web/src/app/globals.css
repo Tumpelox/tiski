@@ -36,8 +36,8 @@
   ---break---
 */
 :root {
-  --background: hsl(28, 72%, 85%);
-  --foreground: hsl(13, 16%, 11%);
+  --background: hsl(208, 34%, 67%);
+  --foreground: hsl(207, 100%, 98%);
   --card: hsl(0, 0%, 100%);
   --card-foreground: hsl(220, 10%, 20%);
   --popover: hsl(0, 0%, 100%);
