@@ -46,7 +46,7 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
       <div
         className={`${!visible && 'hidden md:flex'} fixed md:relative z-40 top-0 right-0 h-screen md:h-fit w-full bg-gradient-to-b md:bg-none from-secondary to-primary`}
       >
-        <div className="h-dvh md:h-fit w-full flex flex-col md:flex-row gap-5 items-center justify-center md:py-2">
+        <div className="h-dvh md:h-fit w-full flex flex-col md:flex-row gap-5 items-center justify-center md:pt-4">
           {props.children}
         </div>
       </div>
