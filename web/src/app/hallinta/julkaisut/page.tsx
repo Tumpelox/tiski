@@ -14,7 +14,17 @@ const KuvatPage = async () => {
   const { data } = await listDocuments<FeedDocument>(
     FeedDatabase.DatabaseId,
     FeedDatabase.CollectionId,
-    [Query.select(['$id', 'text', 'images.*'])]
+    [
+      Query.select([
+        '$id',
+        'text',
+        'images.$id',
+        'images.src',
+        'images.alt',
+        'images.width',
+        'images.height',
+      ]),
+    ]
   );
 
   if (!data) redirect('/');
