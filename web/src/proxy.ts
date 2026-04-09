@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { getLoggedInUser } from './services/userSession';
 import isAdmin, { isPostittaja } from './lib/isAdmin';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/hallinta')) {
     const loginUrl = new URL('/kirjaudu', request.url);
 

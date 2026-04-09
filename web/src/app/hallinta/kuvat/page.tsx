@@ -22,16 +22,12 @@ const KuvatPage = async () => {
   return (
     <div className="space-y-4">
       <Heading.h1>Kuvat</Heading.h1>
-      <Card>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {data.map((picture) => (
-              <ImageWithRemove key={picture.$id} {...picture} />
-            ))}
-          </div>
-          <UploadImage />
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {data.map((picture) => (
+          <ImageWithRemove key={picture.$id} {...picture} />
+        ))}
+      </div>
+      <UploadImage />
     </div>
   );
 };

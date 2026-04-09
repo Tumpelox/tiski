@@ -80,11 +80,9 @@ const TilauksetPage = async (params: Params) => {
   return (
     <div className="space-y-4">
       <Heading.h1>Listaus tilauksista</Heading.h1>
-      <Card>
-        <CardContent>
-          <TilauksetTable orders={data} total={total} />
-        </CardContent>
-      </Card>
+
+      <TilauksetTable orders={data} total={total} />
+
       <DownloadAll />
     </div>
   );
