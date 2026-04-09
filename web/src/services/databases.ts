@@ -12,7 +12,8 @@ export async function getAdminDatabases() {
 export const getDocumentWithApi = async <Type extends Models.Document>(
   databaseId: string,
   collectionId: string,
-  documentId: string
+  documentId: string,
+  queries: string[] = []
 ): Promise<{ data: Type | null; error: DatabaseErrors | null }> => {
   try {
     const databases = await getAdminDatabases();
@@ -20,7 +21,8 @@ export const getDocumentWithApi = async <Type extends Models.Document>(
     const data = await databases.getDocument<Type>(
       databaseId,
       collectionId,
-      documentId
+      documentId,
+      queries
     );
 
     return { data, error: null };
