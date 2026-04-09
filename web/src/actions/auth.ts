@@ -9,8 +9,21 @@ import { ToastType } from '@/store';
 import { deleteSession } from '@/services/userSession';
 import { z } from 'zod';
 import { emailAndPassword, orderCodeSchema } from '@/schemas/auth.schema';
+import { redirect } from 'next/navigation';
 
 // Uudelleenohjaukset kuntoon
+
+export const autoLoginWithCode = async (code: string) => {
+  const { secret, userId } = await loginWithCode(code);
+
+  if (!secret || !userId) {
+    redirect('/login');
+  }
+
+  await createTokenSession(userId, secret);
+
+  redirect('/');
+};
 
 export async function handleCodeLogin(
   loginData: z.infer<typeof orderCodeSchema>

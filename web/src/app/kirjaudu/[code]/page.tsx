@@ -1,6 +1,4 @@
-import { loginWithCode } from '@/services/orderCode';
-import { createTokenSession } from '@/services/userSession';
-import { redirect } from 'next/navigation';
+import AutoLoginWithCode from './AutoLoginWithCode';
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -9,15 +7,7 @@ interface Props {
 const MagicPage = async ({ params }: Props) => {
   const { code } = await params;
 
-  const { secret, userId } = await loginWithCode(code);
-
-  if (!secret || !userId) {
-    redirect('/login');
-  }
-
-  await createTokenSession(userId, secret);
-
-  redirect('/');
+  return <AutoLoginWithCode code={code} />;
 };
 
 export default MagicPage;
