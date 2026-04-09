@@ -12,8 +12,20 @@ import { ToastType } from '@/store';
 
 import { z } from 'zod';
 import { ErrorResponse } from '@/services/appwrite';
+import { getLoggedInUser } from '@/services/userSession';
+import isAdmin from '@/lib/isAdmin';
 
 export const uploadImage = async (upload: z.infer<typeof imageSchema>) => {
+  const { user } = await getLoggedInUser();
+
+  if (!user || !isAdmin(user)) {
+    return {
+      message: 'Sinulla ei ole riittäviä käyttöoikeuksia',
+      type: ToastType.ERROR,
+      data: null,
+    };
+  }
+
   const { data, success } = imageSchema.safeParse(upload);
 
   if (success === false) {
@@ -26,8 +38,8 @@ export const uploadImage = async (upload: z.infer<typeof imageSchema>) => {
 
   const file = await createFile(
     PictureDatabase.BucketId,
-    formatID(data.image),
-    data.image.data
+    formatID(data.file),
+    data.file.data
   );
 
   if (!file.data) {
@@ -38,7 +50,7 @@ export const uploadImage = async (upload: z.infer<typeof imageSchema>) => {
     };
   }
   const { width = 0, height = 0 } = imageSize(
-    Buffer.from(await data.image.data.arrayBuffer())
+    Buffer.from(await data.file.data.arrayBuffer())
   );
 
   const { src } = getFile(file.data);
@@ -71,6 +83,16 @@ export const uploadImage = async (upload: z.infer<typeof imageSchema>) => {
 };
 
 export const removeImage = async (id: string) => {
+  const { user } = await getLoggedInUser();
+
+  if (!user || !isAdmin(user)) {
+    return {
+      message: 'Sinulla ei ole riittäviä käyttöoikeuksia',
+      type: ToastType.ERROR,
+      data: null,
+    };
+  }
+
   const { data, success } = z
     .string()
     .regex(/^[a-zA-Z0-9_.-]*$/)

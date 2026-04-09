@@ -1,6 +1,5 @@
 'use client';
 
-import { uploadImage } from '@/actions/storage';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -21,19 +20,23 @@ import { Input } from '@/components/ui/input';
 import fileReader from '@/lib/fileReader';
 import imageSchema, { AllowedImageTypes } from '@/schemas/image.schema';
 
-import { useToastMessageStore } from '@/store';
+import { ToastType, useToastMessageStore } from '@/store';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { z } from 'zod';
 
-const UploadImage = () => {
+const UploadImage = ({
+  uploadImage,
+}: {
+  uploadImage: (image: z.infer<typeof imageSchema>) => {
+    message: string;
+    type: ToastType;
+  };
+}) => {
   const addMessage = useToastMessageStore((state) => state.addMessage);
-
-  const router = useRouter();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -46,12 +49,11 @@ const UploadImage = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof imageSchema>) => {
-    const { message, type } = await uploadImage(values);
+    const { message, type } = uploadImage(values);
     addMessage(message, type);
     if (type === 'success') {
       form.reset();
       setIsDialogOpen(false);
-      router.refresh();
     }
   };
 
@@ -67,12 +69,6 @@ const UploadImage = () => {
     else form.setValue('file', files[0]);
   };
 
-  useEffect(() => {
-    if (!isDialogOpen) {
-      form.reset();
-    }
-  }, [isDialogOpen, form]);
-
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
@@ -83,7 +79,14 @@ const UploadImage = () => {
           <DialogTitle>Lisää kuva</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+
+              form.handleSubmit(onSubmit)(e);
+            }}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="file"
@@ -117,7 +120,11 @@ const UploadImage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={form.formState.isSubmitting}>
+            <Button
+              type="button"
+              onClick={(e) => form.handleSubmit(onSubmit)(e)}
+              disabled={form.formState.isSubmitting}
+            >
               {form.formState.isSubmitting ? 'Lähetetään...' : 'Lähetä'}
             </Button>
           </form>

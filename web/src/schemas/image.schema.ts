@@ -10,7 +10,7 @@ export const AllowedImageTypes = [
 ];
 
 const imageSchema = z.object({
-  image: z.object({
+  file: z.object({
     data: z.instanceof(File),
     type: z.string().refine((type) => AllowedImageTypes.includes(type), {
       message:

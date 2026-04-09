@@ -19,33 +19,26 @@ const HallintaNavigation = () => {
           <NavigationMenuItem>
             <Link
               href="/hallinta/sivut"
-              className="flex items-center space-x-2"
-              legacyBehavior
+              className={navigationMenuTriggerStyle()}
               passHref
             >
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Sivut
-              </NavigationMenuLink>
+              Sivut
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link
               href="/hallinta/koodit"
-              className="flex items-center space-x-2"
-              legacyBehavior
+              className={navigationMenuTriggerStyle()}
               passHref
             >
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Koodit
-              </NavigationMenuLink>
+              Koodit
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuTrigger>
               <Link
                 href="/hallinta/tilaukset"
-                className="flex items-center space-x-2"
-                legacyBehavior
+                className={navigationMenuTriggerStyle()}
                 passHref
               >
                 Tilaukset
@@ -54,36 +47,38 @@ const HallintaNavigation = () => {
             <NavigationMenuContent>
               <Link
                 href="/hallinta/tilaukset/tuote"
-                className="flex items-center space-x-2"
-                legacyBehavior
+                className={navigationMenuTriggerStyle()}
                 passHref
               >
-                <NavigationMenuLink>Tuotteittain</NavigationMenuLink>
+                Tuotteittain
               </Link>
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link
               href="/hallinta/kuvat"
-              className="flex items-center space-x-2"
-              legacyBehavior
+              className={navigationMenuTriggerStyle()}
               passHref
             >
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Kuvat
-              </NavigationMenuLink>
+              Kuvat
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link
               href="/hallinta/tuotteet"
-              className="flex items-center space-x-2"
-              legacyBehavior
+              className={navigationMenuTriggerStyle()}
               passHref
             >
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Tuotteet
-              </NavigationMenuLink>
+              Tuotteet
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link
+              href="/hallinta/julkaisut"
+              className={navigationMenuTriggerStyle()}
+              passHref
+            >
+              Julkaisut
             </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
