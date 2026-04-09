@@ -5,6 +5,7 @@ import { createAdminClient } from '@/services/createAdminClient';
 import {
   createDocument,
   getDocument,
+  getIndex,
   listDocumentsWithApi,
   removeDocument,
   updateDocument,
@@ -217,3 +218,113 @@ export const deleteOrderCode = async ($id: string) => {
     };
   }
 };
+
+export const deleteUnusedUsers = async () => {
+  try {
+    const { user } = await getLoggedInUser();
+
+    if (!user || !isAdmin(user)) {
+      return {
+        message: 'Sinulla ei ole riittäviä käyttöoikeuksia',
+        type: ToastType.ERROR,
+        data: null,
+      };
+    }
+
+    const adminClient = await createAdminClient();
+
+    const users = new Users(adminClient.account.client);
+
+    const userList = await users.list([Query.limit(1000)]);
+
+    const now = new Date();
+
+    const unusedUsers = userList.users.filter((u) => {
+      const lastLogin = new Date(u.accessedAt || 0);
+      u.prefs;
+      const diffInDays =
+        (now.getTime() - lastLogin.getTime()) / (1000 * 3600 * 24);
+      return diffInDays > 30; // Käyttäjät, jotka eivät ole kirjautuneet sisään viimeiseen 30 päivään
+    });
+
+    console.log(`Found ${unusedUsers.length} unused users. Deleting...`);
+
+    for (const unusedUser of unusedUsers) {
+      await users.delete(unusedUser.$id);
+    }
+
+    return {
+      message: `Poistettu ${unusedUsers.length} käyttämätöntä käyttäjää`,
+      type: ToastType.SUCCESS,
+      data: null,
+    };
+  } catch (error) {
+    console.error('Error deleting unused users:', error);
+    return {
+      message: 'Käyttäjien poisto epäonnistui',
+      type: ToastType.ERROR,
+      data: null,
+    };
+  }
+};
+
+// export const deleteAllOrderCodes = async (idList: string[]) => {
+//   try {
+//     const { user } = await getLoggedInUser();
+
+//     if (!user || !isAdmin(user)) {
+//       return {
+//         message: 'Sinulla ei ole riittäviä käyttöoikeuksia',
+//         type: ToastType.ERROR,
+//         data: null,
+//       };
+//     }
+
+//     const idListSchema = z.array(codeSchema);
+
+//     const { success, data } = idListSchema.safeParse(idList);
+
+//     if (success === false) {
+//       return {
+//         message: 'Virheellinen pyyntö',
+//         type: ToastType.ERROR,
+//         data: null,
+//       };
+//     }
+
+//     const currentOrderCode = await getIndex(
+//       OrderCodeDatabase.DatabaseId,
+//       OrderCodeDatabase.CollectionId,
+//       "index_ordercode_key"
+//     );
+
+//     if (!currentOrderCode.data) throw new Error('Code not found');
+
+//     const adminClient = await createAdminClient();
+
+//     const users = new Users(adminClient.account.client);
+
+//     await users.delete(currentOrderCode.data.userId);
+
+//     const result = await removeDocument(
+//       OrderCodeDatabase.DatabaseId,
+//       OrderCodeDatabase.CollectionId,
+//       data
+//     );
+
+//     if (result.data) {
+//       return {
+//         message: `Tilauskoodi {code} poistettu`,
+//         type: ToastType.SUCCESS,
+//         data: result.data,
+//       };
+//     } else throw new Error('Code delete failed');
+//   } catch (error) {
+//     console.error('Error creating order code:', error);
+//     return {
+//       message: 'Koodin poisto epäonnistui',
+//       type: ToastType.ERROR,
+//       data: null,
+//     };
+//   }
+// };
