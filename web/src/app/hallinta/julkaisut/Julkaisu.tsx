@@ -40,7 +40,7 @@ const Julkaisu = ({ julkaisu }: { julkaisu: FeedDocument }) => {
   return (
     <div className="relative">
       <Link href={`/hallinta/julkaisut/${julkaisu.$id}`}>
-        <div className="flex flex-col gap-4 w-full min-h-fit h-full rounded-md bg-[#f0f0f0] px-2 py-4">
+        <div className="flex flex-col gap-2 w-full min-h-fit h-full">
           {julkaisu.images.length > 0 && (
             <Image
               key={julkaisu.images[0].$id}
@@ -48,11 +48,11 @@ const Julkaisu = ({ julkaisu }: { julkaisu: FeedDocument }) => {
               alt={julkaisu.images[0].alt}
               width={julkaisu.images[0].width}
               height={julkaisu.images[0].height}
-              className="w-full rounded"
+              className="w-full rounded-md aspect-[4/5] object-cover"
             />
           )}
 
-          <div className="grow">
+          <div className="grow px-4">
             <MarkdownToHtml markdown={julkaisu.text} />
           </div>
         </div>

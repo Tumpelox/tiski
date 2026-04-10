@@ -41,7 +41,7 @@ const ImageWithRemove = ({
         alt={alt}
         width={width}
         height={height}
-        className="w-full h-auto rounded"
+        className="object-cover w-full aspect-[4/5] rounded-md"
       />
       <Button
         type="button"
