@@ -38,7 +38,7 @@ const InstagramFeed = async () => {
         Tarratoimikunnan Instagram-julkaisuja
       </h2>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3 justify-items-center">
-        {posts.map((post) => (
+        {posts.toReversed().map((post) => (
           <div
             key={post.$id}
             className="space-y-2"

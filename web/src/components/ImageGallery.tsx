@@ -27,7 +27,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
   return (
     <Carousel className="w-full max-w-md">
       <CarouselContent>
-        {images.map((image, index) => (
+        {images.toReversed().map((image, index) => (
           <CarouselItem key={index}>
             <Image
               src={image.src}
