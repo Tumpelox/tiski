@@ -31,18 +31,21 @@ const KuvatPage = async () => {
 
   return (
     <div className="space-y-4">
-      <Heading.h1>Julkaisut</Heading.h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="flex justify-between w-full">
+        <Heading.h1>Julkaisut</Heading.h1>
+        <Link
+          href={'/hallinta/julkaisut/uusi'}
+          className={buttonVariants({ variant: 'default' })}
+        >
+          Luo uusi julkaisu <Plus className="size-4" />
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {data.map((julkaisu) => (
           <Julkaisu key={julkaisu.$id} julkaisu={julkaisu} />
         ))}
       </div>
-      <Link
-        href={'/hallinta/julkaisut/uusi'}
-        className={buttonVariants({ variant: 'default' })}
-      >
-        Luo uusi julkaisu <Plus className="size-4" />
-      </Link>
     </div>
   );
 };

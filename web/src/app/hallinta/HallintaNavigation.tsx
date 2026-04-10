@@ -15,7 +15,7 @@ const HallintaNavigation = () => {
   return (
     <div className="w-full text-secondary-foreground">
       <NavigationMenu>
-        <NavigationMenuList>
+        <NavigationMenuList className="grid grid-cols-3 gap-4 md:flex md:gap-1">
           <NavigationMenuItem>
             <Link
               href="/hallinta/sivut"

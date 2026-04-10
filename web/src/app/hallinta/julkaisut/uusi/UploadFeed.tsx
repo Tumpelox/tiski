@@ -79,7 +79,7 @@ const UploadFeed = ({
 
   const removeUpload = (id: string) => {
     try {
-      const current = form.getValues('images');
+      const current = form.getValues('images') || [];
       form.setValue('images', current.toSpliced(Number(id), 1));
       return { message: 'Kuva poistettu', type: ToastType.SUCCESS };
     } catch (e) {
@@ -89,7 +89,7 @@ const UploadFeed = ({
 
   const uploadImage = (image: z.infer<typeof imageSchema>) => {
     try {
-      const current = form.getValues('images');
+      const current = form.getValues('images') || [];
       form.setValue('images', [
         { alt: image.alt, file: image.file },
         ...current,
@@ -136,7 +136,7 @@ const UploadFeed = ({
               name="images"
               render={({ field }) => (
                 <>
-                  {field.value.map((file, index) => {
+                  {(field.value || []).map((file, index) => {
                     const imgSrc = URL.createObjectURL(file.file.data);
                     return (
                       <ImageWithRemove
