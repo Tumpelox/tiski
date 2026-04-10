@@ -52,7 +52,7 @@ const TarratPage = async () => {
   return (
     <div className="flex flex-col gap-10 text-accent-foreground">
       <Heading.h1 className="text-center text-4xl md:text-5xl mt-4">
-        TARRAT
+        TARRAT 2025
       </Heading.h1>
       <Paragraph className="text-center text-lg md:text-xl italic">
         <span className="not-italic">ℹ️</span> Tarrojen kääntöpuolelta löydät
