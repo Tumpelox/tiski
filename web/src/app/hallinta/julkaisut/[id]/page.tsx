@@ -6,6 +6,9 @@ import { getDocument } from '@/services/databases';
 import { FeedDatabase, FeedDocument } from '@/interfaces/feed.interface';
 import { notFound } from 'next/navigation';
 import UploadFeed from '../uusi/UploadFeed';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -26,7 +29,15 @@ const UusiFeedPage = async ({ params }: Props) => {
 
   return (
     <div className="space-y-4">
-      <Heading.h1>Muokkaa julkaisua</Heading.h1>
+      <div className="flex justify-between items-center w-full">
+        <Heading.h1>Muokkaa julkaisua</Heading.h1>
+        <Link
+          href={'/hallinta/julkaisut'}
+          className={buttonVariants({ variant: 'default' })}
+        >
+          Takaisin <ArrowLeft className="size-4" />
+        </Link>
+      </div>
       {isAdmin(user) && (
         <div className="mb-4">
           <UploadFeed id={data.$id} text={data.text} images={data.images} />

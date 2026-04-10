@@ -14,7 +14,7 @@ const UusiFeedPage = async () => {
       <div className="flex justify-between items-center w-full">
         <Heading.h1>Luo uusi julkaisu</Heading.h1>
         <Link
-          href={'/hallinta/julkaisut/uusi'}
+          href={'/hallinta/julkaisut'}
           className={buttonVariants({ variant: 'default' })}
         >
           Takaisin <ArrowLeft className="size-4" />
