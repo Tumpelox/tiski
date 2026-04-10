@@ -6,7 +6,7 @@ import Siluet from '@/components/Siluet';
 export default async function Home() {
   return (
     <>
-      <div className="flex flex-col justify-center grow min-h-[calc(100dvh-var(--spacing)*28)] md:min-h-[calc(100dvh-var(--spacing)*46)] md:min-h-[calc(100dvh-var(--spacing)*46)] md:mb-40 lg:mb-[calc(var(--spacing)*104)] xl:mb-[calc(var(--spacing)*120)]">
+      <div className="flex flex-col justify-center grow min-h-[calc(100vh-var(--spacing)*28)] md:min-h-[calc(100vh-var(--spacing)*46)] md:min-h-[calc(100vh-var(--spacing)*46)] md:mb-40 lg:mb-[calc(var(--spacing)*104)] xl:mb-[calc(var(--spacing)*120)]">
         <div className="flex flex-col items-center w-full text-foreground text-center row-span-1 py-8 gap-6 translate-y-1/12">
           <div className="flex flex-col">
             <h1 className="font-bold text-shadow-[0_0_20px_#ffffff] text-4xl md:text-5xl">
