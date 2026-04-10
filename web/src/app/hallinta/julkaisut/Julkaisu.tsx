@@ -23,6 +23,7 @@ import { useState } from 'react';
 const Julkaisu = ({ julkaisu }: { julkaisu: FeedDocument }) => {
   const addMessage = useToastMessageStore((state) => state.addMessage);
   const [isLoading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const router = useRouter();
 
@@ -39,8 +40,8 @@ const Julkaisu = ({ julkaisu }: { julkaisu: FeedDocument }) => {
   };
   return (
     <div className="relative">
-      <Link href={`/hallinta/julkaisut/${julkaisu.$id}`}>
-        <div className="flex flex-col gap-2 w-full min-h-fit h-full">
+      <div className="flex flex-col gap-2 w-full min-h-fit h-full">
+        <Link href={`/hallinta/julkaisut/${julkaisu.$id}`}>
           {julkaisu.images.length > 0 && (
             <Image
               key={julkaisu.images[0].$id}
@@ -51,12 +52,25 @@ const Julkaisu = ({ julkaisu }: { julkaisu: FeedDocument }) => {
               className="w-full rounded-md aspect-[4/5] object-cover"
             />
           )}
-
-          <div className="grow px-4">
-            <MarkdownToHtml markdown={julkaisu.text} />
-          </div>
+        </Link>
+        <div className="grow px-4">
+          <MarkdownToHtml
+            markdown={
+              open ? julkaisu.text : String(julkaisu.text).slice(0, 300) + '...'
+            }
+          />
+          {String(julkaisu.text).length > 300 && (
+            <Button
+              variant={'ghost'}
+              className={'float-end text-primary bg-none underline'}
+              onClick={() => setOpen(!open)}
+            >
+              {open ? 'Sulje' : 'lisää'}
+            </Button>
+          )}
         </div>
-      </Link>
+      </div>
+
       <Dialog>
         <DialogTrigger asChild>
           <Button
