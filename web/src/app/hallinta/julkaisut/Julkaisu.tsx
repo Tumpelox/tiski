@@ -4,6 +4,11 @@ import { removeFeed } from '@/actions/feed';
 import MarkdownToHtml from '@/components/MarkdownToHtml';
 import { Button } from '@/components/ui/button';
 import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
+import {
   Dialog,
   DialogClose,
   DialogContent,
@@ -42,16 +47,28 @@ const Julkaisu = ({ julkaisu }: { julkaisu: FeedDocument }) => {
     <div className="relative">
       <div className="flex flex-col gap-2 w-full min-h-fit h-full">
         <Link href={`/hallinta/julkaisut/${julkaisu.$id}`}>
-          {julkaisu.images.length > 0 && (
-            <Image
-              key={julkaisu.images[0].$id}
-              src={julkaisu.images[0].src}
-              alt={julkaisu.images[0].alt}
-              width={julkaisu.images[0].width}
-              height={julkaisu.images[0].height}
-              className="w-full rounded-md aspect-[4/5] object-cover"
-            />
-          )}
+          <Carousel>
+            <CarouselContent className="rounded-md">
+              {julkaisu.images.length > 0 &&
+                julkaisu.images.map(
+                  ({ $id, src, alt, width, height }, index) => (
+                    <CarouselItem key={$id} className="relative">
+                      <Image
+                        key={$id}
+                        src={src}
+                        alt={alt}
+                        width={width}
+                        height={height}
+                        className="rounded-md aspect-[4/5] object-cover"
+                      />
+                      <p className="absolute text-muted bottom-2 right-2">
+                        {index + 1}/{julkaisu.images.length}
+                      </p>
+                    </CarouselItem>
+                  )
+                )}
+            </CarouselContent>
+          </Carousel>
         </Link>
         <div className="grow px-4">
           <MarkdownToHtml
