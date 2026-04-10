@@ -31,7 +31,7 @@ const KuvatPage = async () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between w-full">
+      <div className="flex justify-between items-center w-full">
         <Heading.h1>Julkaisut</Heading.h1>
         <Link
           href={'/hallinta/julkaisut/uusi'}
