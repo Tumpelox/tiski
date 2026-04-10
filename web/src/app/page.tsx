@@ -1,12 +1,13 @@
 import { CloudLink } from '@/components/CloudButton';
 import { Paragraph } from '@/components/Text';
 import InstagramFeed from '../components/InstagramFeed';
+import Siluet from '@/components/Siluet';
 
 export default async function Home() {
   return (
     <>
-      <div className="flex flex-col min-h-screen flex flex-col items-center justify-center md:min-h-[calc(100dvh-var(--spacing)*46)]">
-        <div className="flex flex-col items-center w-full text-background text-center row-span-1 py-8 gap-6 m-50">
+      <div className="flex flex-col min-h-screen flex flex-col items-center justify-center md:min-h-[calc(100dvh-var(--spacing)*46)] md:mb-40 lg:mb-[calc(var(--spacing)*104)] xl:mb-[calc(var(--spacing)*120)]">
+        <div className="flex flex-col items-center w-full text-foreground text-center row-span-1 py-8 gap-6 m-50">
           <div className="flex flex-col">
             <h1 className="font-bold text-shadow-[0_0_20px_#ffffff] text-4xl md:text-5xl">
               TARRATOIMIKUNTA
@@ -27,9 +28,10 @@ export default async function Home() {
           >
             MISTÄ ON KYSE?
           </CloudLink>
-          <InstagramFeed/>
         </div>
+        <Siluet />
       </div>
+      <InstagramFeed />
       {/* <ReCaptchaContext>
         <FeedbackForm />
       </ReCaptchaContext> */}
