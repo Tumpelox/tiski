@@ -1,5 +1,6 @@
 import { CloudLink } from '@/components/CloudButton';
 import { Paragraph } from '@/components/Text';
+// import InstagramFeed from '../components/InstagramFeed';
 
 export default async function Home() {
   return (
@@ -26,6 +27,7 @@ export default async function Home() {
           >
             MISTÄ ON KYSE?
           </CloudLink>
+          {/* <InstagramFeed/> */}
         </div>
       </div>
       {/* <ReCaptchaContext>
