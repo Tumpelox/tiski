@@ -75,7 +75,7 @@ export const uploadFeed = async (upload: z.infer<typeof feedSchema>) => {
     };
   }
 
-  const uploadedImages = await uploadImages(data.images);
+  const uploadedImages = await uploadImages(data.images || []);
 
   const result = await createDocument<FeedDocument>(
     FeedDatabase.DatabaseId,
@@ -150,7 +150,7 @@ export const updateFeed = async (upload: z.infer<typeof feedSchema>) => {
       const { error } = await removeImage(image);
     }
 
-    const uploadedImages = await uploadImages(data.images);
+    const uploadedImages = await uploadImages(data.images || []);
 
     await updateDocument<FeedDocument>(
       FeedDatabase.DatabaseId,
