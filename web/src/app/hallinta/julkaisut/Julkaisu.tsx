@@ -50,8 +50,9 @@ const Julkaisu = ({ julkaisu }: { julkaisu: FeedDocument }) => {
           <Carousel>
             <CarouselContent className="rounded-md">
               {julkaisu.images.length > 0 &&
-                julkaisu.images.map(
-                  ({ $id, src, alt, width, height }, index) => (
+                julkaisu.images
+                  .toReversed()
+                  .map(({ $id, src, alt, width, height }, index) => (
                     <CarouselItem key={$id} className="relative">
                       <Image
                         key={$id}
@@ -65,8 +66,7 @@ const Julkaisu = ({ julkaisu }: { julkaisu: FeedDocument }) => {
                         {index + 1}/{julkaisu.images.length}
                       </p>
                     </CarouselItem>
-                  )
-                )}
+                  ))}
             </CarouselContent>
           </Carousel>
         </Link>

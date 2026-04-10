@@ -146,7 +146,7 @@ const UploadFeed = ({
                 name="existingImages"
                 render={({ field }) => (
                   <>
-                    {(field.value || []).map((imageId, index) => {
+                    {(field.value || []).toReversed().map((imageId, index) => {
                       const image =
                         images?.find((img) => img.$id === imageId) || null;
 
@@ -173,7 +173,7 @@ const UploadFeed = ({
                 name="images"
                 render={({ field }) => (
                   <>
-                    {(field.value || []).map((file, index) => {
+                    {(field.value || []).toReversed().map((file, index) => {
                       const imgSrc = URL.createObjectURL(file.file.data);
                       return (
                         <CarouselItem key={index}>
