@@ -12,11 +12,7 @@ export const AllowedImageTypes = [
 
 const feedSchema = z
   .object({
-    existingImages: z
-      .string()
-      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-      .array()
-      .optional(),
+    existingImages: z.string().array().optional(),
     images: imageSchema.array().optional(),
     text: z
       .string()
@@ -30,12 +26,11 @@ const feedSchema = z
   .refine(
     (data) => {
       if (
-        data.images?.length ||
-        (0 === 0 && data.existingImages?.length) ||
-        0 === 0
+        (data.images?.length || 0) === 0 &&
+        (data.existingImages?.length || 0) === 0
       ) {
         return false;
-      }
+      } else return true;
     },
     {
       message: 'Vähintään yksi kuva vaaditaan',
