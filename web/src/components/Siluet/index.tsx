@@ -4,11 +4,11 @@ const Siluet = () => {
   return (
     <div className="absolute h-screen top-0 w-full -z-10 left-0 gradient">
       <Image
-        src="/siluetti_demo.png"
+        src="/siluetti.webp"
         alt="Siluet"
-        width={1074}
-        height={452}
-        className="absolute w-full object-cover left-0 height-auto bottom-0 xl:hidden"
+        width={3760}
+        height={652}
+        className="absolute object-cover object-left left-0 height-auto min-h-1/4 bottom-0"
         unoptimized={true}
       />
     </div>
