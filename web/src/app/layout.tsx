@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Montserrat } from 'next/font/google';
 import './globals.css';
 import * as React from 'react';
 import NavigationMenuButton from '@/components/NavigationMenuButton';
@@ -10,11 +9,6 @@ import ToastMessage from '@/components/ToastMessage';
 import SignOutButton from '@/components/SignOutButton';
 import { getLoggedInUser } from '@/services/userSession';
 import PlausibleProvider from 'next-plausible';
-
-const montserrat = Montserrat({
-  variable: '--font-montserrat',
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
   title: 'Tarratoimikunta',
@@ -42,7 +36,7 @@ export default async function RootLayout({
           <meta name="theme-color" content="#ffffff" />
         </head>
         <body
-          className={`${montserrat.variable} antialiased bg-background min-h-dvh flex flex-col md:gap-6`}
+          className={`antialiased bg-background min-h-dvh flex flex-col md:gap-6 gradient bg-fixed`}
         >
           <header className="w-full min-h-16 md:h-fit px-4 sm:px-8 md:px-0 md:container md:mx-auto md:max-w-3xl">
             <ToastMessage />
@@ -52,9 +46,7 @@ export default async function RootLayout({
               </NavigationMenu>
             </NavigationMenuButton>
           </header>
-          <main className="container max-w-5xl mx-auto px-4 sm:px-8 md:px-8 lg:px-0 grow flex flex-col pb-8 pt-4">
-            {children}
-          </main>
+          <main className="grow flex flex-col pb-8 pt-4">{children}</main>
         </body>
       </html>
     </PlausibleProvider>

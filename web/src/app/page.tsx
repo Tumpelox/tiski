@@ -31,7 +31,12 @@ export default async function Home() {
         </div>
         <Siluet />
       </div>
-      <InstagramFeed />
+      <div className="bg-primary pt-8 relative">
+        <div className="container max-w-5xl mx-auto px-4 sm:px-8 md:px-8 lg:px-0">
+          <InstagramFeed />
+        </div>
+      </div>
+
       {/* <ReCaptchaContext>
         <FeedbackForm />
       </ReCaptchaContext> */}
