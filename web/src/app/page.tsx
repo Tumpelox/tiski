@@ -31,7 +31,7 @@ export default async function Home() {
         </div>
         <Siluet />
       </div>
-      <div className="bg-primary pt-8 relative">
+      <div className="bg-primary py-8 relative">
         <div className="absolute h-36 top-0 left-0 w-full gradient-from-background-to-transparent"></div>
         <div className="container max-w-5xl mx-auto px-4 sm:px-8 md:px-8 lg:px-0">
           <InstagramFeed />

@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/carousel';
 import Image from 'next/image';
 
-
 type Image = {
   src: string;
   alt?: string;
@@ -25,7 +24,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
   if (!images?.length) return null;
 
   return (
-    <Carousel className="w-full max-w-md">
+    <Carousel className="gradient rounded-md shadow-lg">
       <CarouselContent>
         {images.toReversed().map((image, index) => (
           <CarouselItem key={index}>
@@ -34,7 +33,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
               alt={image.alt ?? ''}
               width={image.width}
               height={image.height}
-              className="w-full rounded-md object-contain"
+              className="rounded-md aspect-[4/5] object-cover"
             />
           </CarouselItem>
         ))}
@@ -45,4 +44,4 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
   );
 };
 
-export default ImageGallery
+export default ImageGallery;
