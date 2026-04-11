@@ -46,7 +46,7 @@ export default async function RootLayout({
               </NavigationMenu>
             </NavigationMenuButton>
           </header>
-          <main className="grow flex flex-col pb-8 pt-4">{children}</main>
+          <main className="grow flex flex-col">{children}</main>
         </body>
       </html>
     </PlausibleProvider>
