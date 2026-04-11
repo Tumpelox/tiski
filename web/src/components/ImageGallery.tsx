@@ -24,7 +24,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
   if (!images?.length) return null;
 
   return (
-    <Carousel className="gradient rounded-md shadow-lg">
+    <Carousel className="gradient rounded-md">
       <CarouselContent>
         {images.toReversed().map((image, index) => (
           <CarouselItem key={index}>

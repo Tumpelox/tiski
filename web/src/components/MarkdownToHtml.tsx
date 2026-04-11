@@ -7,7 +7,6 @@ import React from 'react';
 const MarkdownToHtml = ({ markdown }: { markdown: string }) => {
   return (
     <Markdown
-      className="flex flex-col gap-4"
       options={{
         wrapper: React.Fragment,
         overrides: {
