@@ -57,7 +57,7 @@ const Paragraph = ({
   ...props
 }: React.ComponentProps<'p'>) => {
   return (
-    <p {...props} className={cn(className)}>
+    <p {...props} className={cn('text-sm mb-2 mt-1', className)}>
       {children}
     </p>
   );

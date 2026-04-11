@@ -18,10 +18,10 @@ const InstagramPost = ({ post }: { post: FeedDocument }) => {
         <div className="grow px-4 bg-background text-foreground rounded-md shadow-lg pt-4 pb-2">
           <MarkdownToHtml
             markdown={
-              open ? post.text : String(post.text).slice(0, 300) + '...'
+              open ? post.text : String(post.text).slice(0, 250) + '...'
             }
           />
-          {String(post.text).length > 300 && (
+          {String(post.text).length > 250 && (
             <Button
               variant={'ghost'}
               className={'float-end text-lg bg-none underline'}

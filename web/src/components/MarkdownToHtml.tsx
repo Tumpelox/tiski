@@ -7,6 +7,7 @@ import React from 'react';
 const MarkdownToHtml = ({ markdown }: { markdown: string }) => {
   return (
     <Markdown
+      className="flex flex-col gap-4"
       options={{
         wrapper: React.Fragment,
         overrides: {
@@ -40,7 +41,7 @@ const MarkdownToHtml = ({ markdown }: { markdown: string }) => {
           li: {
             component: 'li',
             props: {
-              className: 'mb-1', // Example Tailwind classes for li
+              className: 'mb-1',
             },
           },
           a: {
