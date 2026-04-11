@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const Siluet = () => {
   return (
-    <div className="absolute h-screen top-0 w-full -z-10 left-0 gradient">
+    <div className="absolute h-[100svh] top-0 w-full -z-10 left-0 gradient">
       <Image
         src="/siluetti.webp"
         alt="Siluet"
