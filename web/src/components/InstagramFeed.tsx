@@ -29,7 +29,7 @@ const InstagramFeed = async () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl md:text-4xl font-light text-primary-foreground text-shadow-[0_0_20px_#ffffff] mt-40 mb-8 text-center">
+      <h2 className="text-3xl md:text-4xl text-foreground text-shadow-[0_0_20px_var(--background)] mt-40 mb-8 text-center">
         Tarratoimikunnan Instagram-julkaisuja
       </h2>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3 justify-items-center">

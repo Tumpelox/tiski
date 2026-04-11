@@ -7,16 +7,14 @@ export default async function Home() {
   return (
     <>
       <div className="flex flex-col justify-center grow min-h-[calc(100vh-var(--spacing)*16)] md:min-h-[calc(100vh-var(--spacing)*28)]">
-        <div className="flex flex-col gap-6 items-center py-8 row-span-1 text-foreground text-shadow-[0_0_20px_#ffffff] translate-y-[4.6%] md:translate-y-[10%] w-full">
+        <div className="flex flex-col gap-6 items-center py-8 row-span-1 text-foreground text-shadow-[0_0_20px_var(--background)] translate-y-[4.6%] md:translate-y-[10%] w-full">
           <div className="flex flex-col text-center w-full">
-            <h1 className="font-bold text-shadow-[0_0_20px_var(--background)] text-4xl md:text-5xl">
-              TARRATOIMIKUNTA
-            </h1>
-            <p className="text-3xl md:text-4xl font-light text-shadow-[0_0_20px_var(--background)]">
+            <h1 className="font-bold text-4xl md:text-5xl">TARRATOIMIKUNTA</h1>
+            <p className="text-3xl md:text-4xl font-light">
               SUVISEUROISSA 2026
             </p>
           </div>
-          <Paragraph className="font-light text-center text-shadow-[0_0_20px_var(--background)] text-xl w-full">
+          <Paragraph className="font-light text-center text-xl w-full">
             Tervetuloa turvasatamaan. Me olemme Tarratoimikunta. Seisomme
             ihmisoikeuksien ja heikompien puolella Jeesuksen tavoin.{' '}
           </Paragraph>
