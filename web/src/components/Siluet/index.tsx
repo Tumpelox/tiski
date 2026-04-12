@@ -1,8 +1,27 @@
+import { cn } from '@/lib/utils';
+import { cva, VariantProps } from 'class-variance-authority';
 import Image from 'next/image';
 
-const Siluet = () => {
+export const siluetVariants = cva(
+  'absolute top-0 w-full -z-10 left-0 gradient',
+  {
+    variants: {
+      height: {
+        full: 'h-[100svh]',
+        half: 'h-[50svh]',
+      },
+    },
+    defaultVariants: {
+      height: 'full',
+    },
+  }
+);
+
+const Siluet = ({
+  height = 'full',
+}: React.ComponentProps<'button'> & VariantProps<typeof siluetVariants>) => {
   return (
-    <div className="absolute h-[100svh] top-0 w-full -z-10 left-0 gradient">
+    <div className={cn(siluetVariants({ height }))}>
       <Image
         src="/siluetti.webp"
         alt="Siluet"

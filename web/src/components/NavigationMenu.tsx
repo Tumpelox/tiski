@@ -1,5 +1,8 @@
 import { MenuItem } from '@/interfaces/settings.interface';
 import { CloudLink } from './CloudButton';
+import { Button } from './ui/button';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 const NavigationMenu = ({
   items,
@@ -9,16 +12,21 @@ const NavigationMenu = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <nav className="flex flex-col md:flex-row md:w-fit items-center justify-center gap-4">
+    <nav
+      className={cn('flex flex-col items-center justify-center gap-8', {
+        'md:flex-row md:w-fit': false,
+      })}
+    >
       {items.map((item) => (
-        <CloudLink
+        <Link
           key={item.url}
           href={item.url}
-          variant={'card'}
-          className="md:w-32 mt-2 md:mt-0"
+          className={cn('text-2xl font-semibold mt-2', {
+            'md:w-32 md:w-3 md:mt-0': false,
+          })}
         >
           {item.name.toUpperCase()}
-        </CloudLink>
+        </Link>
       ))}
       {children}
     </nav>
