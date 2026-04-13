@@ -61,7 +61,7 @@ const Siluet = ({
           unoptimized={true}
         />
       </div>
-      {variant === 'default' && (
+      {variant !== 'secondary' && (
         <div className="absolute h-36 -bottom-36 left-0 w-full gradient-from-background-to-transparent"></div>
       )}
     </div>
