@@ -29,7 +29,7 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: currentColor;
   }
 }
 
@@ -50,11 +50,11 @@
   --background: hsl(41, 94%, 68%);
   --foreground: hsl(207, 100%, 98%);
   --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(220, 10%, 20%);
+  --card-foreground: hsl(220, 7%, 8%);
   --popover: hsl(0, 0%, 100%);
   --popover-foreground: hsl(220, 10%, 20%);
   --primary: hsl(208, 34%, 67%);
-  --primary-foreground: hsl(220, 10%, 20%);
+  --primary-foreground: hsl(208, 34%, 95%);
   --secondary: hsl(26, 97%, 66%);
   --secondary-foreground: hsl(0, 0%, 100%);
   --muted: hsl(33, 53%, 85%);

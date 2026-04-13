@@ -1,3 +1,4 @@
+import Siluet from '@/components/Siluet';
 import { Heading, Paragraph } from '@/components/Text';
 import { Article, ArticleDatabase } from '@/interfaces/article.interface';
 import { getDocumentWithApi } from '@/services/databases';
@@ -23,11 +24,13 @@ const Page = async ({ params }: Props) => {
   if (!data) notFound();
 
   return (
-    <div className="container max-w-5xl mx-auto pb-8 pt-4 px-4 sm:px-8 md:px-8 lg:px-0 flex flex-col gap-6 text-foreground">
-      <Heading.h1 className="mt-6 mb-4 text-4xl text-wrap">
-        {data.title.toUpperCase()}
-      </Heading.h1>
-      <div className="flex flex-col gap-4">
+    <div className="grow bg-primary text-primary-foreground">
+      <Siluet height="half" variant="secondary">
+        <Heading.h1 className="mt-6 mb-4 text-4xl text-wrap">
+          {data.title.toUpperCase()}
+        </Heading.h1>
+      </Siluet>
+      <div className="flex flex-col gap-4 container max-w-5xl mx-auto pb-8 pt-4 px-4 sm:px-8 md:px-8 lg:px-0">
         <Markdown
           options={{
             wrapper: React.Fragment,
