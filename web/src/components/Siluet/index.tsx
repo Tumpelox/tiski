@@ -54,7 +54,7 @@ const Siluet = ({
         <Image
           src="/siluetti.webp"
           alt="Siluet"
-          width={3760}
+          width={3750}
           height={652}
           className="absolute object-cover object-left left-0 height-auto min-h-1/4 bottom-0"
           loading="eager"
