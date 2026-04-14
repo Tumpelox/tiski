@@ -32,6 +32,7 @@ const NavigationMenu = ({
       <div className="flex gap-4">
         <Link
           href="https://www.instagram.com/tarratoimikunta/"
+          target="_blank"
           className={cn('flex gap-2 text-xl font-semibold underline mt-2', {
             'md:w-32 md:w-3 md:mt-0': false,
           })}
@@ -40,6 +41,7 @@ const NavigationMenu = ({
         </Link>
         <Link
           href="https://www.facebook.com/people/Tarratoimikunta/61584972506597/"
+          target="_blank"
           className={cn('flex gap-2 text-xl font-semibold underline mt-2', {
             'md:w-32 md:w-3 md:mt-0': false,
           })}
