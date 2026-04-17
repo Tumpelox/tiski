@@ -15,7 +15,7 @@ const HallintaNavigation = () => {
   return (
     <div className="w-full text-secondary-foreground">
       <NavigationMenu>
-        <NavigationMenuList className="grid grid-cols-3 gap-4 md:flex md:gap-1">
+        <NavigationMenuList className="flex gap-1 flex-wrap justify-start">
           <NavigationMenuItem>
             <Link
               href="/hallinta/sivut"
@@ -35,24 +35,22 @@ const HallintaNavigation = () => {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>
-              <Link
-                href="/hallinta/tilaukset"
-                className={navigationMenuTriggerStyle()}
-                passHref
-              >
-                Tilaukset
-              </Link>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <Link
-                href="/hallinta/tilaukset/tuote"
-                className={navigationMenuTriggerStyle()}
-                passHref
-              >
-                Tuotteittain
-              </Link>
-            </NavigationMenuContent>
+            <Link
+              href="/hallinta/tilaukset"
+              className={navigationMenuTriggerStyle()}
+              passHref
+            >
+              Tilaukset
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link
+              href="/hallinta/tilaukset/tuote"
+              className={navigationMenuTriggerStyle()}
+              passHref
+            >
+              Tilaukset tuotteittain
+            </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link
