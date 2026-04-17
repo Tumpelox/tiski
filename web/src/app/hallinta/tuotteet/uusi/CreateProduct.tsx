@@ -47,7 +47,7 @@ const UploadProduct = ({
   title?: string;
   description?: string;
   available?: boolean;
-  stock?: number;
+  stock?: string;
   hidden?: boolean;
   pictures?: PictureDocument[];
 }) => {
@@ -65,7 +65,7 @@ const UploadProduct = ({
       title: title || '',
       description: description || '',
       available: available || false,
-      stock: stock || 0,
+      stock: stock || '0',
       hidden: hidden || false,
       pictures: [],
       existingImages: pictures?.map((image) => image.$id) || [],
