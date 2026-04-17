@@ -8,6 +8,9 @@ import { listDocuments } from '@/services/databases';
 // import { getLoggedInUser } from "@/services/userSession";
 import { redirect } from 'next/navigation';
 import TuotteetTable from './TuotteetTable';
+import Link from 'next/link';
+import { Plus } from 'lucide-react';
+import { buttonVariants } from '@/components/ui/button';
 
 const TuotteetPage = async () => {
   // const { user } = await getLoggedInUser();
@@ -21,12 +24,17 @@ const TuotteetPage = async () => {
 
   return (
     <div className="space-y-4">
-      <Heading.h1>Tuotteet</Heading.h1>
-      <Card>
-        <CardContent>
-          <TuotteetTable products={data} />
-        </CardContent>
-      </Card>
+      <div className="flex justify-between items-center w-full">
+        <Heading.h1>Tuotteet</Heading.h1>
+        <Link
+          href={'/hallinta/tuotteet/uusi'}
+          className={buttonVariants({ variant: 'default' })}
+        >
+          Luo uusi tuote <Plus className="size-4" />
+        </Link>
+      </div>
+
+      <TuotteetTable products={data} />
     </div>
   );
 };

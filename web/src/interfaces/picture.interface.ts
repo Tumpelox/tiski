@@ -7,6 +7,7 @@ export enum PictureDatabase {
 }
 
 export interface Picture {
+  $id: string;
   src: string;
   height: number;
   width: number;
