@@ -10,6 +10,7 @@ import SignOutButton from '@/components/SignOutButton';
 import { getLoggedInUser } from '@/services/userSession';
 import PlausibleProvider from 'next-plausible';
 import { cn } from '@/lib/utils';
+import { CartMenu } from '@/components/Cart';
 
 export const metadata: Metadata = {
   title: 'Tarratoimikunta',
@@ -53,6 +54,7 @@ export default async function RootLayout({
                 <SignOutButton user={user} />
               </NavigationMenu>
             </NavigationMenuButton>
+            <CartMenu />
           </header>
           <main className="grow flex flex-col">{children}</main>
         </body>

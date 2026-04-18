@@ -7,10 +7,49 @@ import Link from 'next/link';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import { Product } from '@/interfaces/product.interface';
 import { Bundle } from '@/interfaces/bundle.interface';
-import { CloudButton, CloudLink } from './CloudButton';
 import { ItemCount } from './AddToCart';
-import { X } from 'lucide-react';
+import { ShoppingBasket, X } from 'lucide-react';
 import { Heading, Paragraph } from './Text';
+import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+
+export const CartMenu = () => {
+  const { items, getTotalItems } = useCartStore();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const pathName = usePathname();
+
+  useEffect(() => {
+    if (items.length > 0) {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
+    }
+  }, [items]);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathName]);
+
+  if (getTotalItems() === 0) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+      <DialogTrigger asChild>
+        <Button className="h-fit m-1 p-2 border-0 relative" variant={'ghost'}>
+          <ShoppingBasket className="size-10" />
+          <span className="absolute bottom-1 right-1 size-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
+            {getTotalItems()}
+          </span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <Cart />
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, clearCart, getTotalItems } =
@@ -24,9 +63,7 @@ const Cart = () => {
           <Paragraph>Ostoskorisi on tyhjä</Paragraph>
         </CardHeader>
         <CardFooter>
-          <CloudLink small href="/tuotteet">
-            Selaa tuotteita
-          </CloudLink>
+          <Link href="/tuotteet">Selaa tuotteita</Link>
         </CardFooter>
       </Card>
     );
@@ -99,12 +136,10 @@ const Cart = () => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <CloudButton small onClick={clearCart} variant={'secondary'}>
+        <Button onClick={clearCart} variant={'ghost'}>
           TYHJENNÄ
-        </CloudButton>
-        <CloudLink small href="/tilaus/uusi">
-          TILAA
-        </CloudLink>
+        </Button>
+        <Link href="/tilaus/uusi">TILAA</Link>
       </CardFooter>
     </Card>
   );
