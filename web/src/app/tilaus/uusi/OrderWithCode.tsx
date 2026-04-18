@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/form';
 import orderSchema from '@/schemas/order.schema';
 import { CloudButton } from '@/components/CloudButton';
+import { Button } from '@/components/ui/button';
 
 const Order = () => {
   const { items, clearCart } = useCartStore();
@@ -128,14 +129,14 @@ const Order = () => {
               </FormItem>
             )}
           />
-          <CloudButton
-            small
+          <Button
+            variant={'ghost'}
             type="submit"
             disabled={form.formState.isSubmitting}
             className="float-right"
           >
             {form.formState.isSubmitting ? 'Lähetetään tilausta...' : 'TILAA'}
-          </CloudButton>
+          </Button>
         </form>
       </Form>
     </div>

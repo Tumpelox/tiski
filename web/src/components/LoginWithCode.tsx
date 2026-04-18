@@ -17,6 +17,7 @@ import {
 import { orderCodeSchema } from '@/schemas/auth.schema';
 import { useRouter } from 'next/navigation';
 import { CloudButton } from './CloudButton';
+import { Button } from './ui/button';
 
 export const LoginWithCode = () => {
   const { addMessage } = useToastMessageStore();
@@ -63,9 +64,13 @@ export const LoginWithCode = () => {
             </FormItem>
           )}
         />
-        <CloudButton type="submit" disabled={form.formState.isSubmitting} small>
-          {form.formState.isSubmitting ? 'Kirjaudutaan...' : 'Kirjaudu'}
-        </CloudButton>
+        <Button
+          variant={'ghost'}
+          type="submit"
+          disabled={form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting ? 'Kirjaudutaan...' : 'KIRJAUDU'}
+        </Button>
       </form>
     </Form>
   );

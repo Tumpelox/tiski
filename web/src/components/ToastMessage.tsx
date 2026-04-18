@@ -12,9 +12,9 @@ const MessageVariants = cva(
   {
     variants: {
       type: {
-        [ToastType.SUCCESS]: 'bg-background text-foreground',
+        [ToastType.SUCCESS]: 'bg-secondary-foreground text-secondary',
         [ToastType.ERROR]: 'bg-destructive text-white',
-        [ToastType.INFO]: 'bg-accent text-accent-foreground',
+        [ToastType.INFO]: 'bg-primary-foreground text-primary',
       },
     },
     defaultVariants: {
@@ -39,7 +39,7 @@ const ToastMessage = () => {
   }, [messages, removeMessage]);
 
   return (
-    <div className="fixed flex flex-col gap-4 items-end px-4 sm:px-8 right-0 top-10 z-50 w-fit max-w-full">
+    <div className="fixed flex bg-gre flex-col gap-4 items-end px-4 sm:px-8 right-0 top-10 z-[100] w-fit max-w-full">
       {[...messages].reverse().map((message) => (
         <div
           key={message.uuid}

@@ -21,6 +21,7 @@ import { useForm } from 'react-hook-form';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { z } from 'zod';
 import { Paragraph } from '@/components/Text';
+import { Button } from '@/components/ui/button';
 
 const Order = () => {
   const { items, clearCart } = useCartStore();
@@ -164,14 +165,14 @@ const Order = () => {
               Sitoudun että tilaus tehdään suviseuroissa tapahtuvaa
               tarravaikuttamista varten!
             </Paragraph>
-            <CloudButton
-              small
+            <Button
+              variant={'ghost'}
               type="submit"
               disabled={form.formState.isSubmitting}
               className="float-right"
             >
               {form.formState.isSubmitting ? 'Lähetetään tilausta...' : 'TILAA'}
-            </CloudButton>
+            </Button>
           </div>
         </form>
       </Form>

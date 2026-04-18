@@ -52,59 +52,44 @@ const BundlePage = async ({ params }: Props) => {
     .flat();
 
   return (
-    <Card className="max-w-5xl mx-auto w-full">
-      <CardContent className="flex flex-col md:grid md:grid-cols-5 gap-6 md:gap-8">
+    <div className="relative mb-6">
+      <div className="flex flex-col gap-4 w-full min-h-fit h-full">
         {data.products && (
-          <div className="col-span-3">
-            <Carousel className="w-full">
-              <CarouselContent>
-                {[promoImage, ...images]
-                  .filter((image) => image !== null)
-                  .map(({ picture, title }, index) => {
-                    return (
-                      <CarouselItem key={index}>
-                        <Image
-                          className="rounded w-full"
-                          src={picture.src}
-                          alt={picture.alt}
-                          height={picture.height}
-                          width={picture.width}
-                        />
-                        <Paragraph className="text-center text-sm font-light">
-                          {title}
-                        </Paragraph>
-                      </CarouselItem>
-                    );
-                  })}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          </div>
+          <Carousel className="w-full">
+            <CarouselContent>
+              {[promoImage, ...images]
+                .filter((image) => image !== null)
+                .map(({ picture, title }, index) => {
+                  return (
+                    <CarouselItem key={index}>
+                      <Image
+                        className="rounded-md aspect-square object-cover"
+                        src={picture.src}
+                        alt={picture.alt}
+                        height={picture.height}
+                        width={picture.width}
+                      />
+                      <Paragraph className="text-center text-sm font-light">
+                        {title}
+                      </Paragraph>
+                    </CarouselItem>
+                  );
+                })}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         )}
-        <div className="col-span-2 flex flex-col gap-4 items-end justify-between md:pr-2">
-          <div className="flex flex-col gap-4 md:gap-8 w-full">
-            <Heading.h1 className="text-2xl md:text-3xl text-center font-light">
-              {data.title}
-            </Heading.h1>
-            <Paragraph className="text-center font-light">
-              {data.description}
-            </Paragraph>
-          </div>
-          <AddToCart bundle={clientSideBundle(data)} canAddToCart={canAdd} />
+
+        <div className="grow px-4 bg-card text-card-foreground rounded-md pt-4 pb-2">
+          <Heading.h3 className="font-light text-2xl">{data.title}</Heading.h3>
+          <Paragraph className="font-light">{data.description}</Paragraph>
+          {canAdd !== CanAddToCart.CodeNotFound && data.available && (
+            <AddToCart bundle={data} canAddToCart={canAdd} />
+          )}
         </div>
-      </CardContent>
-      {/* <CardContent>
-          <Paragraph>Tuotenumero: {id}</Paragraph>
-          <Paragraph>Varastossa: {stock}</Paragraph>
-          <div>
-            <p>Paketin tuotteet:</p>
-            {data.products.map((product) => (
-              <p key={product.$id}>{product.title}</p>
-            ))}
-          </div>
-        </CardContent> */}
-    </Card>
+      </div>
+    </div>
   );
 };
 

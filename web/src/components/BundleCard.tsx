@@ -2,7 +2,6 @@
 
 import { Product } from '@/interfaces/product.interface';
 import Image from 'next/image';
-import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import Link from 'next/link';
 import AddToCart from './AddToCart';
 import { Bundle } from '@/interfaces/bundle.interface';
@@ -44,37 +43,30 @@ const BundleCard = ({
   ...props
 }: BundleCardProps) => {
   return (
-    <Card className={cn(className)} {...props}>
-      <Link href={`/tuotteet/paketit/${bundle.$id}`}>
-        {bundle.promoImage ? (
-          <CardContent className="flex justify-center">
+    <div className={cn(className)} {...props}>
+      <div className="relative mb-6">
+        <div className="flex flex-col gap-4 w-full min-h-fit h-full">
+          {bundle.promoImage && (
             <Image
               src={bundle.promoImage.src}
               width={bundle.promoImage.width}
               height={bundle.promoImage.height}
               alt={bundle.promoImage.alt}
-              className="max-w-2xl w-full"
+              className="rounded-md aspect-square object-cover"
             />
-          </CardContent>
-        ) : (
-          <CardContent className="grid grid-cols-2 gap-2">
-            <BundleImages products={bundle.products} />
-          </CardContent>
-        )}
-
-        <CardHeader className="pt-4 w-full text-center space-y-2">
-          <Heading.h3 className="font-light text-2xl">
-            {bundle.title}
-          </Heading.h3>
-          <Paragraph className="font-light">{bundle.description}</Paragraph>
-        </CardHeader>
-      </Link>
-      {canAddToCart !== CanAddToCart.CodeNotFound && bundle.available && (
-        <CardFooter>
-          <AddToCart bundle={bundle} canAddToCart={canAddToCart} />
-        </CardFooter>
-      )}
-    </Card>
+          )}
+          <div className="grow px-4 bg-card text-card-foreground rounded-md pt-4 pb-2">
+            <Heading.h3 className="font-light text-2xl">
+              {bundle.title}
+            </Heading.h3>
+            <Paragraph className="font-light">{bundle.description}</Paragraph>
+            {canAddToCart !== CanAddToCart.CodeNotFound && bundle.available && (
+              <AddToCart bundle={bundle} canAddToCart={canAddToCart} />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -6,6 +6,7 @@ import { useToastMessageStore } from '@/store';
 import { Models } from 'node-appwrite';
 import { CloudButton } from './CloudButton';
 import { LogOut } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type SignOutButtonProps = {
   user: Models.User<Models.Preferences> | null;
@@ -23,14 +24,19 @@ const SignOutButton = ({ user }: SignOutButtonProps) => {
   }
 
   return (
-    <CloudButton
-      variant="accent"
+    <button
       onClick={handleSignOut}
-      className="md:w-32 mt-2 md:mt-0"
+      className={cn(
+        'flex gap-2 text-xl text-destructive font-semibold mt-2 items-center',
+        {
+          'md:w-32 md:w-3 md:mt-0': false,
+        }
+      )}
       title="Kirjaudu ulos"
     >
+      Kirjaudu ulos
       <LogOut className="size-6 text-destructive" />
-    </CloudButton>
+    </button>
   );
 };
 
