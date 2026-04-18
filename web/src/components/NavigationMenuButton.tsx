@@ -19,7 +19,7 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative size-10 m-3">
       <button
         name="Päävalikko"
         title="Päävalikko"
@@ -28,7 +28,7 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
             'absolute text-secondary-foreground': visible,
             'drop-shadow-md absolute text-white': !visible,
           },
-          'size-10 z-50 top-1 right-0 m-2',
+          'size-10 z-50 right-0',
           { 'md:hidden': false }
         )}
         onClick={toggleNavigationMenu}

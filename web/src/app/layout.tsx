@@ -40,9 +40,12 @@ export default async function RootLayout({
           className={`antialiased bg-background min-h-dvh flex flex-col md:gap-6 bg-fixed`}
         >
           <header
-            className={cn('w-full min-h-16 px-4 sm:px-8', {
-              'md:h-fit md:px-0 md:container md:mx-auto md:max-w-3xl': false,
-            })}
+            className={cn(
+              'w-full min-h-16 px-4 sm:px-8 flex flex-row-reverse justify-between items-center',
+              {
+                'md:h-fit md:px-0 md:container md:mx-auto md:max-w-3xl': false,
+              }
+            )}
           >
             <ToastMessage />
             <NavigationMenuButton>
