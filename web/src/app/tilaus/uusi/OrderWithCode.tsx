@@ -63,27 +63,55 @@ const Order = () => {
               <FormItem>
                 <FormLabel>Tilaajan nimi</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} autoComplete="name" />
                 </FormControl>
                 <FormDescription>Tilauksessa käytettävä nimi</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="shippingAddress"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Osoite</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormDescription>Tilauksen toimitusosoite</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-6 sm:grid-rows-2 gap-4">
+            <FormField
+              control={form.control}
+              name="shippingAddress"
+              render={({ field }) => (
+                <FormItem className="sm:col-span-6">
+                  <FormLabel>Katuosoite</FormLabel>
+                  <FormControl>
+                    <Input {...field} autoComplete="street-address" />
+                  </FormControl>
+                  <FormDescription>Tilauksen toimitusosoite</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="shippingPostalCode"
+              render={({ field }) => (
+                <FormItem className="sm:col-span-2">
+                  <FormLabel>Postikoodi</FormLabel>
+                  <FormControl>
+                    <Input {...field} autoComplete="postal-code" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="shippingCity"
+              render={({ field }) => (
+                <FormItem className="sm:col-span-4">
+                  <FormLabel>Kunta</FormLabel>
+                  <FormControl>
+                    <Input {...field} autoComplete="address-level2" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="orderNotes"

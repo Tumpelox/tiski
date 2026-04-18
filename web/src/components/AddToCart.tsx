@@ -117,7 +117,6 @@ const AddToCart = ({
         <Button
           variant={'ghost'}
           title="Lisää ostoskoriin"
-          disabled={product.stock === 0}
           onClick={() => {
             addItem(product, 'product');
             addMessage(
@@ -146,7 +145,6 @@ const AddToCart = ({
         />
         <Button
           variant={'ghost'}
-          disabled={bundle.products.length === 0 || stock === 0}
           onClick={() => {
             addItem(bundle, 'bundle', count);
             addMessage(

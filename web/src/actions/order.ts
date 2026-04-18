@@ -114,8 +114,14 @@ export const newOrder = async (
     };
   }
 
-  const { products, shippingAddress, shippingName, orderNotes } =
-    parsedOrder.data;
+  const {
+    products,
+    shippingAddress,
+    shippingPostalCode,
+    shippingCity,
+    shippingName,
+    orderNotes,
+  } = parsedOrder.data;
 
   if (products.length === 0) {
     return {
@@ -206,7 +212,7 @@ export const newOrder = async (
         orderCode: orderCode.$id,
         orderItems,
         orderContacts: {
-          address: shippingAddress,
+          address: `${shippingAddress}, ${shippingPostalCode} ${shippingCity}`,
           name: shippingName,
         },
         orderNotes,
