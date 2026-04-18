@@ -12,6 +12,7 @@ import { BundleDatabase, BundleDocument } from '@/interfaces/bundle.interface';
 import { CanAddToCart } from '@/interfaces/orderCode.interface';
 import { clientSideBundle } from '@/lib/clientSideProduct';
 import { getDocumentWithApi } from '@/services/databases';
+import { canAddToCart } from '@/services/orderCode';
 
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -29,13 +30,13 @@ const BundlePage = async ({ params }: Props) => {
     id
   );
 
+  const canAdd = await canAddToCart();
+
   if (!data || data.hidden) notFound();
 
   // const stock = data.products
   //   .map((product) => product.stock)
   //   .sort((a, b) => a - b)[0];
-
-  const canAdd = CanAddToCart.Ok;
 
   const promoImage = data.promoImage
     ? { picture: data.promoImage, title: data.title }

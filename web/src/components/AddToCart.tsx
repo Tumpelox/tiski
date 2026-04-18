@@ -90,7 +90,7 @@ const AddToCart = ({
   };
 
   const date = new Date(new Date().toUTCString());
-  const closeDate = new Date('Mon, 09 Jun 2025 21:00:00 GMT');
+  const closeDate = new Date('Mon, 09 Jun 2026 21:00:00 GMT');
 
   if (date >= closeDate) {
     return <></>;

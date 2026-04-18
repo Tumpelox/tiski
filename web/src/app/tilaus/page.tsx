@@ -14,7 +14,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Order } from '@/interfaces/order.interface'; // Import Order interface
-// import LoginWithCode from '@/components/LoginWithCode';
+import LoginWithCode from '@/components/LoginWithCode';
 import { Heading, Paragraph } from '@/components/Text';
 
 const TilausPage = async () => {
@@ -35,17 +35,17 @@ const TilausPage = async () => {
   };
 
   const date = new Date(new Date().toUTCString());
-  const closeDate = new Date('Mon, 09 Jun 2025 21:00:00 GMT');
+  const closeDate = new Date('Mon, 09 Jun 2026 21:00:00 GMT');
 
   return (
     <div className="container mx-auto py-8 space-y-8">
-      {/* {!orderCode && (
+      {!orderCode && (
         <Card>
           <CardContent>
             <LoginWithCode />
           </CardContent>
         </Card>
-      )} */}
+      )}
       {date >= closeDate && (
         <Card>
           <CardContent>
