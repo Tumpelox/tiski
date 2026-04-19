@@ -91,7 +91,7 @@ const Order = () => {
               name="shippingPostalCode"
               render={({ field }) => (
                 <FormItem className="sm:col-span-2">
-                  <FormLabel>Postikoodi</FormLabel>
+                  <FormLabel>Postinumero</FormLabel>
                   <FormControl>
                     <Input {...field} autoComplete="postal-code" />
                   </FormControl>
