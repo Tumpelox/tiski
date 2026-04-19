@@ -15,7 +15,7 @@ const InstagramPost = ({ post }: { post: FeedDocument }) => {
     <div className="relative mb-6">
       <div className="flex flex-col gap-4 w-full min-h-fit h-full">
         <ImageGallery images={post.images} />
-        <div className="grow px-4 bg-card text-card-foreground rounded-md pt-4 pb-2">
+        <div className="grow px-4 bg-card text-card-foreground rounded-md pt-4 pb-2 text-sm">
           <MarkdownToHtml
             markdown={
               open ? post.text : String(post.text).slice(0, 250) + `...\n`

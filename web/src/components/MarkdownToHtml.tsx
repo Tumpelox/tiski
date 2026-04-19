@@ -30,11 +30,20 @@ const MarkdownToHtml = ({ markdown }: { markdown: string }) => {
           },
           p: {
             component: Paragraph,
+            props: {
+              className: 'text-sm mb-2 mt-1',
+            },
           },
           ul: {
             component: 'ul',
             props: {
-              className: 'list-disc list-inside mb-4 pl-4', // Example Tailwind classes for ul
+              className: 'list-disc list-inside mb-2 mt-1', // Example Tailwind classes for ul
+            },
+          },
+          ol: {
+            component: 'ul',
+            props: {
+              className: 'list-decimal list-inside mb-2 mt-1', // Example Tailwind classes for ul
             },
           },
           li: {

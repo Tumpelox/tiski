@@ -30,7 +30,7 @@ const Page = async ({ params }: Props) => {
           {data.title.toUpperCase()}
         </Heading.h1>
       </Siluet>
-      <div className="flex flex-col gap-4 container max-w-5xl mx-auto pb-8 pt-4 px-4 sm:px-8 md:px-8 lg:px-0">
+      <div className="flex flex-col gap-4 container max-w-5xl mx-auto pb-8 pt-4 px-4 sm:px-8 md:px-8 lg:px-0 text-lg">
         <Markdown
           options={{
             wrapper: React.Fragment,
