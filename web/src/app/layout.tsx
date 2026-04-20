@@ -12,11 +12,6 @@ import PlausibleProvider from 'next-plausible';
 import { cn } from '@/lib/utils';
 import { CartMenu } from '@/components/Cart';
 
-export const metadata: Metadata = {
-  title: 'Tarratoimikunta',
-  description: 'Tarratoimikunta harjoittaa pehmeää aktivismia suviseuroissa',
-};
-
 export default async function RootLayout({
   children,
 }: Readonly<{

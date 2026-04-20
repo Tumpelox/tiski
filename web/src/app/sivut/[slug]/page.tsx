@@ -8,8 +8,40 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
+import defaultMetadata from '../../metadata';
+import { Metadata } from 'next';
+
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata | null> {
+  const { slug } = await params;
+
+  const { data } = await getDocumentWithApi<Article>(
+    ArticleDatabase.DatabaseId,
+    ArticleDatabase.CollectionId,
+    slug
+  );
+
+  if (!data) return null;
+
+  return {
+    title: `${data.title} - Tarratoimikunta`,
+    description: defaultMetadata.description,
+    openGraph: {
+      ...defaultMetadata.openGraph,
+      title: `${data.title} - Tarratoimikunta`,
+      description: defaultMetadata.description || undefined,
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title: `${data.title} - Tarratoimikunta`,
+      description: defaultMetadata.description,
+    },
+  };
 }
 
 const Page = async ({ params }: Props) => {
@@ -26,8 +58,8 @@ const Page = async ({ params }: Props) => {
   return (
     <div className="grow bg-primary text-primary-foreground">
       <Siluet height="half" variant="secondary">
-        <Heading.h1 className="mt-6 mb-4 text-4xl text-wrap">
-          {data.title.toUpperCase()}
+        <Heading.h1 className="mt-6 mb-4 text-4xl text-wrap uppercase">
+          {data.title}
         </Heading.h1>
       </Siluet>
       <div className="flex flex-col gap-4 container max-w-5xl mx-auto pb-8 pt-4 px-4 sm:px-8 md:px-8 lg:px-0 text-lg">

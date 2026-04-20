@@ -21,6 +21,10 @@ import { listDocumentsWithApi } from '@/services/databases';
 import { canAddToCart, getOrderCode } from '@/services/orderCode';
 import { getLoggedInUser } from '@/services/userSession';
 import { Suspense } from 'react';
+import defaultMetadata from '../metadata';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = defaultMetadata;
 
 const getBundles = async () => {
   const { data } = await listDocumentsWithApi<BundleDocument>(
@@ -67,8 +71,8 @@ const TuotteetPage = async () => {
 
   return (
     <div className="flex flex-col gap-10 text-accent-foreground">
-      <Heading.h1 className="text-center text-4xl md:text-5xl mt-4">
-        TARRAT
+      <Heading.h1 className="text-center text-4xl md:text-5xl mt-4 uppercase">
+        Tarrat
       </Heading.h1>
       {orderCode && (
         <Paragraph className="text-center text-lg md:text-xl italic">

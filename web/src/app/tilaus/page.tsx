@@ -16,6 +16,10 @@ import { Button } from '@/components/ui/button';
 import { Order } from '@/interfaces/order.interface'; // Import Order interface
 import LoginWithCode from '@/components/LoginWithCode';
 import { Heading, Paragraph } from '@/components/Text';
+import defaultMetadata from '../metadata';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = defaultMetadata;
 
 const TilausPage = async () => {
   const { user } = await getLoggedInUser();

@@ -21,11 +21,33 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import Link from 'next/link';
+import { Metadata } from 'next';
+import defaultMetadata from '../metadata';
 
 const unifrakturCook = UnifrakturCook({
   weight: '700',
   subsets: ['latin'],
 });
+
+export async function generateMetadata(): Promise<Metadata | null> {
+  return {
+    title: 'Tarrat - Tarratoimikunta',
+    description:
+      'Tutustu Tarratoimikunnan suviseuroissa jakamiin tarroihin, joiden tarkoituksena on lempeästi ravistella yhteisön rakenteita ja havahduttaa yhteisön jäsenet keskustelemaan.',
+    openGraph: {
+      ...defaultMetadata.openGraph,
+      title: 'Tarrat - Tarratoimikunta',
+      description:
+        'Tutustu Tarratoimikunnan suviseuroissa jakamiin tarroihin, joiden tarkoituksena on lempeästi ravistella yhteisön rakenteita ja havahduttaa yhteisön jäsenet keskustelemaan.',
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title: 'Tarrat - Tarratoimikunta',
+      description:
+        'Tutustu Tarratoimikunnan suviseuroissa jakamiin tarroihin, joiden tarkoituksena on lempeästi ravistella yhteisön rakenteita ja havahduttaa yhteisön jäsenet keskustelemaan.',
+    },
+  };
+}
 
 const getProducts = async () => {
   const { data } = await listDocumentsWithApi<ProductDocument>(
@@ -51,8 +73,8 @@ const TarratPage = async () => {
 
   return (
     <div className="flex flex-col gap-10 text-accent-foreground">
-      <Heading.h1 className="text-center text-4xl md:text-5xl mt-4">
-        TARRAT 2025
+      <Heading.h1 className="text-center text-4xl md:text-5xl mt-4 uppercase">
+        Tarrat 2025
       </Heading.h1>
       <Paragraph className="text-center text-lg md:text-xl italic">
         <span className="not-italic">ℹ️</span> Tarrojen kääntöpuolelta löydät

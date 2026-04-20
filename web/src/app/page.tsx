@@ -1,7 +1,10 @@
-import { CloudLink } from '@/components/CloudButton';
 import { Paragraph } from '@/components/Text';
 import InstagramFeed from '../components/InstagramFeed';
 import Siluet from '@/components/Siluet';
+import defaultMetadata from './metadata';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = defaultMetadata;
 
 export default async function Home() {
   return (
@@ -9,10 +12,12 @@ export default async function Home() {
       <Siluet>
         <div className="flex flex-col gap-6 items-center py-8 row-span-1 text-foreground w-full md:translate-y-[-20%]">
           <div className="flex flex-col text-center w-full px-4">
-            <h1 className="font-bold text-4xl md:text-5xl">TARRATOIMIKUNTA</h1>
-            <p className="text-3xl md:text-4xl font-light">
-              SUVISEUROISSA 2026
-            </p>
+            <h1 className="font-bold text-4xl md:text-5xl uppercase">
+              Tarratoimikunta
+            </h1>
+            <h2 className="text-3xl md:text-4xl font-light uppercase">
+              Suviseuroissa 2026
+            </h2>
           </div>
           <Paragraph className="font-light text-center text-xl w-full px-8">
             Tervetuloa turvasatamaan. Me olemme Tarratoimikunta. Seisomme
