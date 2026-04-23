@@ -220,7 +220,7 @@ export const updateProduct = async (upload: z.infer<typeof productSchema>) => {
       {
         title: data.title,
         description: data.description,
-        stock: data.stock,
+        stock: Number(data.stock),
         available: data.available,
         hidden: data.hidden,
         pictures: [...data.existingImages, ...uploadedImages],
