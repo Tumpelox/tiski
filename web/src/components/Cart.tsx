@@ -10,12 +10,19 @@ import { Bundle } from '@/interfaces/bundle.interface';
 import { ItemCount } from './AddToCart';
 import { ShoppingBasket, X } from 'lucide-react';
 import { Heading, Paragraph } from './Text';
-import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 export const CartMenu = () => {
-  const { items, getTotalItems } = useCartStore();
+  const { items, getTotalItems, clearCart } = useCartStore();
   const [isOpen, setIsOpen] = useState(false);
 
   const pathName = usePathname();
@@ -45,9 +52,86 @@ export const CartMenu = () => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <Cart />
+        <DialogHeader>
+          <DialogTitle>Ostoskori</DialogTitle>
+          <DialogDescription>
+            Ostoskorissasi on {getTotalItems()} tuotetta
+          </DialogDescription>
+        </DialogHeader>
+        <CartItems />
+        <div
+          data-slot="dialog-footer"
+          className="flex flex-col sm:flex-row gap-4 items-center sm:justify-between"
+        >
+          <Button onClick={clearCart} variant={'ghost'}>
+            TYHJENNÄ
+          </Button>
+          <Link href="/tilaus/uusi">TILAA</Link>
+        </div>
       </DialogContent>
     </Dialog>
+  );
+};
+
+const CartItems = () => {
+  const { items, removeItem, updateQuantity } = useCartStore();
+
+  return (
+    <div className="space-y-4">
+      {items.map((item) => (
+        <div
+          key={item.$id}
+          className="grid items-center grid-cols-10 grid-rows-2 sm:flex gap-4 border-b pb-4"
+        >
+          {item.type === 'product' && (item.item as Product).pictures[0] && (
+            <div className="size-full  sm:size-24 aspect-square relative col-span-2">
+              <Image
+                src={(item.item as Product).pictures[0].src}
+                alt={(item.item as Product).pictures[0].alt}
+                fill
+                className="object-cover rounded "
+              />
+            </div>
+          )}
+          {item.type === 'bundle' && (item.item as Bundle).promoImage && (
+            <div className="size-full sm:size-24 aspect-square relative col-span-2">
+              <Image
+                src={(item.item as Bundle).promoImage?.src as string}
+                alt={(item.item as Bundle).promoImage?.alt as string}
+                fill
+                className="object-cover rounded"
+              />
+            </div>
+          )}
+          <div className="col-span-8 flex-grow w-full">
+            <Heading.h4>
+              <Link
+                href={`/tuotteet${item.type === 'bundle' ? '/paketit/' + item.$id : item.$id}`}
+              >
+                {item.item.title}
+              </Link>
+            </Heading.h4>
+            <p className="text-sm text-gray-500 line-clamp-1">
+              {item.item.description}
+            </p>
+          </div>
+          <ItemCount
+            count={item.quantity}
+            handleChange={(value: number) => updateQuantity(item.$id, value)}
+            stock={999}
+            className="col-span-8 w-full justify-center sm:w-fit sm:flex-col-reverse"
+          />
+          <Button
+            className="col-span-2"
+            variant="ghost"
+            onClick={() => removeItem(item.$id)}
+            title="Poista tuote ostoskorista"
+          >
+            <X className="size-6 text-destructive" />
+          </Button>
+        </div>
+      ))}
+    </div>
   );
 };
 
@@ -76,64 +160,7 @@ const Cart = () => {
         <Paragraph>Ostoskorissasi on {getTotalItems()} tuotetta</Paragraph>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          {items.map((item) => (
-            <div
-              key={item.$id}
-              className="grid items-center grid-cols-10 grid-rows-2 sm:flex gap-4 border-b pb-4"
-            >
-              {item.type === 'product' &&
-                (item.item as Product).pictures[0] && (
-                  <div className="size-full  sm:size-24 aspect-square relative col-span-2">
-                    <Image
-                      src={(item.item as Product).pictures[0].src}
-                      alt={(item.item as Product).pictures[0].alt}
-                      fill
-                      className="object-cover rounded "
-                    />
-                  </div>
-                )}
-              {item.type === 'bundle' && (item.item as Bundle).promoImage && (
-                <div className="size-full sm:size-24 aspect-square relative col-span-2">
-                  <Image
-                    src={(item.item as Bundle).promoImage?.src as string}
-                    alt={(item.item as Bundle).promoImage?.alt as string}
-                    fill
-                    className="object-cover rounded"
-                  />
-                </div>
-              )}
-              <div className="col-span-8 flex-grow w-full">
-                <Heading.h4>
-                  <Link
-                    href={`/tuotteet${item.type === 'bundle' ? '/paketit/' + item.$id : item.$id}`}
-                  >
-                    {item.item.title}
-                  </Link>
-                </Heading.h4>
-                <p className="text-sm text-gray-500 line-clamp-1">
-                  {item.item.description}
-                </p>
-              </div>
-              <ItemCount
-                count={item.quantity}
-                handleChange={(value: number) =>
-                  updateQuantity(item.$id, value)
-                }
-                stock={999}
-                className="col-span-8 w-full justify-center sm:w-fit sm:flex-col-reverse"
-              />
-              <Button
-                className="col-span-2"
-                variant="ghost"
-                onClick={() => removeItem(item.$id)}
-                title="Poista tuote ostoskorista"
-              >
-                <X className="size-6 text-destructive" />
-              </Button>
-            </div>
-          ))}
-        </div>
+        <CartItems />
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button onClick={clearCart} variant={'ghost'}>
