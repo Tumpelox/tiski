@@ -7,6 +7,7 @@ import {
 } from '@/interfaces/orderCode.interface';
 import { createAdminClient } from './createAdminClient';
 import { getLoggedInUser } from './userSession';
+import isAdmin from '@/lib/isAdmin';
 
 export const loginWithCode = async (code: string) => {
   try {
@@ -62,7 +63,10 @@ export const getOrderCode = async (
 
 export const canAddToCart = async () => {
   const { user } = await getLoggedInUser();
+
   if (!user) return CanAddToCart.CodeNotFound;
+
+  if (isAdmin(user)) return CanAddToCart.Ok;
 
   const orderCode = await getOrderCode(user);
 
