@@ -34,13 +34,13 @@ const NavigationMenuButton = (props: { children: React.ReactNode }) => {
         onClick={toggleNavigationMenu}
       >
         <div
-          className={`h-[7%] rounded-sm left-0 block absolute duration-standard bg-current transition-[rotate] ${visible ? 'rotate-[135deg] w-[85%]' : 'top-1/6 w-[85%]'}`}
+          className={`h-[0.188rem] rounded-sm left-0 block absolute duration-standard bg-current transition-[rotate] ${visible ? 'rotate-[135deg] w-[85%]' : 'top-1/6 w-[85%]'}`}
         ></div>
         <div
-          className={`h-[7%] rounded-sm left-0 block absolute duration-standard bg-current transition-[rotate] ${visible ? 'rotate-45 w-[85%]' : 'w-[75%]'}`}
+          className={`h-[0.188rem] rounded-sm left-0 block absolute duration-standard bg-current transition-[rotate] ${visible ? 'rotate-45 w-[85%]' : 'w-[75%]'}`}
         ></div>
         <div
-          className={`h-[7%] rounded-sm left-0 block absolute duration-standard bg-current transition-[rotate] ${visible ? 'rotate-[135deg] w-[85%]' : 'bottom-1/6 translate-y-full w-full'}`}
+          className={`h-[0.188rem] rounded-sm left-0 block absolute duration-standard bg-current transition-[rotate] ${visible ? 'rotate-[135deg] w-[85%]' : 'bottom-1/6 translate-y-full w-full'}`}
         ></div>
       </button>
 
