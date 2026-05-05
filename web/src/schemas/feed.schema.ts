@@ -14,6 +14,11 @@ const feedSchema = z
   .object({
     existingImages: z.string().array().optional(),
     images: imageSchema.array().optional(),
+    title: z
+      .string()
+      .max(256, { message: 'Otsikon maksimipituus on 256 merkkiä' })
+      .optional()
+      .nullable(),
     text: z
       .string()
       .min(1, { message: 'Kuvaus vaaditaan' })
@@ -45,6 +50,11 @@ export const feedUpdateSchema = z.object({
   images: imageSchema
     .array()
     .min(1, { message: 'Vähintään yksi kuva vaaditaan' }),
+  title: z
+    .string()
+    .max(256, { message: 'Otsikon maksimipituus on 256 merkkiä' })
+    .optional()
+    .nullable(),
   text: z
     .string()
     .min(1, { message: 'Kuvaus vaaditaan' })

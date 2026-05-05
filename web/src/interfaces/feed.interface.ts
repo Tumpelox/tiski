@@ -10,6 +10,7 @@ export enum FeedDatabase {
 
 export interface Feed {
   text: string;
+  title: string | null;
   images: PictureDocument[];
 }
 
