@@ -11,6 +11,7 @@ export const fieldOrder = [
   'kaupunki',
   'paketteja',
   'lisätiedot',
+  'osoiteTulostus',
 ];
 
 export enum FieldOrder {
@@ -20,6 +21,7 @@ export enum FieldOrder {
   'kaupunki' = 'Kaupunki',
   'paketteja' = 'Paketteja',
   'lisätiedot' = 'Lisätiedot',
+  'osoiteTulostus' = 'Osoitteen tulostus',
 }
 
 const DownloadAll = () => {
@@ -32,17 +34,49 @@ const DownloadAll = () => {
       const tilaukset = utils.json_to_sheet(
         [
           FieldOrder,
-          ...orders.tilaukset.sort(
-            (a, b) =>
-              orders.tilastot.kaupungit[b.kaupunki ?? 'Ei kaupunkia'] -
-              orders.tilastot.kaupungit[a.kaupunki ?? 'Ei kaupunkia']
-          ),
+          ...orders.tilaukset
+            .sort(
+              (a, b) =>
+                orders.tilastot.kaupungit[b.kaupunki ?? 'Ei kaupunkia'] -
+                orders.tilastot.kaupungit[a.kaupunki ?? 'Ei kaupunkia']
+            )
+            .map((order) => ({
+              ...order,
+              osoiteTulostus: order.nimi + '\n' + order.osoite,
+            })),
         ],
         {
           header: fieldOrder,
           skipHeader: true,
         }
       );
+
+      if (tilaukset['!ref']) {
+        const range = utils.decode_range(tilaukset['!ref']);
+
+        for (let R = range.s.r; R <= range.e.r; ++R) {
+          const cellAddress = utils.encode_cell({ r: R, c: 6 });
+
+          if (!tilaukset[cellAddress]) continue;
+
+          tilaukset[cellAddress].s = {
+            alignment: {
+              wrapText: true,
+              vertical: 'top',
+            },
+          };
+        }
+      }
+
+      tilaukset['!cols'] = [
+        { wch: 20 },
+        { wch: 20 },
+        { wch: 35 },
+        { wch: 12 },
+        { wch: 10 },
+        { wch: 30 },
+        { wch: 40 },
+      ];
 
       const kaupungitHeader = Object.keys(orders.tilastot.kaupungit);
       const kaupungitData = Object.values(orders.tilastot.kaupungit);
@@ -55,10 +89,14 @@ const DownloadAll = () => {
         ['Tilauksia', ...kaupungitData],
       ]);
 
+      kaupungit['!cols'] = [{ wch: 10 }];
+
       const paketit = utils.aoa_to_sheet([
         ['Pakettia per tilaus', ...pakettejaHeader],
         ['kpl', ...pakettejaData],
       ]);
+
+      paketit['!cols'] = [{ wch: 20 }];
 
       utils.book_append_sheet(book, tilaukset, 'Tilaukset');
 
