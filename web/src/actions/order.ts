@@ -490,14 +490,73 @@ export const downloadOrders = async () => {
 
   if (!orders.data) return null;
 
-  return orders.data.map((order) => {
-    return {
-      numero: order.$id,
-      nimi: order.orderContacts.name,
-      osoite: order.orderContacts.address,
-      puhelin: order.orderContacts.phone ?? 'Ei',
-      paketteja: order.orderItems.reduce((acc, item) => acc + item.quantity, 0),
-      lisätiedot: order.orderNotes ?? 'Ei',
-    };
-  });
+  const tilaukset = orders.data
+    .map((order) => {
+      const cityRegExp = /\d{5}\s+(.+)$/;
+
+      const kaupunki = order.orderContacts.address
+        .match(cityRegExp)?.[1]
+        ?.toUpperCase();
+
+      return {
+        numero: order.$id,
+        nimi: order.orderContacts.name,
+        osoite: order.orderContacts.address,
+        kaupunki,
+        paketteja: order.orderItems.reduce(
+          (acc, item) => acc + item.quantity,
+          0
+        ),
+        lisätiedot: order.orderNotes ?? 'Ei',
+      };
+    })
+    .sort((order1, order2) => {
+      if (order1.kaupunki && order2.kaupunki) {
+        return order1.kaupunki.localeCompare(order2.kaupunki);
+      } else if (order1.kaupunki) {
+        return -1;
+      } else if (order2.kaupunki) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+  const paketteja = Object.fromEntries(
+    Object.entries(
+      tilaukset.reduce(
+        (acc, order) => {
+          const paketteja = String(order.paketteja);
+
+          if (acc[paketteja]) {
+            acc[paketteja] = acc[paketteja] + 1;
+          } else {
+            acc[paketteja] = 1;
+          }
+          return acc;
+        },
+        {} as Record<string, number>
+      )
+    ).sort((a, b) => a[1] - b[1])
+  );
+
+  const kaupungit = Object.fromEntries(
+    Object.entries(
+      tilaukset.reduce(
+        (acc, order) => {
+          const kaupunki = order.kaupunki ?? 'Ei kaupunkia';
+
+          if (acc[kaupunki]) {
+            acc[kaupunki] = acc[kaupunki] + 1;
+          } else {
+            acc[kaupunki] = 1;
+          }
+          return acc;
+        },
+        {} as Record<string, number>
+      )
+    ).sort((a, b) => b[1] - a[1])
+  );
+
+  return { tilaukset, tilastot: { paketteja, kaupungit } };
 };

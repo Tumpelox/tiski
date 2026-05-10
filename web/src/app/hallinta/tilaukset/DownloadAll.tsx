@@ -2,22 +2,22 @@
 
 import { downloadOrders } from '@/actions/order';
 import { CloudButton } from '@/components/CloudButton';
-import formExcelData from '@/services/formExcelData';
+import { utils, write } from 'xlsx';
 
 export const fieldOrder = [
   'numero',
   'nimi',
   'osoite',
-  'puhelin',
+  'kaupunki',
   'paketteja',
   'lisätiedot',
 ];
 
 export enum FieldOrder {
-  'numero' = 'Numero',
+  'numero' = 'Tilaus',
   'nimi' = 'Nimi',
   'osoite' = 'Osoite',
-  'puhelin' = 'Puhelin',
+  'kaupunki' = 'Kaupunki',
   'paketteja' = 'Paketteja',
   'lisätiedot' = 'Lisätiedot',
 }
@@ -27,14 +27,55 @@ const DownloadAll = () => {
     const orders = await downloadOrders();
 
     if (orders) {
-      const excelData = formExcelData(orders, fieldOrder);
+      const book = utils.book_new();
 
-      if (excelData) {
-        const a = document.createElement('a');
-        a.href = excelData;
-        a.download = 'orders.xlsx';
-        a.click();
-      }
+      const tilaukset = utils.json_to_sheet(
+        [
+          FieldOrder,
+          ...orders.tilaukset.sort(
+            (a, b) =>
+              orders.tilastot.kaupungit[b.kaupunki ?? 'Ei kaupunkia'] -
+              orders.tilastot.kaupungit[a.kaupunki ?? 'Ei kaupunkia']
+          ),
+        ],
+        {
+          header: fieldOrder,
+          skipHeader: true,
+        }
+      );
+
+      const kaupungitHeader = Object.keys(orders.tilastot.kaupungit);
+      const kaupungitData = Object.values(orders.tilastot.kaupungit);
+
+      const pakettejaHeader = Object.keys(orders.tilastot.paketteja);
+      const pakettejaData = Object.values(orders.tilastot.paketteja);
+
+      const kaupungit = utils.aoa_to_sheet([
+        ['Kaupunki', ...kaupungitHeader],
+        ['Tilauksia', ...kaupungitData],
+      ]);
+
+      const paketit = utils.aoa_to_sheet([
+        ['Pakettia per tilaus', ...pakettejaHeader],
+        ['kpl', ...pakettejaData],
+      ]);
+
+      utils.book_append_sheet(book, tilaukset, 'Tilaukset');
+
+      utils.book_append_sheet(book, kaupungit, 'Kaupungit');
+
+      utils.book_append_sheet(book, paketit, 'Paketteja');
+
+      const buffer = write(book, { type: 'array', bookType: 'xlsx' });
+
+      const url = URL.createObjectURL(
+        new Blob([buffer], { type: 'application/octet-stream' })
+      );
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'orders.xlsx';
+      a.click();
     }
   };
 
