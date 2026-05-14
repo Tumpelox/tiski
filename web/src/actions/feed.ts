@@ -82,6 +82,7 @@ export const uploadFeed = async (upload: z.infer<typeof feedSchema>) => {
     FeedDatabase.CollectionId,
     ID.unique(),
     {
+      title: data.title,
       text: data.text,
       images: uploadedImages,
     }
@@ -157,6 +158,7 @@ export const updateFeed = async (upload: z.infer<typeof feedSchema>) => {
       FeedDatabase.CollectionId,
       data.id!,
       {
+        title: data.title,
         text: data.text,
         images: [...data.existingImages, ...uploadedImages],
       }

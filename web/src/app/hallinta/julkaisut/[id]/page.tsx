@@ -40,7 +40,7 @@ const UusiFeedPage = async ({ params }: Props) => {
       </div>
       {isAdmin(user) && (
         <div className="mb-4">
-          <UploadFeed id={data.$id} text={data.text} images={data.images} />
+          <UploadFeed id={data.$id} text={data.text} title={data.title ?? ''} images={data.images} />
         </div>
       )}
     </div>
