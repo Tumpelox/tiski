@@ -17,8 +17,7 @@ const feedSchema = z
     title: z
       .string()
       .max(256, { message: 'Otsikon maksimipituus on 256 merkkiä' })
-      .optional()
-      .nullable(),
+      .optional(),
     text: z
       .string()
       .min(1, { message: 'Kuvaus vaaditaan' })
@@ -53,8 +52,7 @@ export const feedUpdateSchema = z.object({
   title: z
     .string()
     .max(256, { message: 'Otsikon maksimipituus on 256 merkkiä' })
-    .optional()
-    .nullable(),
+    .optional(),
   text: z
     .string()
     .min(1, { message: 'Kuvaus vaaditaan' })

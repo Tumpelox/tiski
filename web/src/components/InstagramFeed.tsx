@@ -12,6 +12,7 @@ const getPosts = async (): Promise<FeedDocument[]> => {
     [
       Query.select([
         '$id',
+        'title',
         'text',
         'images.src',
         'images.alt',

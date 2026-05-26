@@ -10,6 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import feedSchema from '@/schemas/feed.schema';
 import imageSchema from '@/schemas/image.schema';
@@ -35,10 +36,12 @@ import {
 
 const UploadFeed = ({
   id,
+  title,
   text,
   images,
 }: {
   id?: string;
+  title?: string;
   text?: string;
   images?: PictureDocument[];
 }) => {
@@ -53,6 +56,7 @@ const UploadFeed = ({
     resolver: zodResolver(feedSchema),
     defaultValues: {
       id,
+      title: title || '',
       text: text || '',
       images: [],
       existingImages: images?.map((image) => image.$id) || [],
@@ -205,6 +209,19 @@ const UploadFeed = ({
                 <FormLabel>Teksti</FormLabel>
                 <FormControl>
                   <Textarea {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Otsikko</FormLabel>
+                <FormControl>
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
