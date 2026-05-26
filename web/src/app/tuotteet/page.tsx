@@ -23,6 +23,7 @@ import { getLoggedInUser } from '@/services/userSession';
 import { Suspense } from 'react';
 import defaultMetadata from '../metadata';
 import { Metadata } from 'next';
+import { CanAddToCart } from '@/interfaces/orderCode.interface';
 
 export const metadata: Metadata = defaultMetadata;
 
@@ -62,7 +63,7 @@ const TuotteetPage = async () => {
   // const products = await getProducts();
   const bundles = await getBundles();
 
-  const canAdd = await canAddToCart();
+  const canAdd = CanAddToCart.Ok;
 
   const items = [
     // ...products,
@@ -74,19 +75,19 @@ const TuotteetPage = async () => {
       <Heading.h1 className="text-center text-4xl md:text-5xl mt-4 uppercase">
         Tarrat
       </Heading.h1>
-      {orderCode && (
-        <Paragraph className="text-center text-lg md:text-xl italic">
-          <span className="not-italic">ℹ️</span> Tarrat lähetetään
-          hienotunteisesti paketissa, jonka sisältöä ei voi arvata ulkoapäin.
-        </Paragraph>
-      )}
-      {!orderCode && (
+
+      <Paragraph className="text-center text-lg md:text-xl italic">
+        <span className="not-italic">ℹ️</span> Tarrat lähetetään
+        hienotunteisesti paketissa, jonka sisältöä ei voi arvata ulkoapäin.
+      </Paragraph>
+
+      {/* {!orderCode && (
         <Card className="w-full">
           <CardContent>
             <LoginWithCode />
           </CardContent>
         </Card>
-      )}
+      )} */}
       <div
         className={cn('grid grid-cols-1 gap-4 w-full', {
           'sm:grid-cols-1': items.length === 1,

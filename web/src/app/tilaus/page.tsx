@@ -43,13 +43,13 @@ const TilausPage = async () => {
 
   return (
     <div className="container mx-auto py-8 space-y-8">
-      {!orderCode && (
+      {/* {!orderCode && (
         <Card>
           <CardContent>
             <LoginWithCode />
           </CardContent>
         </Card>
-      )}
+      )} */}
       {date >= closeDate && (
         <Card>
           <CardContent>
@@ -64,7 +64,6 @@ const TilausPage = async () => {
       {(!orderCode || !orderCode?.orders) && date < closeDate && <Cart />}
       {date >= closeDate && orderCode && date < closeDate && (
         <>
-          {/* Only render the cart if no orders have been placed */}
           {!orderCode.orders && <Cart />}
           <Card>
             <CardHeader>

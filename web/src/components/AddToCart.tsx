@@ -109,11 +109,11 @@ const AddToCart = ({
     if (product.available === false) return null;
     return (
       <div className="flex flex-col gap-4 w-full items-center">
-        <ItemCount
+        {/* <ItemCount
           stock={product.stock}
           count={count}
           handleChange={handleItemCountChange}
-        />
+        /> */}
         <Button
           variant={'ghost'}
           title="Lisää ostoskoriin"
@@ -138,11 +138,11 @@ const AddToCart = ({
       999;
     return (
       <div className="flex flex-col gap-4 w-full items-center">
-        <ItemCount
+        {/* <ItemCount
           stock={stock}
           handleChange={handleItemCountChange}
           count={count}
-        />
+        /> */}
         <Button
           variant={'ghost'}
           onClick={() => {

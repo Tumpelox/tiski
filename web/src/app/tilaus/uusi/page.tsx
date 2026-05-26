@@ -11,10 +11,11 @@ const UusiTilausPage = async () => {
   const { user } = await getLoggedInUser();
   const orderCode = await getOrderCode(user);
 
-  const date = new Date(new Date().toUTCString());
-  const closeDate = new Date('Mon, 09 Jun 2026 21:00:00 GMT');
+  const date = new Date();
+  const closeDate = new Date('2026-06-12T21:00:00.000Z');
 
   if (date >= closeDate) redirect('/tilaus');
+
   return (
     <ReCaptchaProvider>
       <Card>

@@ -363,10 +363,8 @@ export const newOrderWithOutCode = async (
     const orderItems = products
       .filter((item) => validProducts.includes(item.$id))
       .map((item) => {
-        if (item.type === 'product')
-          return { product: item.$id, quantity: item.quantity };
-        if (item.type === 'bundle')
-          return { bundle: item.$id, quantity: item.quantity };
+        if (item.type === 'product') return { product: item.$id, quantity: 1 };
+        if (item.type === 'bundle') return { bundle: item.$id, quantity: 1 };
       })
       .filter((item) => item !== undefined);
 
