@@ -39,7 +39,7 @@ const TilausPage = async () => {
   };
 
   const date = new Date(new Date().toUTCString());
-  const closeDate = new Date('Mon, 13 Jun 2026 21:00:00 GMT');
+  const closeDate = new Date('Tue, 16 Jun 2026 21:00:00 GMT');
 
   return (
     <div className="container mx-auto py-8 space-y-8">
