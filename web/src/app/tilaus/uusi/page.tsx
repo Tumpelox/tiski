@@ -12,7 +12,7 @@ const UusiTilausPage = async () => {
   const orderCode = await getOrderCode(user);
 
   const date = new Date();
-  const closeDate = new Date('2026-06-12T21:00:00.000Z');
+  const closeDate = new Date('2026-06-16T21:00:00.000Z');
 
   if (date >= closeDate) redirect('/tilaus');
 
