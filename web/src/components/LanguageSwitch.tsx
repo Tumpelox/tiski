@@ -8,7 +8,7 @@ const LanguageSwitch = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className="absolute left-4 top-4 z-50">
+    <div className="fixed left-4 top-4 z-50">
       <Link
         href={href}
         className="text-sm font-semibold text-current underline underline-offset-4"
