@@ -37,6 +37,9 @@ export default async function Home() {
       </Siluet>
       <div className="py-8 relative">
         <div className="container max-w-5xl mx-auto px-4 sm:px-8 md:px-8 lg:px-0">
+          <h2 className="text-3xl md:text-4xl text-foreground mt-4 mb-8 text-center">
+            Tarratoimikunnan Instagram-julkaisuja
+          </h2>
           <InstagramFeed />
         </div>
       </div>
