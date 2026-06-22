@@ -76,7 +76,7 @@ const TarratPage = async () => {
     <div className="flex flex-col gap-10 text-accent-foreground">
       <LanguageSwitch href="/tarrat">FI</LanguageSwitch>
       <Heading.h1 className="text-center text-4xl md:text-5xl mt-4 uppercase">
-        Tarrat 2025
+        Stickers 2025
       </Heading.h1>
       <Paragraph className="text-center text-lg md:text-xl italic">
         <span className="not-italic">ℹ️</span> On the back of the stickers, you'll find some background information about them
