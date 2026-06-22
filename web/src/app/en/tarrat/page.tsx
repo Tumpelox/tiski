@@ -11,7 +11,7 @@ import { clientSideProduct } from '@/lib/clientSideProduct';
 import { cn } from '@/lib/utils';
 import { listDocumentsWithApi } from '@/services/databases';
 import { Suspense } from 'react';
-import TarraCard from '../../components/FlipCard';
+import TarraCard from '../../../components/FlipCard';
 import Image from 'next/image';
 import { UnifrakturCook } from 'next/font/google';
 import { Instagram, Link as LinkIcon } from 'lucide-react';
@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/carousel';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import defaultMetadata from '../metadata';
+import defaultMetadata from '../../metadata';
 import LanguageSwitch from '@/components/LanguageSwitch';
 
 const unifrakturCook = UnifrakturCook({
@@ -79,8 +79,7 @@ const TarratPage = async () => {
         Tarrat 2025
       </Heading.h1>
       <Paragraph className="text-center text-lg md:text-xl italic">
-        <span className="not-italic">ℹ️</span> Tarrojen kääntöpuolelta löydät
-        ajatuksia tarrojen taustoista
+        <span className="not-italic">ℹ️</span> On the back of the stickers, you'll find some background information about them
       </Paragraph>
       <div
         className={cn('grid grid-cols-1 gap-4 w-full', {

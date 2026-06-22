@@ -1,7 +1,7 @@
 import { Paragraph } from '@/components/Text';
-import InstagramFeed from '../components/InstagramFeed';
+import InstagramFeed from '../../components/InstagramFeed';
 import Siluet from '@/components/Siluet';
-import defaultMetadata from './metadata';
+import defaultMetadata from './../metadata';
 import { Metadata } from 'next';
 import LanguageSwitch from '@/components/LanguageSwitch';
 
@@ -18,12 +18,11 @@ export default async function Home() {
               Tarratoimikunta
             </h1>
             <h2 className="text-3xl md:text-4xl font-light uppercase">
-              Suviseuroissa 2026
+              Summer services 2026
             </h2>
           </div>
           <Paragraph className="font-light text-center text-xl w-full px-8">
-            Tervetuloa turvasatamaan. Me olemme Tarratoimikunta. Seisomme
-            ihmisoikeuksien ja heikompien puolella Jeesuksen tavoin.
+            Welcome to your safe haven. We are “Tarratoimikunta” - the sticker committee. Just like Jesus, we stand up for human rights and those who are vulnerable.
           </Paragraph>
           {/* <CloudLink
             className="mt-4 md:mt-8"

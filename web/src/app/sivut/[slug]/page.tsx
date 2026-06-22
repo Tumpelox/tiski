@@ -10,6 +10,7 @@ import React from 'react';
 
 import defaultMetadata from '../../metadata';
 import { Metadata } from 'next';
+import LanguageSwitch from '@/components/LanguageSwitch';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -62,6 +63,9 @@ const Page = async ({ params }: Props) => {
           {data.title}
         </Heading.h1>
       </Siluet>
+      {slug === 'mista-on-kyse' && (
+        <LanguageSwitch href="/en/sivut/mista-on-kyse">EN</LanguageSwitch>
+      )}
       <div className="flex flex-col gap-4 container max-w-5xl mx-auto pb-8 pt-4 px-4 sm:px-8 md:px-8 lg:px-0 text-lg">
         <Markdown
           options={{
