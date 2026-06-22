@@ -74,7 +74,7 @@ const TarratPage = async () => {
 
   return (
     <div className="flex flex-col gap-10 text-accent-foreground">
-      <LanguageSwitch href="/en/tarrat">EN</LanguageSwitch>
+      <LanguageSwitch href="/tarrat">FI</LanguageSwitch>
       <Heading.h1 className="text-center text-4xl md:text-5xl mt-4 uppercase">
         Tarrat 2025
       </Heading.h1>

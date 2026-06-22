@@ -10,7 +10,7 @@ export const metadata: Metadata = defaultMetadata;
 export default async function Home() {
   return (
     <>
-      <LanguageSwitch href="/en">EN</LanguageSwitch>
+      <LanguageSwitch href="/">FI</LanguageSwitch>
       <Siluet>
         <div className="flex flex-col gap-6 items-center py-8 row-span-1 text-foreground w-full md:translate-y-[-20%]">
           <div className="flex flex-col text-center w-full px-4">
