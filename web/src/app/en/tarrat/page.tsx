@@ -1,34 +1,25 @@
 import { Heading, Paragraph } from '@/components/Text';
 
-import { Bundle } from '@/interfaces/bundle.interface';
-
 import {
-  Product,
-  ProductDatabase,
-  ProductDocument,
-} from '@/interfaces/product.interface';
-import { clientSideProduct } from '@/lib/clientSideProduct';
+  Bundle,
+  BundleDatabase,
+  BundleDocument,
+} from '@/interfaces/bundle.interface';
+
+import { Product } from '@/interfaces/product.interface';
+import { clientSideBundle } from '@/lib/clientSideProduct';
 import { cn } from '@/lib/utils';
 import { listDocumentsWithApi } from '@/services/databases';
-import { Suspense } from 'react';
 import TarraCard from '../../../components/FlipCard';
 import Image from 'next/image';
-import { UnifrakturCook } from 'next/font/google';
-import { Instagram, Link as LinkIcon } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
-import Link from 'next/link';
 import { Metadata } from 'next';
 import defaultMetadata from '../../metadata';
 import LanguageSwitch from '@/components/LanguageSwitch';
-
-const unifrakturCook = UnifrakturCook({
-  weight: '700',
-  subsets: ['latin'],
-});
 
 export async function generateMetadata(): Promise<Metadata | null> {
   return {
@@ -50,10 +41,12 @@ export async function generateMetadata(): Promise<Metadata | null> {
   };
 }
 
-const getProducts = async () => {
-  const { data } = await listDocumentsWithApi<ProductDocument>(
-    ProductDatabase.DatabaseId,
-    ProductDatabase.CollectionId
+const bundleIds = ['yhden-jakajan-paketti', 2026];
+
+const getBundles = async () => {
+  const { data } = await listDocumentsWithApi<BundleDocument>(
+    BundleDatabase.DatabaseId,
+    BundleDatabase.CollectionId
   );
 
   if (!data) {
@@ -61,163 +54,69 @@ const getProducts = async () => {
   }
 
   return data
-    .filter((product) => product.hidden === false)
-    .map((product) => clientSideProduct(product));
+    .filter((bundle) => bundle.products.length > 0)
+    .filter((bundle) => bundleIds.includes(bundle.$id))
+    .map((bundle) => clientSideBundle(bundle));
 };
 
 const TarratPage = async () => {
   // const { user } = await getLoggedInUser();
   // const orderCode = await getOrderCode(user);
-  const products = await getProducts();
-
-  const items = [...products];
+  const bundles = await getBundles();
+  console.log(bundles);
 
   return (
     <div className="flex flex-col gap-10 text-accent-foreground">
       <LanguageSwitch href="/tarrat">FI</LanguageSwitch>
       <Heading.h1 className="text-center text-4xl md:text-5xl mt-4 uppercase">
         Stickers 2025
-      </Heading.h1>
+      </Heading.h1>{' '}
       <Paragraph className="text-center text-lg md:text-xl italic">
-        <span className="not-italic">ℹ️</span> On the back of the stickers, you'll find some background information about them
+        <span className="not-italic">ℹ️</span> On the back of the stickers,
+        you'll find some background information about them{' '}
       </Paragraph>
-      <div
-        className={cn('grid grid-cols-1 gap-4 w-full', {
-          'sm:grid-cols-1': items.length === 1,
-          'sm:grid-cols-2': items.length === 2,
-          'sm:grid-cols-2 md:grid-cols-3': items.length >= 3,
-        })}
-      >
-        <Suspense fallback={<div>Ladataan tarroja...</div>}>
-          {items.map((item: Product | Bundle) => {
-            if (Object.hasOwn(item, 'pictures')) {
-              return (
-                <TarraCard
-                  key={item.$id}
-                  front={
-                    <Carousel>
-                      <CarouselContent>
-                        {(item as Product).pictures.map((picture, index) => (
-                          <CarouselItem key={picture.src + index}>
-                            <Image
-                              src={picture.src}
-                              width={picture.width}
-                              height={picture.height}
-                              alt={picture.alt}
-                              className="size-full"
-                            />
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                    </Carousel>
-                  }
-                  back={
-                    <div className="flex flex-col justify-center h-full">
-                      <Paragraph className="md:text-sm text-left">
-                        {item.description}
-                      </Paragraph>
-                    </div>
-                  }
-                />
-              );
-            }
-          })}
-        </Suspense>
-        <TarraCard
-          front={
-            <div
-              className={`${unifrakturCook.className} h-full flex flex-col justify-center items-center bg-white text-black`}
-            >
-              <Paragraph className="text-center text-[2.7rem] sm:text-3xl">
-                Seksuaalioikeuksien julistus
-              </Paragraph>
-            </div>
-          }
-          back={
-            <div className="h-full flex flex-col items-center justify-center">
-              <Link
-                target="_blank"
-                href="https://www.worldsexualhealth.net/_files/ugd/793f03_8f71ab092a2e43939aa88f72690d87d0.pdf"
-                className="text-2xl sm:text-xl md:text-lg  hover:-translate-y-1.5 transition-transform"
-              >
-                Avaa PDF
-                <LinkIcon className="ml-2 inline" />
-              </Link>
-            </div>
-          }
-        />
-        {/* <TarraCard
-          front={
-            <div
-              className={`${unifrakturCook.className} h-full flex flex-col justify-center items-center bg-white text-black`}
-            >
-              <Paragraph className="text-center text-5xl sm:text-3xl">
-                Lasten oikeuksien julistus
-              </Paragraph>
-            </div>
-          }
-          back={
-            <div className="h-full flex flex-col items-center justify-center">
-              <CloudLink
-                variant={'card'}
-                size={'large'}
-                href="https://www.unicef.fi/tyomme/lapsen-oikeudet/lapsen-oikeuksien-sopimus/lapsen-oikeuksien-sopimus-tiivistettyna/"
-                className="text-2xl sm:text-xl md:text-lg"
-              >
-                Avaa sivu
-                <Link className="ml-2" />
-              </CloudLink>
-            </div>
-          }
-        /> */}
-        <TarraCard
-          front={
-            <div
-              className={`${unifrakturCook.className} h-full flex flex-col justify-center items-center bg-white text-black`}
-            >
-              <Paragraph className="text-center text-[2.7rem] sm:text-3xl">
-                Tietoa hengellisestä väkivallasta
-              </Paragraph>
-            </div>
-          }
-          back={
-            <div className="h-full flex flex-col items-center justify-center">
-              <Link
-                target="_blank"
-                href="https://www.mielenterveystalo.fi/fi/omahoito/uskonnollisesta-yhteisosta-irtautumisen-omahoito-ohjelma/mita-hengellinen-vakivalta"
-                className="text-2xl sm:text-xl md:text-lg  hover:-translate-y-1.5 transition-transform"
-              >
-                Lue lisää
-                <LinkIcon className="ml-2 inline" />
-              </Link>
-            </div>
-          }
-        />
-        <TarraCard
-          front={
-            <div
-              className={`${unifrakturCook.className} h-full flex flex-col justify-center items-center bg-white text-black`}
-            >
-              <Paragraph className="text-center text-[2.7rem] sm:text-3xl flex items-center">
-                Instagram
-                <Instagram className="ml-2 inline" />
-              </Paragraph>
-            </div>
-          }
-          back={
-            <div className="h-full flex flex-col items-center justify-center">
-              <Link
-                target="_blank"
-                href="https://instagram.com/tarratoimikunta"
-                className="text-2xl sm:text-xl md:text-lg hover:-translate-y-1.5 transition-transform"
-              >
-                @tarratoimikunta
-                <LinkIcon className="ml-2 inline" />
-              </Link>
-            </div>
-          }
-        />
-      </div>
+      {bundles.map((bundle: Bundle) => {
+        const products = bundle.products;
+        return (
+          <div
+            key={bundle.$id}
+            className={cn(
+              'grid grid-cols-1 gap-4 w-full',
+              'sm:grid-cols-2 md:grid-cols-3'
+            )}
+          >
+            {products.map((product: Product) => (
+              <TarraCard
+                key={product.$id}
+                front={
+                  <Carousel>
+                    <CarouselContent>
+                      {product.pictures.map((picture, index) => (
+                        <CarouselItem key={picture.src + index}>
+                          <Image
+                            src={picture.src}
+                            width={picture.width}
+                            height={picture.height}
+                            alt={picture.alt}
+                            className="size-full"
+                          />
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                  </Carousel>
+                }
+                back={
+                  <div className="flex flex-col justify-center h-full">
+                    <Paragraph className="md:text-sm text-left">
+                      {product.description}
+                    </Paragraph>
+                  </div>
+                }
+              />
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 };
