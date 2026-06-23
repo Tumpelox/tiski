@@ -134,10 +134,38 @@ export const uploadProduct = async (upload: z.infer<typeof productSchema>) => {
 
   const uploadedImages = await uploadImages(data.pictures || []);
 
+  const shortenFilename =
+    data.title.length < 26
+      ? data.title
+      : `${data.title.slice(0, 23 - data.title.length)}...${data.title.slice(data.title.length - 5, data.title.length - 1)}`;
+
+  const string =
+    `${shortenFilename}_${ID.unique(10).slice(4, 8 + 26 - shortenFilename.length)}`
+      .trim()
+      .toLowerCase();
+
+  let legalString = '';
+
+  for (const char of string) {
+    if (char.match(/^[a-zA-Z0-9_.-]*$/)) {
+      legalString += char;
+    } else {
+      if (char === 'ä') legalString += 'a';
+      else if (char === 'ö') legalString += 'o';
+      else if (char === 'å') legalString += 'a';
+      else if (char === 'Ä') legalString += 'A';
+      else if (char === 'Ö') legalString += 'O';
+      else if (char === 'Å') legalString += 'A';
+      else legalString += '_';
+    }
+  }
+
+  console.log('Generated legal string for product ID:', legalString);
+
   const result = await createDocument<ProductDocument>(
     ProductDatabase.DatabaseId,
     ProductDatabase.CollectionId,
-    ID.unique(),
+    legalString,
     {
       title: data.title,
       description: data.description,

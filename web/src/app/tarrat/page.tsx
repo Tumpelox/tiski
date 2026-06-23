@@ -41,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata | null> {
   };
 }
 
-const bundleIds = ['yhden-jakajan-paketti', 2026];
+const bundleIds = ['yhden-jakajan-paketti', '2026'];
 
 const getBundles = async () => {
   const { data } = await listDocumentsWithApi<BundleDocument>(
@@ -56,6 +56,11 @@ const getBundles = async () => {
   return data
     .filter((bundle) => bundle.products.length > 0)
     .filter((bundle) => bundleIds.includes(bundle.$id))
+    .sort((a, b) => {
+      return (
+        new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime()
+      );
+    })
     .map((bundle) => clientSideBundle(bundle));
 };
 
@@ -63,13 +68,12 @@ const TarratPage = async () => {
   // const { user } = await getLoggedInUser();
   // const orderCode = await getOrderCode(user);
   const bundles = await getBundles();
-  console.log(bundles);
 
   return (
     <div className="flex flex-col gap-10 text-accent-foreground">
       <LanguageSwitch href="/en/tarrat">EN</LanguageSwitch>
       <Heading.h1 className="text-center text-4xl md:text-5xl mt-4 uppercase">
-        Tarrat 2025
+        Tarrat
       </Heading.h1>
       <Paragraph className="text-center text-lg md:text-xl italic">
         <span className="not-italic">ℹ️</span> Tarrojen kääntöpuolelta löydät
@@ -78,43 +82,48 @@ const TarratPage = async () => {
       {bundles.map((bundle: Bundle) => {
         const products = bundle.products;
         return (
-          <div
-            key={bundle.$id}
-            className={cn(
-              'grid grid-cols-1 gap-4 w-full',
-              'sm:grid-cols-2 md:grid-cols-3'
-            )}
-          >
-            {products.map((product: Product) => (
-              <TarraCard
-                key={product.$id}
-                front={
-                  <Carousel>
-                    <CarouselContent>
-                      {product.pictures.map((picture, index) => (
-                        <CarouselItem key={picture.src + index}>
-                          <Image
-                            src={picture.src}
-                            width={picture.width}
-                            height={picture.height}
-                            alt={picture.alt}
-                            className="size-full"
-                          />
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                  </Carousel>
-                }
-                back={
-                  <div className="flex flex-col justify-center h-full">
-                    <Paragraph className="md:text-sm text-left">
-                      {product.description}
-                    </Paragraph>
-                  </div>
-                }
-              />
-            ))}
-          </div>
+          <>
+            <Heading.h2 className="text-center text-4xl md:text-5xl mt-4 uppercase">
+              {bundle.title}
+            </Heading.h2>
+            <div
+              key={bundle.$id}
+              className={cn(
+                'grid grid-cols-1 gap-4 w-full',
+                'sm:grid-cols-2 md:grid-cols-3'
+              )}
+            >
+              {products.map((product: Product) => (
+                <TarraCard
+                  key={product.$id}
+                  front={
+                    <Carousel>
+                      <CarouselContent>
+                        {product.pictures.map((picture, index) => (
+                          <CarouselItem key={picture.src + index}>
+                            <Image
+                              src={picture.src}
+                              width={picture.width}
+                              height={picture.height}
+                              alt={picture.alt}
+                              className="size-full"
+                            />
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                    </Carousel>
+                  }
+                  back={
+                    <div className="flex flex-col justify-center h-full">
+                      <Paragraph className="md:text-sm text-left">
+                        {product.description}
+                      </Paragraph>
+                    </div>
+                  }
+                />
+              ))}
+            </div>
+          </>
         );
       })}
     </div>
