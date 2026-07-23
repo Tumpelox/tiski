@@ -8,7 +8,7 @@ import { Settings, SettingsDatabase } from '@/interfaces/settings.interface';
 import ToastMessage from '@/components/ToastMessage';
 import SignOutButton from '@/components/SignOutButton';
 import { getLoggedInUser } from '@/services/userSession';
-import PlausibleProvider from 'next-plausible';
+import { OpenPanelComponent } from '@openpanel/nextjs';
 import { cn } from '@/lib/utils';
 import { CartMenu } from '@/components/Cart';
 
@@ -27,33 +27,36 @@ export default async function RootLayout({
   const menuItems = settings.data?.[0].mainMenu.menuItems ?? [];
 
   return (
-    <PlausibleProvider domain="tarratoimikunta.fi">
-      <html lang="fi">
-        <head>
-          <meta name="theme-color" content="#ffffff" />
-        </head>
-        <body
-          className={`antialiased bg-background min-h-dvh flex flex-col md:gap-6 bg-fixed`}
+    <html lang="fi">
+      <head>
+        <meta name="theme-color" content="#ffffff" />
+      </head>
+      <OpenPanelComponent
+        clientId="24325308-6d9a-477a-8bbd-ab98a0136e1d"
+        apiUrl="https://analytics.motunix.fi/api"
+        trackScreenViews={true}
+      />
+      <body
+        className={`antialiased bg-background min-h-dvh flex flex-col md:gap-6 bg-fixed`}
+      >
+        <header
+          className={cn(
+            'w-full min-h-16 px-4 sm:px-8 flex flex-row-reverse justify-between items-center',
+            {
+              'md:h-fit md:px-0 md:container md:mx-auto md:max-w-3xl': false,
+            }
+          )}
         >
-          <header
-            className={cn(
-              'w-full min-h-16 px-4 sm:px-8 flex flex-row-reverse justify-between items-center',
-              {
-                'md:h-fit md:px-0 md:container md:mx-auto md:max-w-3xl': false,
-              }
-            )}
-          >
-            <ToastMessage />
-            <NavigationMenuButton>
-              <NavigationMenu items={menuItems}>
-                <SignOutButton user={user} />
-              </NavigationMenu>
-            </NavigationMenuButton>
-            <CartMenu />
-          </header>
-          <main className="grow flex flex-col">{children}</main>
-        </body>
-      </html>
-    </PlausibleProvider>
+          <ToastMessage />
+          <NavigationMenuButton>
+            <NavigationMenu items={menuItems}>
+              <SignOutButton user={user} />
+            </NavigationMenu>
+          </NavigationMenuButton>
+          <CartMenu />
+        </header>
+        <main className="grow flex flex-col">{children}</main>
+      </body>
+    </html>
   );
 }
