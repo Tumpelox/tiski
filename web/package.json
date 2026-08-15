@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
-    "@openpanel/nextjs": "^1.5.1",
     "@radix-ui/react-alert-dialog": "^1.1.13",
     "@radix-ui/react-dialog": "^1.1.13",
     "@radix-ui/react-label": "^2.1.6",
@@ -27,6 +26,7 @@
     "lucide-react": "^0.479.0",
     "markdown-to-jsx": "^7.7.4",
     "next": "^16.2.2",
+    "next-plausible": "^3.12.4",
     "next-recaptcha-v3": "^1.5.2",
     "node-appwrite": "^16.0.0",
     "radix-ui": "^1.4.3",
