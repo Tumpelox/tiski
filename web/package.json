@@ -26,7 +26,7 @@
     "lucide-react": "^0.479.0",
     "markdown-to-jsx": "^7.7.4",
     "next": "^16.2.2",
-    "next-plausible": "^3.12.4",
+    "next-plausible": "^4.0.0",
     "next-recaptcha-v3": "^1.5.2",
     "node-appwrite": "^16.0.0",
     "radix-ui": "^1.4.3",
